@@ -1,0 +1,26 @@
+{
+  "name": "vaipakam-keeper-bot",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Reference autonomous-liquidation bot for Vaipakam. Runs as a standalone Node.js process; clones cleanly out of the Vaipakam monorepo for third-party operators.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node --experimental-strip-types --no-warnings src/index.ts",
+    "dev": "node --watch --experimental-strip-types --no-warnings src/index.ts",
+    "typecheck": "tsc -p .",
+    "lint": "tsc -p ."
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "viem": "^2.21.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}

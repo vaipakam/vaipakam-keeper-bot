@@ -1,0 +1,286 @@
+/**
+ * Vaipakam keeper bot — entry point.
+ *
+ * Self-contained reference implementation any third-party operator
+ * can clone, configure with their own keeper key + RPC, and run to
+ * compete for Vaipakam liquidations. Mirrors the autonomous-keeper
+ * logic in `ops/hf-watcher/src/keeper.ts` but as a vanilla Node.js
+ * process (no Cloudflare dependency).
+ *
+ * Per tick, per chain:
+ *   1. Read every loan id from `getActiveLoanIds()` (or the operator-
+ *      supplied whitelist via CHAIN_<id>_LOAN_IDS).
+ *   2. For each loan, read HF via `calculateHealthFactor(loanId)`.
+ *      Skip loans with HF >= 1.0.
+ *   3. For loans with HF < 1.0, fetch the loan struct, orchestrate
+ *      quotes from the 4 DEX venues, rank by expected output.
+ *   4. Submit `triggerLiquidation(loanId, ranked)` from the keeper EOA.
+ *
+ * Idempotent dedupe per tick — won't re-attempt the same loan twice
+ * in one cron sweep. Across ticks, the diamond's status check
+ * naturally rejects re-attempts on already-liquidated loans.
+ *
+ * Liquidation is permissionless on-chain. Losing the race to another
+ * keeper or MEV bot is fine; the second `triggerLiquidation` reverts
+ * cleanly and you only pay gas for the failed simulation. Run with
+ * an MEV-protected RPC (e.g. Flashbots Protect on Ethereum, MEV
+ * Blocker on BSC) to claim more bonuses on contested chains.
+ */
+
+import {
+  type Address,
+  createPublicClient,
+  createWalletClient,
+  http,
+  parseAbi,
+  type PublicClient,
+  type WalletClient,
+} from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { loadConfig, type BotConfig, type ChainConfig } from './config.ts';
+import { log, setLogLevel } from './log.ts';
+import { orchestrateQuotes } from './quotes.ts';
+
+/// Diamond ABI subset the bot needs. The active-loan listing uses
+/// the protocol's own paginated view so the bot doesn't have to
+/// scan event logs. `getActiveLoansCount` returns the total; we
+/// page through with `getActiveLoansPaginated(offset, limit)`.
+const DIAMOND_ABI = parseAbi([
+  'function getActiveLoansCount() view returns (uint256)',
+  'function getActiveLoansPaginated(uint256 offset, uint256 limit) view returns (uint256[] memory)',
+  'function calculateHealthFactor(uint256 loanId) view returns (uint256)',
+  'function getLoanDetails(uint256 loanId) view returns ((uint256 offerId, address lender, address borrower, address principalAsset, uint256 principal, address collateralAsset, uint256 collateralAmount, address prepayAsset, uint256 prepayAmount, uint256 interestRateBps, uint256 startTime, uint256 durationDays, uint8 status, uint8 assetType, uint256 lenderTokenId, uint256 borrowerTokenId, uint256 tokenId, uint256 quantity, bool fallbackConsentFromBoth, uint8 collateralAssetType, uint256 collateralTokenId, uint256 collateralQuantity, uint256 lenderDiscountAccAtInit, uint256 borrowerDiscountAccAtInit) loan)',
+  'function triggerLiquidation(uint256 loanId, (uint256 adapterIdx, bytes data)[] calls)',
+]);
+
+/// Page size for the active-loan scan. Keep small enough that one
+/// `eth_call` returns within Alchemy/Infura free-tier response time
+/// budgets even with thousands of active loans.
+const SCAN_PAGE = 200n;
+
+interface ChainContext {
+  cfg: ChainConfig;
+  publicClient: PublicClient;
+  walletClient: WalletClient;
+}
+
+async function buildChainContexts(cfg: BotConfig): Promise<ChainContext[]> {
+  const account = privateKeyToAccount(cfg.keeperKey);
+  return cfg.chains.map((chain) => ({
+    cfg: chain,
+    publicClient: createPublicClient({
+      transport: http(chain.rpcUrl),
+    }),
+    walletClient: createWalletClient({
+      account,
+      transport: http(chain.rpcUrl),
+    }),
+  }));
+}
+
+async function listCandidateLoanIds(ctx: ChainContext): Promise<bigint[]> {
+  // Operator-pinned whitelist short-circuits the chain scan — useful
+  // when running a bot that only competes for a specific borrower's
+  // book or for stress-testing one loan at a time.
+  if (ctx.cfg.loanIds && ctx.cfg.loanIds.length > 0) {
+    return ctx.cfg.loanIds.map((n) => BigInt(n));
+  }
+
+  let total: bigint;
+  try {
+    total = (await ctx.publicClient.readContract({
+      address: ctx.cfg.diamond,
+      abi: DIAMOND_ABI,
+      functionName: 'getActiveLoansCount',
+    })) as bigint;
+  } catch (err) {
+    log.warn('candidates.count.failed', {
+      chain: ctx.cfg.chainId,
+      err: String(err).slice(0, 200),
+    });
+    return [];
+  }
+  if (total === 0n) return [];
+
+  const ids: bigint[] = [];
+  for (let offset = 0n; offset < total; offset += SCAN_PAGE) {
+    try {
+      const page = (await ctx.publicClient.readContract({
+        address: ctx.cfg.diamond,
+        abi: DIAMOND_ABI,
+        functionName: 'getActiveLoansPaginated',
+        args: [offset, SCAN_PAGE],
+      })) as readonly bigint[];
+      for (const id of page) ids.push(id);
+      if (page.length < Number(SCAN_PAGE)) break;
+    } catch (err) {
+      log.warn('candidates.page.failed', {
+        chain: ctx.cfg.chainId,
+        offset: Number(offset),
+        err: String(err).slice(0, 200),
+      });
+      break;
+    }
+  }
+  return ids;
+}
+
+async function attemptLiquidation(
+  cfg: BotConfig,
+  ctx: ChainContext,
+  loanId: bigint,
+): Promise<boolean> {
+  let hf: bigint;
+  try {
+    hf = (await ctx.publicClient.readContract({
+      address: ctx.cfg.diamond,
+      abi: DIAMOND_ABI,
+      functionName: 'calculateHealthFactor',
+      args: [loanId],
+    })) as bigint;
+  } catch (err) {
+    log.debug('hf.read.failed', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      err: String(err).slice(0, 150),
+    });
+    return false;
+  }
+  if (hf >= 10n ** 18n) return false; // not liquidatable
+
+  let loan: {
+    collateralAsset: Address;
+    collateralAmount: bigint;
+    principalAsset: Address;
+    status: number;
+    assetType: number;
+  };
+  try {
+    loan = (await ctx.publicClient.readContract({
+      address: ctx.cfg.diamond,
+      abi: DIAMOND_ABI,
+      functionName: 'getLoanDetails',
+      args: [loanId],
+    })) as typeof loan;
+  } catch (err) {
+    log.debug('loan.read.failed', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      err: String(err).slice(0, 150),
+    });
+    return false;
+  }
+  // Only ERC-20 loans hit the swap path. NFT rentals default via the
+  // time-based full-collateral-transfer route.
+  if (loan.assetType !== 0) return false;
+  if (loan.status !== 0) return false; // not Active
+
+  const quotes = await orchestrateQuotes({
+    chainId: ctx.cfg.chainId,
+    sellToken: loan.collateralAsset,
+    buyToken: loan.principalAsset,
+    sellAmount: loan.collateralAmount,
+    taker: ctx.cfg.diamond,
+    slippageBps: cfg.slippageBps,
+    client: ctx.publicClient,
+    zeroExApiKey: cfg.zeroExApiKey,
+    oneInchApiKey: cfg.oneInchApiKey,
+  });
+
+  if (quotes.calls.length === 0) {
+    log.info('liquidation.no-quotes', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      failed: quotes.failed,
+    });
+    return false;
+  }
+
+  const account = ctx.walletClient.account;
+  if (!account) return false;
+
+  try {
+    const hash = await ctx.walletClient.writeContract({
+      address: ctx.cfg.diamond,
+      abi: DIAMOND_ABI,
+      functionName: 'triggerLiquidation',
+      args: [loanId, quotes.calls],
+      account,
+      chain: ctx.walletClient.chain,
+    });
+    log.info('liquidation.submitted', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      tx: hash,
+      via: quotes.ranked[0]?.kind,
+      expected: quotes.ranked[0]?.expectedOutput.toString(),
+    });
+    return true;
+  } catch (err) {
+    // Most common cause: another keeper / MEV bot beat us, the
+    // diamond's status check now rejects. Not an error worth
+    // alerting on.
+    log.info('liquidation.failed', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      err: String(err).slice(0, 200),
+    });
+    return false;
+  }
+}
+
+async function tickChain(cfg: BotConfig, ctx: ChainContext): Promise<void> {
+  const candidates = await listCandidateLoanIds(ctx);
+  log.debug('tick.start', {
+    chain: ctx.cfg.chainId,
+    candidates: candidates.length,
+  });
+  const attempted = new Set<string>();
+  for (const id of candidates) {
+    const key = `${ctx.cfg.chainId}:${id}`;
+    if (attempted.has(key)) continue;
+    attempted.add(key);
+    await attemptLiquidation(cfg, ctx, id);
+  }
+}
+
+async function main(): Promise<void> {
+  const cfg = loadConfig();
+  setLogLevel(cfg.logLevel);
+  log.info('keeper.start', {
+    keeper: cfg.keeperAddress,
+    chains: cfg.chains.map((c) => c.chainId),
+    pollIntervalSeconds: cfg.pollIntervalSeconds,
+    zeroEx: !!cfg.zeroExApiKey,
+    oneInch: !!cfg.oneInchApiKey,
+  });
+
+  const ctxs = await buildChainContexts(cfg);
+
+  // First tick immediately, then on the configured interval.
+  while (true) {
+    const tickStart = Date.now();
+    await Promise.all(
+      ctxs.map((ctx) =>
+        tickChain(cfg, ctx).catch((err) => {
+          log.error('tick.failed', {
+            chain: ctx.cfg.chainId,
+            err: String(err).slice(0, 300),
+          });
+        }),
+      ),
+    );
+    const elapsed = Date.now() - tickStart;
+    log.debug('tick.done', { elapsedMs: elapsed });
+    const sleepMs = Math.max(
+      0,
+      cfg.pollIntervalSeconds * 1000 - elapsed,
+    );
+    await new Promise((resolve) => setTimeout(resolve, sleepMs));
+  }
+}
+
+main().catch((err) => {
+  log.error('keeper.fatal', { err: String(err).slice(0, 500) });
+  process.exit(1);
+});
