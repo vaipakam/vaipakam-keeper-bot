@@ -1,0 +1,79 @@
+# Vaipakam keeper-bot — CI.
+#
+# Phase 1 scope: typecheck + ABI-shape validation. The bot is a
+# pure read-then-write client; there's no logic to unit-test in
+# isolation that wouldn't require a forked diamond + funded keeper
+# wallet. The existing test surface for the keeper code path is the
+# upstream monorepo's `SwapAdapterTest.t.sol` — this CI just guards
+# against TS regressions and ensures the checked-in ABI JSONs
+# remain valid JSON / ABI shape.
+#
+# Phase 2 (post-mainnet) adds:
+#   - abi-drift job: cast-call against a known testnet diamond's
+#     selectors to confirm the bot's ABI matches deployed surface.
+#   - integration-fork job: spin a Base mainnet fork, call
+#     triggerLiquidation against a synthetic loan, assert success.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+  abi-shape:
+    name: ABI shape sanity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate ABI JSONs are well-formed
+        run: |
+          set -euo pipefail
+          # Each file under src/abis/ must be a non-empty JSON array
+          # of items with a "type" field. Catches accidental commits
+          # of forge's pretty-table output instead of `--json` output.
+          fail=0
+          for f in src/abis/*.json; do
+            [ -f "$f" ] || continue
+            # _source.json is a metadata stamp, not an ABI — skip.
+            if [ "$(basename "$f")" = "_source.json" ]; then
+              continue
+            fi
+            # Strict JSON validation
+            if ! jq -e 'type == "array" and length > 0 and all(.type)' "$f" > /dev/null; then
+              echo "✗ $f is not a non-empty ABI array" >&2
+              fail=1
+            else
+              echo "✓ $f"
+            fi
+          done
+          exit $fail
+
+      - name: Source-stamp present
+        run: |
+          # The exportAbis.sh script writes _source.json with the
+          # monorepo commit hash. Its presence indicates the ABIs
+          # were exported via the supported path, not hand-edited.
+          test -f src/abis/_source.json
+          jq -e '.monorepoCommit and .exportedAt' src/abis/_source.json

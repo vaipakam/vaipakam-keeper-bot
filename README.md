@@ -86,6 +86,44 @@ Logs are JSON-lines, ingestible by Datadog / Loki / Splunk:
 {"ts":"2026-04-25T18:23:02.456Z","level":"info","msg":"liquidation.submitted","chain":8453,"loanId":42,"tx":"0xabc...","via":"oneinch","expected":"1543200000"}
 ```
 
+## Syncing with upstream
+
+The bot's diamond ABI lives in `src/abis/` as per-facet JSON files
+generated from the upstream contracts via the monorepo's
+`contracts/script/exportAbis.sh`. These files are the contract of
+truth — when the diamond's signatures change, regenerating them is
+the one synchronization step.
+
+**Contributor flow when the upstream protocol changes a selector
+the bot reads** (`getActiveLoansCount`, `getActiveLoansPaginated`,
+`calculateHealthFactor`, `getLoanDetails`, `triggerLiquidation`):
+
+```bash
+# In the upstream Vaipakam monorepo:
+cd /path/to/vaipakam
+forge build
+KEEPER_BOT_DIR=/path/to/vaipakam-keeper-bot \
+  bash contracts/script/exportAbis.sh
+
+# In this repo:
+cd /path/to/vaipakam-keeper-bot
+git diff src/abis/   # review what changed
+npm run typecheck    # confirm bot still builds
+git commit -am 'Sync ABIs with vaipakam@<commit>'
+git push
+```
+
+The script writes `src/abis/_source.json` with the monorepo's
+commit hash + timestamp at export time, so an auditor reviewing a
+released bot version can correlate it with a specific upstream
+contract state.
+
+CI runs `abi-shape` on every PR — validates each `src/abis/*.json`
+is a non-empty ABI array, and that `_source.json` exists. That
+catches the most common breakage mode: someone hand-edited
+`src/abis/RiskFacet.json` (or ran `forge inspect` without `--json`,
+producing a pretty-table the consumer can't parse).
+
 ## MEV considerations
 
 Liquidation is permissionless and competitive. To land more
