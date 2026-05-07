@@ -107,13 +107,43 @@ const CHAIN_META: Record<number, ChainSwapMeta> = {
 };
 
 interface ZeroExResp {
-  transaction?: { data?: string };
+  transaction?: { to?: string; data?: string };
   buyAmount?: string;
 }
 interface OneInchResp {
-  tx?: { data?: string };
+  tx?: { to?: string; data?: string };
   dstAmount?: string;
   toAmount?: string;
+}
+
+/**
+ * Pack `(swapTarget, swapCalldata)` for an `AggregatorAdapterBase`-
+ * style adapter. The on-chain decoder is
+ * `abi.decode(adapterData, (address, bytes))`, so this mirrors the
+ * Solidity expectation. Centralised so 0x and 1inch can't drift.
+ *
+ * The 0x v2 / Settler / AllowanceHolder design intentionally splits
+ * the approve recipient (immutable AllowanceHolder, pinned at adapter
+ * construction) from the swap-call destination (rotating Settler,
+ * gated by an owner-managed allowlist on the adapter). The keeper
+ * passes the API's `transaction.to` here; the adapter rejects
+ * anything not in the allowlist before forwarding the calldata.
+ *
+ * 1inch v6 currently coalesces both roles into AggregationRouterV6,
+ * but the same packing applies — the adapter's allowlist still gates
+ * `tx.to` against a compromised keeper injecting a rogue destination.
+ */
+function packAdapterData(swapTarget: Address, swapCalldata: Hex): Hex {
+  return encodeAbiParameters(
+    [{ type: 'address' }, { type: 'bytes' }],
+    [swapTarget, swapCalldata],
+  ) as Hex;
+}
+
+const ADDRESS_HEX_LEN = 42; // 0x + 40 hex chars
+
+function isAddressLike(s: string | undefined): s is Address {
+  return typeof s === 'string' && s.startsWith('0x') && s.length === ADDRESS_HEX_LEN;
 }
 
 export interface OrchestrateInput extends QuoteRequest {
@@ -145,15 +175,22 @@ async function fetchZeroEx(
     });
     if (!res.ok) return null;
     const body = (await res.json()) as ZeroExResp;
+    const swapTo = body.transaction?.to;
     const data = body.transaction?.data;
     const out = body.buyAmount;
-    if (!data?.startsWith('0x') || !out) return null;
+    // 0x v2 splits the approve recipient (canonical AllowanceHolder,
+    // immutable on the adapter) from the call destination (rotating
+    // Settler, gated by the adapter's allowlist). We MUST capture
+    // `transaction.to` and pass it through — without it the adapter
+    // can't tell the keeper from a hostile caller injecting an
+    // arbitrary destination.
+    if (!isAddressLike(swapTo) || !data?.startsWith('0x') || !out) return null;
     return {
       kind: 'zeroex',
       expectedOutput: BigInt(out),
       call: {
         adapterIdx: BigInt(meta.adapters.zeroex),
-        data: data as Hex,
+        data: packAdapterData(swapTo, data as Hex),
       },
     };
   } catch {
@@ -183,13 +220,23 @@ async function fetchOneInch(
     });
     if (!res.ok) return null;
     const body = (await res.json()) as OneInchResp;
+    const swapTo = body.tx?.to;
     const data = body.tx?.data;
     const amount = body.dstAmount ?? body.toAmount;
-    if (!data?.startsWith('0x') || !amount) return null;
+    // 1inch v6 currently uses one address for both approval and
+    // swap-call (AggregationRouterV6, identical on every chain), but
+    // we still pack `(swapTarget, swapCalldata)` so the on-chain
+    // adapter's allowlist gates `tx.to` against a compromised keeper
+    // and so the wire format is forward-compat with a future v7 that
+    // could split the two roles.
+    if (!isAddressLike(swapTo) || !data?.startsWith('0x') || !amount) return null;
     return {
       kind: 'oneinch',
       expectedOutput: BigInt(amount),
-      call: { adapterIdx: BigInt(meta.adapters.oneinch), data: data as Hex },
+      call: {
+        adapterIdx: BigInt(meta.adapters.oneinch),
+        data: packAdapterData(swapTo, data as Hex),
+      },
     };
   } catch {
     return null;
