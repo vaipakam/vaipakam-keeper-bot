@@ -92,12 +92,19 @@ Per tick:
    inverse bucket. The first unconsumed loan in that bucket is
    a candidate; if `simulateContract(triggerInternalMatchLiquidation,
    [A.id, B.id, 0])` succeeds, submit.
-5. **3-way pass** (planned — bot does 2-way only today):
-   for loans that didn't pair up in step 4, look for a
-   3-cycle. Build a directed graph
-   `principalAsset → collateralAsset` per remaining loan, run
-   a cycle detector with depth limit 3. Each detected
-   `(A, B, C)` is a candidate.
+5. **3-way pass**: re-bucket the remaining (unconsumed) loans
+   by `principalAsset` so asset edges can be walked in O(1)
+   per hop. For each loan `A`:
+   - Look up `bucket[A.collateralAsset]` → candidate `B`s
+     whose debt is in A's collateral asset.
+   - For each such `B`, look up `bucket[B.collateralAsset]` →
+     candidate `C`s whose debt is in B's collateral asset.
+   - Accept the first `C` whose `collateralAsset == A.principalAsset`
+     (closes the A→B→C→A cycle). Submit
+     `triggerInternalMatchLiquidation(A.id, B.id, C.id)`.
+   - Skip degenerate cycles where `B.collateralAsset ==
+     A.principalAsset` — that's a 2-way pair, already
+     handled in step 4.
 
 ## 5. Submit policy
 
@@ -149,12 +156,6 @@ matching without a bot restart.
 
 ## 8. Future extensions
 
-Items tracked in `docs/internal/PendingTasks-2026-05-14.md`
-§B.2.4 + B.2.5 in the vaipakam repo:
-
-- **3-way chain detection** in `internalMatcher.ts` (the
-  contract supports it; this doc covers it; the bot's 2nd
-  pass implementation is the missing piece).
 - **Cross-chain match aggregation**: a bot scanning chain A
   could discover a match on chain B (one leg posted on each
   chain). Requires an LZ message + cross-chain settlement
@@ -167,3 +168,8 @@ Items tracked in `docs/internal/PendingTasks-2026-05-14.md`
   in the 2% priority window where external is blocked, to
   avoid wasted simulations on loans already above-window
   (external is grabbing them).
+- **4-way+ chains**: the contract entry point caps at 3 legs,
+  so a longer cycle isn't directly callable. A bot could in
+  principle find a 4-cycle and submit it as two overlapping
+  3-cycles; whether that's worth the complexity depends on
+  observed 4-cycle frequency at scale.

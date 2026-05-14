@@ -208,13 +208,15 @@ async function submitMatch(
   ctx: DetectorCtx,
   a: LoanLite,
   b: LoanLite,
+  c: LoanLite | null,
 ): Promise<boolean> {
+  const cId = c ? c.id : 0n;
   try {
     const { request } = await ctx.publicClient.simulateContract({
       address: ctx.diamond,
       abi: DETECTOR_ABI,
       functionName: 'triggerInternalMatchLiquidation',
-      args: [a.id, b.id, 0n],
+      args: [a.id, b.id, cId],
       account: ctx.walletClient.account!,
     });
     const hash = await ctx.walletClient.writeContract(request);
@@ -222,6 +224,7 @@ async function submitMatch(
       chain: ctx.chainId,
       loanIdA: a.id.toString(),
       loanIdB: b.id.toString(),
+      loanIdC: cId.toString(),
       tx: hash,
     });
     return true;
@@ -233,10 +236,60 @@ async function submitMatch(
       chain: ctx.chainId,
       loanIdA: a.id.toString(),
       loanIdB: b.id.toString(),
+      loanIdC: cId.toString(),
       err: msg,
     });
     return false;
   }
+}
+
+/**
+ * Find a 3-loan A→B→C→A cycle starting at `a` that doesn't include
+ * any consumed loan. Returns `null` when no cycle is reachable
+ * within the current candidate pool.
+ *
+ * Walks two hops: from `a.collateralAsset` find a loan `b` whose
+ * principal is that asset; from `b.collateralAsset` find a loan `c`
+ * whose principal is THAT asset AND whose collateral closes the
+ * cycle (`c.collateralAsset == a.principalAsset`). O(M × N) on
+ * bucket sizes where M = bucket(a.collateralAsset).size and
+ * N = bucket(b.collateralAsset).size — at protocol scale, both
+ * are small because the depth-tier classification already
+ * filters out illiquid pairs.
+ *
+ * Note the bucket convention here groups by `principalAsset`, not
+ * the 2-way `(principal, collateral)` pair — for 3-cycle detection
+ * we follow asset edges, not full bucket keys.
+ */
+function findThreeWayChain(
+  a: LoanLite,
+  loansByPrincipalAsset: Map<string, LoanLite[]>,
+  consumed: Set<bigint>,
+): [LoanLite, LoanLite] | null {
+  const aPrincipalLower = a.principalAsset.toLowerCase();
+  const aCollateralLower = a.collateralAsset.toLowerCase();
+  // `b` has principal = a.collateralAsset, i.e., B's debt is in
+  // the asset A's borrower forfeits.
+  const bCandidates = loansByPrincipalAsset.get(aCollateralLower) ?? [];
+  for (const b of bCandidates) {
+    if (consumed.has(b.id) || b.id === a.id) continue;
+    const bCollateralLower = b.collateralAsset.toLowerCase();
+    // Skip the trivial 2-way: A.principal=B.collateral AND
+    // B.principal=A.collateral is the 2-way case, already
+    // handled in the first pass. The 3-way path needs
+    // B.collateral ≠ A.principal (a third asset).
+    if (bCollateralLower === aPrincipalLower) continue;
+    // `c` has principal = b.collateralAsset AND collateral =
+    // a.principalAsset — closes the A → B → C → A cycle.
+    const cCandidates = loansByPrincipalAsset.get(bCollateralLower) ?? [];
+    for (const c of cCandidates) {
+      if (consumed.has(c.id) || c.id === a.id || c.id === b.id) continue;
+      if (c.collateralAsset.toLowerCase() === aPrincipalLower) {
+        return [b, c];
+      }
+    }
+  }
+  return null;
 }
 
 /**
@@ -263,6 +316,10 @@ export async function runInternalMatcherTick(ctx: DetectorCtx): Promise<number> 
 
   let submits = 0;
   const consumed = new Set<bigint>();
+
+  // First pass — 2-way matches. Highest-value because they're
+  // cheaper gas-wise and more common in practice (most opposing
+  // pairs are symmetric two-loan pairs, not full 3-cycles).
   for (const l of loans) {
     if (submits >= MAX_SUBMITS_PER_TICK) break;
     if (consumed.has(l.id)) continue;
@@ -271,7 +328,7 @@ export async function runInternalMatcherTick(ctx: DetectorCtx): Promise<number> 
     for (const partner of invBucket) {
       if (consumed.has(partner.id)) continue;
       if (partner.id === l.id) continue;
-      const ok = await submitMatch(ctx, l, partner);
+      const ok = await submitMatch(ctx, l, partner, null);
       if (ok) {
         consumed.add(l.id);
         consumed.add(partner.id);
@@ -280,6 +337,34 @@ export async function runInternalMatcherTick(ctx: DetectorCtx): Promise<number> 
       // Move to next l after first successful match to spread
       // matches across pairs (and across the per-tick cap).
       break;
+    }
+  }
+
+  // Second pass — 3-way A→B→C→A chain matches on whatever didn't
+  // pair up 2-way. Group remaining loans by `principalAsset` so
+  // the cycle finder can walk asset edges in O(1) per hop.
+  if (submits < MAX_SUBMITS_PER_TICK) {
+    const loansByPrincipalAsset = new Map<string, LoanLite[]>();
+    for (const l of loans) {
+      if (consumed.has(l.id)) continue;
+      const k = l.principalAsset.toLowerCase();
+      const arr = loansByPrincipalAsset.get(k) ?? [];
+      arr.push(l);
+      loansByPrincipalAsset.set(k, arr);
+    }
+    for (const a of loans) {
+      if (submits >= MAX_SUBMITS_PER_TICK) break;
+      if (consumed.has(a.id)) continue;
+      const chain = findThreeWayChain(a, loansByPrincipalAsset, consumed);
+      if (!chain) continue;
+      const [b, c] = chain;
+      const ok = await submitMatch(ctx, a, b, c);
+      if (ok) {
+        consumed.add(a.id);
+        consumed.add(b.id);
+        consumed.add(c.id);
+        submits++;
+      }
     }
   }
 
