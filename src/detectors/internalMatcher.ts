@@ -58,10 +58,21 @@ const SCAN_PAGE = 200n;
  *  keeper's per-minute gas budget. */
 const MAX_SUBMITS_PER_TICK = 10;
 
-/** LoanStatus.Active — only active loans are matchable. The view
- *  already filters terminal statuses out (they're not in the
- *  active list) but the hydration callback double-checks. */
+/** LoanStatus enum values from `LibVaipakam.LoanStatus`. EC-003
+ *  Phase 4 widened the matchable set from `{Active}` to
+ *  `{Active, FallbackPending}` — loans whose at-fallback liquidation
+ *  failed transiently (slippage > 6%, DEX revert, oracle stale at
+ *  that moment) are rescuable via internal match in a later block.
+ *  The on-chain `triggerInternalMatchLiquidation` gate enforces the
+ *  same set; this constant pair keeps the off-chain hydration filter
+ *  in sync. */
 const LOAN_STATUS_ACTIVE = 0;
+const LOAN_STATUS_FALLBACK_PENDING = 4;
+
+/** True iff the loan status is in the EC-003 matchable set. */
+function isMatchableStatus(status: number): boolean {
+  return status === LOAN_STATUS_ACTIVE || status === LOAN_STATUS_FALLBACK_PENDING;
+}
 
 /** Subset of the `Loan` struct fields needed for matching. */
 interface LoanLite {
@@ -190,7 +201,14 @@ async function hydrateLoans(
         args: [id],
       })) as Record<string, unknown>;
       const lite = liftLoan(raw);
-      if (lite.status !== LOAN_STATUS_ACTIVE) continue;
+      // EC-003 Phase 4 — accept both Active and FallbackPending. The
+      // FallbackPending loans are the rescue opportunity: their
+      // at-fallback liquidation failed transiently but the asset is
+      // often still priceable. The on-chain oracle-priceable gate in
+      // `triggerInternalMatchLiquidation` rejects the genuinely-
+      // illiquid ones, so the bot can submit optimistically; the
+      // submit-time pre-flight below trims the obviously-doomed ones.
+      if (!isMatchableStatus(lite.status)) continue;
       if (lite.principal === 0n || lite.collateralAmount === 0n) continue;
       out.push(lite);
     } catch (err) {
