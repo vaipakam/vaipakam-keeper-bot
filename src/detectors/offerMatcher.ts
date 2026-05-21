@@ -40,6 +40,7 @@
 import {
   type Address,
   type Abi,
+  type Hex,
   type PublicClient,
   type WalletClient,
 } from 'viem';
@@ -74,6 +75,17 @@ const MAX_PREVIEW_CALLS_PER_TICK = 2000;
  *  cap submissions per tick so a busy book doesn't burn the keeper's
  *  whole gas budget in one minute. */
 const MAX_SUBMITS_PER_TICK = 25;
+
+/** Per-chain wall-time budget. `submitMatch` awaits
+ *  `waitForTransactionReceipt` (up to ~30 s per match post-borrower-
+ *  partial-fill); a sequential `runOfferMatcherTick` over a single
+ *  chain can spend `MAX_SUBMITS_PER_TICK × 30 s` ≈ 12.5 min on a
+ *  congested chain. The bot's per-chain ticks are independent today,
+ *  but a sequential or batched runner driving multiple chains could
+ *  see one congested chain starve the others. 90 s leaves headroom
+ *  for ~3 multi-chain ticks within a 5-min cron envelope (mirroring
+ *  the Workers-side budget in `apps/keeper/src/matcher.ts`). */
+const PER_CHAIN_WALL_TIME_BUDGET_MS = 90_000;
 
 /** Mirrors `LibOfferMatch.MatchError`. Index 0 == Ok. */
 const MATCH_ERR_OK = 0;
@@ -278,9 +290,20 @@ async function previewMatch(
   }
 }
 
-/** Submit `matchOffers`. Returns true iff the tx was broadcast (not
- *  necessarily confirmed). Reverts are logged at INFO and treated as
- *  no-ops — losing a race is the expected baseline. */
+/** Submit `matchOffers` AND wait for inclusion before returning. The
+ *  receipt wait is load-bearing: without it, the matcher tick's inner
+ *  loop continues immediately and the next `previewMatch` reads `latest`
+ *  state that doesn't include the just-broadcast tx's effects.
+ *  Subsequent (L,B) pairs then evaluate against PRE-match lender
+ *  capacity, queue up multiple matches against the SAME unallocated
+ *  balance, and most of them revert when mined — burning gas AND
+ *  wasting `MAX_SUBMITS_PER_TICK` slots that should go to valid pairs.
+ *
+ *  Returns true ONLY on `receipt.status === 'success'`. Broadcast
+ *  failures, on-chain reverts, and receipt-wait timeouts are all
+ *  logged and surface as `false` — caller breaks the inner loop on
+ *  failure because the lender's state has moved beyond what
+ *  previewMatch predicted. */
 async function submitMatch(
   ctx: MatcherCtx,
   lenderId: bigint,
@@ -290,8 +313,9 @@ async function submitMatch(
   const account = ctx.walletClient.account;
   if (!account) return false;
 
+  let hash: Hex;
   try {
-    const hash = await ctx.walletClient.writeContract({
+    hash = await ctx.walletClient.writeContract({
       address: ctx.diamond,
       abi: MATCHER_ABI,
       functionName: 'matchOffers',
@@ -299,21 +323,11 @@ async function submitMatch(
       account,
       chain: ctx.walletClient.chain,
     });
-    log.info('matcher.submit.ok', {
-      chain: ctx.chainId,
-      lenderId: Number(lenderId),
-      borrowerId: Number(borrowerId),
-      tx: hash,
-      matchAmount: preview.matchAmount.toString(),
-      matchRateBps: Number(preview.matchRateBps),
-      lenderRemaining: preview.lenderRemainingPostMatch.toString(),
-    });
-    return true;
   } catch (err) {
     const errStr = String(err);
-    // FunctionDisabled(3) = 0x... the master kill-switch path. Log
-    // once per chain so we don't spam the operator's console while
-    // the protocol's flag is still off.
+    // FunctionDisabled(3) = 0x96624a75 — the partialFillEnabled
+    // master kill-switch path. Log once per chain so we don't spam
+    // the operator's console while the protocol's flag is still off.
     if (errStr.includes('FunctionDisabled') || errStr.includes('0x96624a75')) {
       if (!killSwitchLogged.get(ctx.chainId)) {
         log.info('matcher.disabled', {
@@ -332,6 +346,50 @@ async function submitMatch(
     }
     return false;
   }
+
+  // 30 s timeout per match — bounded by chain block time × small
+  // constant. Worst-case tick duration: MAX_SUBMITS_PER_TICK × ~block,
+  // bounded by `PER_CHAIN_WALL_TIME_BUDGET_MS` at the caller.
+  try {
+    const receipt = await ctx.publicClient.waitForTransactionReceipt({
+      hash,
+      timeout: 30_000,
+    });
+    if (receipt.status !== 'success') {
+      // On-chain revert — another matcher / a borrower cancel / a
+      // governance flip raced us between preview and inclusion. Log
+      // it; caller breaks the inner loop on `false`.
+      log.info('matcher.submit.reverted', {
+        chain: ctx.chainId,
+        lenderId: Number(lenderId),
+        borrowerId: Number(borrowerId),
+        tx: hash,
+      });
+      return false;
+    }
+  } catch (err) {
+    // Timeout (tx dropped from mempool or RPC slow) — assume in-flight
+    // and back off this lender for the tick.
+    log.info('matcher.submit.receiptTimeout', {
+      chain: ctx.chainId,
+      lenderId: Number(lenderId),
+      borrowerId: Number(borrowerId),
+      tx: hash,
+      err: String(err).slice(0, 200),
+    });
+    return false;
+  }
+
+  log.info('matcher.submit.ok', {
+    chain: ctx.chainId,
+    lenderId: Number(lenderId),
+    borrowerId: Number(borrowerId),
+    tx: hash,
+    matchAmount: preview.matchAmount.toString(),
+    matchRateBps: Number(preview.matchRateBps),
+    lenderRemaining: preview.lenderRemainingPostMatch.toString(),
+  });
+  return true;
 }
 
 /** One pass over the chain's order book — see module docstring for
@@ -357,6 +415,13 @@ export async function runOfferMatcherTick(ctx: MatcherCtx): Promise<void> {
   // log line; resetting on every tick is fine.
   killSwitchLogged.set(ctx.chainId, killSwitchLogged.get(ctx.chainId) ?? false);
 
+  // Bound the chain's wall-time so a congested chain can't starve any
+  // sibling work in the same scheduler tick. Each loop level checks
+  // `overBudget()` before doing more work.
+  const tickStart = Date.now();
+  const overBudget = () =>
+    Date.now() - tickStart > PER_CHAIN_WALL_TIME_BUDGET_MS;
+
   let previewCalls = 0;
   let submits = 0;
   const attempted = new Set<string>();
@@ -365,14 +430,18 @@ export async function runOfferMatcherTick(ctx: MatcherCtx): Promise<void> {
   // bucket can never produce a valid match and isn't worth a single
   // RPC call.
   for (const [key, lenderList] of lenders) {
+    if (submits >= MAX_SUBMITS_PER_TICK) break;
+    if (overBudget()) break;
     const borrowerList = borrowers.get(key);
     if (!borrowerList || borrowerList.length === 0) continue;
 
     for (const L of lenderList) {
       if (submits >= MAX_SUBMITS_PER_TICK) break;
+      if (overBudget()) break;
       for (const B of borrowerList) {
         if (previewCalls >= MAX_PREVIEW_CALLS_PER_TICK) break;
         if (submits >= MAX_SUBMITS_PER_TICK) break;
+        if (overBudget()) break;
         const pairKey = `${L.id}:${B.id}`;
         if (attempted.has(pairKey)) continue;
         attempted.add(pairKey);
@@ -385,21 +454,62 @@ export async function runOfferMatcherTick(ctx: MatcherCtx): Promise<void> {
         const ok = await submitMatch(ctx, L.id, B.id, p);
         if (ok) {
           submits += 1;
-          // Borrower offer is single-fill in Phase 1 — mark consumed
-          // so we don't re-attempt against another lender in this
-          // same tick. Lender stays in the loop because partial fills
-          // are allowed: the next borrower in the bucket may still
-          // match the same lender's remaining capacity.
-          break;
+          // Post borrower-partial-fill (vaipakam #102 / #172), borrower
+          // offers are NOT single-fill anymore. Don't break the inner
+          // loop on success: the same lender may have remaining capacity
+          // to fan-out across additional borrowers in this tick, and the
+          // same borrower (post-this match) may still have capacity that
+          // a DIFFERENT lender in `lenderList` could fill.
+          //
+          // The `attempted` set already prevents re-trying the exact
+          // (L,B) pair within a tick. After a successful submit, both
+          // L's and B's `amountFilled` have grown on-chain (the receipt
+          // wait in `submitMatch` guarantees the next read sees the
+          // mutation); the next `previewMatch` reads the updated state
+          // and returns the right overlap (or `AmountNoOverlap` /
+          // dust-close, which the `if (!p || p.errorCode !== Ok)`
+          // continue above handles cleanly).
+          //
+          // Early-exit only when the preview reports the lender is now
+          // FULLY filled (`lenderRemainingPostMatch == 0n`). Anything
+          // smaller — where the lender still has capacity that might
+          // not meet the per-match minimum — is left to the contract's
+          // `previewMatch` to filter on the next iteration; the extra
+          // preview call per exhausted lender per tick is cheap relative
+          // to fan-out wins on healthy ones.
+          if (p.lenderRemainingPostMatch === 0n) {
+            break;
+          }
+          // Otherwise fall through to the next borrower for this lender.
+          continue;
         }
+        // `submitMatch` returned false. The three causes (broadcast
+        // failure, on-chain revert, `waitForTransactionReceipt` timeout)
+        // all leave L's state uncertain — the tx may still be in flight,
+        // or another matcher / a borrower-cancel raced us. Trying L
+        // against B2/B3 in the same tick would re-evaluate against
+        // possibly-stale state and either queue duplicate matches (the
+        // race the receipt-wait was added to prevent) or burn preview
+        // calls on doomed pairs. Back off this lender for the tick —
+        // `attempted` already prevents (L,B1) retry, but we need an
+        // explicit `break` to skip the rest of the borrower list too.
+        break;
       }
     }
-    if (submits >= MAX_SUBMITS_PER_TICK) break;
   }
 
   log.debug('matcher.tick.done', {
     chain: ctx.chainId,
     previewCalls,
     submits,
+    elapsedMs: Date.now() - tickStart,
   });
+  if (overBudget()) {
+    log.info('matcher.tick.overBudget', {
+      chain: ctx.chainId,
+      elapsedMs: Date.now() - tickStart,
+      budgetMs: PER_CHAIN_WALL_TIME_BUDGET_MS,
+      note: 'wall-time budget exhausted; deferring remaining work to next tick',
+    });
+  }
 }
