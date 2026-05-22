@@ -285,29 +285,6 @@
   },
   {
     "type": "function",
-    "name": "getEscrowStats",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "totalNFTsInEscrow",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "activeRentalsCount",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "totalRentalVolumeNumeraire",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getGlobalCounts",
     "inputs": [],
     "outputs": [
@@ -983,7 +960,7 @@
   },
   {
     "type": "function",
-    "name": "getTotalNFTsInEscrowByCollection",
+    "name": "getTotalNFTsInVaultByCollection",
     "inputs": [
       {
         "name": "collection",
@@ -1231,6 +1208,16 @@
             "name": "createdAt",
             "type": "uint64",
             "internalType": "uint64"
+          },
+          {
+            "name": "collateralAmountMax",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collateralAmountFilled",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       },
@@ -1349,7 +1336,7 @@
   },
   {
     "type": "function",
-    "name": "getUserNFTsInEscrow",
+    "name": "getUserNFTsInVault",
     "inputs": [
       {
         "name": "user",
@@ -1539,6 +1526,29 @@
       },
       {
         "name": "activeLoanCount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getVaultStats",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "totalNFTsInVault",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "activeRentalsCount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "totalRentalVolumeNumeraire",
         "type": "uint256",
         "internalType": "uint256"
       }

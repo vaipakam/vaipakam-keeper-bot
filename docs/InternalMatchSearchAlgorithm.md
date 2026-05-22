@@ -125,7 +125,7 @@ Per tick:
 
 ## 6. Gas + economics
 
-- **Per match (2-way)**: ~250–350k gas (4 escrow withdraws +
+- **Per match (2-way)**: ~250–350k gas (4 vault withdraws +
   2 deposit-counter records + status transition for each
   cleared leg).
 - **Per match (3-way)**: ~400–500k gas (6 withdraws + 3
