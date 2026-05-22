@@ -46,16 +46,23 @@ import {
 } from 'viem';
 import { log } from '../log.ts';
 import metricsAbi from '../abis/MetricsFacet.json' with { type: 'json' };
-import offerAbi from '../abis/OfferFacet.json' with { type: 'json' };
+import offerCreateAbi from '../abis/OfferCreateFacet.json' with { type: 'json' };
+import offerAcceptAbi from '../abis/OfferAcceptFacet.json' with { type: 'json' };
 import offerCancelAbi from '../abis/OfferCancelFacet.json' with { type: 'json' };
 import offerMatchAbi from '../abis/OfferMatchFacet.json' with { type: 'json' };
 
-// `getOffer` lives on OfferCancelFacet post EIP-170 split; merge both
-// facet ABIs so viem can resolve every selector this detector calls
-// against the diamond.
+// OfferFacet was split for the EIP-170 24,576-byte limit into
+// OfferCreateFacet (createOffer + range fields), OfferAcceptFacet
+// (acceptOffer), OfferCancelFacet (cancelOffer + getOffer + read views),
+// and OfferMatchFacet (matchOffers + previewMatch). Merge every half
+// here so viem can resolve every selector this detector calls against
+// the diamond. The previously-imported legacy combined
+// `OfferFacet.json` was deleted alongside the #227 rename housekeeping
+// — the monorepo hasn't exported it since the split landed.
 const MATCHER_ABI: Abi = [
   ...(metricsAbi as Abi),
-  ...(offerAbi as Abi),
+  ...(offerCreateAbi as Abi),
+  ...(offerAcceptAbi as Abi),
   ...(offerCancelAbi as Abi),
   ...(offerMatchAbi as Abi),
 ];
