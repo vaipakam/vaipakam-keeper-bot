@@ -123,6 +123,11 @@
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
           },
           {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
+          },
+          {
             "name": "lendingAsset",
             "type": "address",
             "internalType": "address"
@@ -199,6 +204,11 @@
           },
           {
             "name": "createdAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "expiresAt",
             "type": "uint64",
             "internalType": "uint64"
           },
@@ -294,6 +304,11 @@
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
           },
           {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
+          },
+          {
             "name": "lendingAsset",
             "type": "address",
             "internalType": "address"
@@ -370,6 +385,11 @@
           },
           {
             "name": "createdAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "expiresAt",
             "type": "uint64",
             "internalType": "uint64"
           },
@@ -842,6 +862,22 @@
     "type": "error",
     "name": "NotCanonicalVPFIChain",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotCreatorOrNotExpired",
+    "inputs": [
+      {
+        "name": "creator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "expiresAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
   },
   {
     "type": "error",
