@@ -1130,6 +1130,11 @@
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
           },
           {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
+          },
+          {
             "name": "lendingAsset",
             "type": "address",
             "internalType": "address"
@@ -1206,6 +1211,11 @@
           },
           {
             "name": "createdAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "expiresAt",
             "type": "uint64",
             "internalType": "uint64"
           },

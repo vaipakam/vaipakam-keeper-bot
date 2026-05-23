@@ -107,6 +107,16 @@
             "name": "periodicInterestCadence",
             "type": "uint8",
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
+          },
+          {
+            "name": "expiresAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
           }
         ]
       }
@@ -233,6 +243,16 @@
             "name": "periodicInterestCadence",
             "type": "uint8",
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
+          },
+          {
+            "name": "expiresAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
           }
         ]
       }
@@ -354,6 +374,16 @@
             "name": "periodicInterestCadence",
             "type": "uint8",
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
+          },
+          {
+            "name": "expiresAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
           }
         ]
       },
@@ -552,6 +582,16 @@
             "name": "periodicInterestCadence",
             "type": "uint8",
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
+          },
+          {
+            "name": "expiresAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
           }
         ]
       }
@@ -566,6 +606,11 @@
   {
     "type": "error",
     "name": "AmountMustBePositive",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AonRequiresSingleValueAmount",
     "inputs": []
   },
   {
@@ -828,6 +873,11 @@
   },
   {
     "type": "error",
+    "name": "IocRequiresExpiry",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "KYCRequired",
     "inputs": []
   },
@@ -1043,6 +1093,27 @@
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "OfferExpiryAboveCap",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "cap",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferExpiryInPast",
+    "inputs": []
   },
   {
     "type": "error",
