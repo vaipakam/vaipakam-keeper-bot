@@ -96,6 +96,12 @@ const PER_CHAIN_WALL_TIME_BUDGET_MS = 90_000;
 
 /** Mirrors `LibOfferMatch.MatchError`. Index 0 == Ok. */
 const MATCH_ERR_OK = 0;
+/** Mirrors `LibOfferMatch.MatchError.SelfTrade` (vaipakam #234). The
+ *  contract-side load-bearing gate is `SelfTradeForbidden(party)` in
+ *  `OfferAcceptFacet._acceptOffer`; `previewMatch` returns this
+ *  variant when `L.creator == B.creator`. Numeric value 11 — the
+ *  variant is the 12th in the enum (after `LtvAboveTier`). */
+const MATCH_ERR_SELF_TRADE = 11;
 
 /** Mirrors `LibVaipakam.OfferType`. */
 const OFFER_TYPE_LENDER = 0;
@@ -453,9 +459,36 @@ export async function runOfferMatcherTick(ctx: MatcherCtx): Promise<void> {
         if (attempted.has(pairKey)) continue;
         attempted.add(pairKey);
 
+        // vaipakam #235 — self-trade short-circuit. Same-creator pairs
+        // can never produce a valid loan (the contract reverts
+        // `SelfTradeForbidden(party)` in `_acceptOffer`), and
+        // `previewMatch` returns `MatchError.SelfTrade`. Skipping them
+        // before the RPC roundtrip saves one `eth_call` per
+        // colluding-creator pair per tick. Lower-cased compare because
+        // `getOffer` returns checksummed addresses.
+        if (L.creator.toLowerCase() === B.creator.toLowerCase()) {
+          continue;
+        }
+
         previewCalls += 1;
         const p = await previewMatch(ctx, L.id, B.id);
         if (!p) continue;
+        // Defence-in-depth: the client-side pre-filter above should
+        // catch every same-creator pair. Log here anyway in case the
+        // local `getOffer` cache races against an in-flight ownership
+        // transfer or a future refactor drops `creator` from
+        // `OfferLite`. Other typed errors are too noisy to log
+        // per-pair; the observability story for those lives in the
+        // per-tick submits / previewCalls counters.
+        if (p.errorCode === MATCH_ERR_SELF_TRADE) {
+          log.debug('matcher.selfTrade.slippedPreFilter', {
+            chainId: ctx.chainId,
+            lenderId: L.id.toString(),
+            borrowerId: B.id.toString(),
+            creator: L.creator,
+          });
+          continue;
+        }
         if (p.errorCode !== MATCH_ERR_OK) continue;
 
         const ok = await submitMatch(ctx, L.id, B.id, p);
