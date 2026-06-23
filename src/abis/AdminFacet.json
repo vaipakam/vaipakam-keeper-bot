@@ -27,6 +27,13 @@
   },
   {
     "type": "function",
+    "name": "disableRateModel",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "getAutoExtendEnabled",
     "inputs": [],
     "outputs": [
@@ -86,6 +93,55 @@
         "name": "",
         "type": "address",
         "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPartialLiquidationSizing",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "targetHfCeilingBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "deepUnderwaterHfBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "dustFloorNumeraire",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRateModel",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRateModelMaxDeviationBps",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -189,6 +245,38 @@
   },
   {
     "type": "function",
+    "name": "isSwapAdapterDisabled",
+    "inputs": [
+      {
+        "name": "adapter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "keepersPaused",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "pause",
     "inputs": [],
     "outputs": [],
@@ -261,6 +349,19 @@
   },
   {
     "type": "function",
+    "name": "setAggregatorAdaptersPaused",
+    "inputs": [
+      {
+        "name": "value",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setAutoExtendEnabled",
     "inputs": [
       {
@@ -313,6 +414,19 @@
   },
   {
     "type": "function",
+    "name": "setKeepersPaused",
+    "inputs": [
+      {
+        "name": "value",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setPancakeswapV2Factory",
     "inputs": [
       {
@@ -339,6 +453,68 @@
   },
   {
     "type": "function",
+    "name": "setPartialLiquidationSizing",
+    "inputs": [
+      {
+        "name": "targetHfCeilingBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "deepUnderwaterHfBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "dustFloorNumeraire",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPeerLtvReadsPaused",
+    "inputs": [
+      {
+        "name": "value",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRateModel",
+    "inputs": [
+      {
+        "name": "newModel",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRateModelMaxDeviationBps",
+    "inputs": [
+      {
+        "name": "newBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setSushiswapV2Factory",
     "inputs": [
       {
@@ -358,6 +534,24 @@
         "name": "newFactory",
         "type": "address",
         "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setSwapAdapterDisabled",
+    "inputs": [
+      {
+        "name": "adapter",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "disabled",
+        "type": "bool",
+        "internalType": "bool"
       }
     ],
     "outputs": [],
@@ -434,6 +628,19 @@
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "AggregatorAdaptersPausedSet",
+    "inputs": [
+      {
+        "name": "paused",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
   },
   {
     "type": "event",
@@ -553,6 +760,19 @@
   },
   {
     "type": "event",
+    "name": "KeepersPausedSet",
+    "inputs": [
+      {
+        "name": "paused",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "PancakeswapV2FactorySet",
     "inputs": [
       {
@@ -591,12 +811,82 @@
   },
   {
     "type": "event",
+    "name": "PartialLiquidationSizingSet",
+    "inputs": [
+      {
+        "name": "targetHfCeilingBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "deepUnderwaterHfBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "dustFloorNumeraire",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "Paused",
     "inputs": [
       {
         "name": "account",
         "type": "address",
         "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PeerLtvReadsPausedSet",
+    "inputs": [
+      {
+        "name": "paused",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RateModelMaxDeviationBpsSet",
+    "inputs": [
+      {
+        "name": "newBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RateModelSet",
+    "inputs": [
+      {
+        "name": "previousModel",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newModel",
+        "type": "address",
+        "indexed": true,
         "internalType": "address"
       }
     ],
@@ -655,6 +945,25 @@
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SwapAdapterDisabledSet",
+    "inputs": [
+      {
+        "name": "adapter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "disabled",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
       }
     ],
     "anonymous": false
@@ -783,11 +1092,6 @@
   },
   {
     "type": "error",
-    "name": "BridgedBuyReceiverNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -836,6 +1140,11 @@
   {
     "type": "error",
     "name": "ChainDayAlreadyReported",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ConsolidationNotAllowed",
     "inputs": []
   },
   {
@@ -964,6 +1273,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidPartialLiqSizing",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidRateModelDeviation",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "KYCRequired",
     "inputs": []
   },
@@ -1059,11 +1378,6 @@
   },
   {
     "type": "error",
-    "name": "NoStakingRewardsToClaim",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NonLiquidAsset",
     "inputs": []
   },
@@ -1075,11 +1389,6 @@
   {
     "type": "error",
     "name": "NotBorrower",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotBridgedBuyReceiver",
     "inputs": []
   },
   {
@@ -1105,6 +1414,11 @@
   {
     "type": "error",
     "name": "NotOfferCreator",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotWatcherOrAdmin",
     "inputs": []
   },
   {
@@ -1251,6 +1565,11 @@
   },
   {
     "type": "error",
+    "name": "RateModelNotContract",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "RecoveryAmountExceedsUnsolicited",
     "inputs": []
   },
@@ -1343,11 +1662,6 @@
   },
   {
     "type": "error",
-    "name": "StakingPoolExhausted",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "SwapAdapterAlreadyRegistered",
     "inputs": []
   },
@@ -1378,37 +1692,12 @@
   },
   {
     "type": "error",
-    "name": "VPFIBuyAmountTooSmall",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyRateNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIGlobalCapExceeded",
+    "name": "UseDisableRateModel",
     "inputs": []
   },
   {
     "type": "error",
     "name": "VPFIInvalidOriginChainId",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIPerWalletCapExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIReserveInsufficient",
     "inputs": []
   },
   {
@@ -1449,6 +1738,11 @@
   {
     "type": "error",
     "name": "VaultWithdrawFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "VpfiNotAllowedAsRentalPrepay",
     "inputs": []
   }
 ]

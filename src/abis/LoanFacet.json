@@ -233,6 +233,26 @@
             "name": "borrowerNotifBilled",
             "type": "bool",
             "internalType": "bool"
+          },
+          {
+            "name": "allowsPrepayListing",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "interestSettled",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minHealthFactorAtInit",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "initLtvCapBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -443,6 +463,11 @@
             "internalType": "bool"
           },
           {
+            "name": "allowsPrepayListing",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
             "name": "periodicInterestCadence",
             "type": "uint8",
             "internalType": "enum LibVaipakam.PeriodicInterestCadence"
@@ -543,11 +568,6 @@
   },
   {
     "type": "error",
-    "name": "BridgedBuyReceiverNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -600,6 +620,11 @@
   },
   {
     "type": "error",
+    "name": "ConsolidationNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "CountriesNotCompatible",
     "inputs": []
   },
@@ -623,6 +648,17 @@
     "type": "error",
     "name": "DayNotReadyToFinalize",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "EncumbranceAlreadyExists",
+    "inputs": [
+      {
+        "name": "key",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -669,6 +705,17 @@
     "type": "error",
     "name": "InsufficientProceeds",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IntentPending",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -823,27 +870,17 @@
   },
   {
     "type": "error",
-    "name": "NoStakingRewardsToClaim",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NonLiquidAsset",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NotAuthorizedRewardOApp",
+    "name": "NotAuthorizedRewardMessenger",
     "inputs": []
   },
   {
     "type": "error",
     "name": "NotBorrower",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotBridgedBuyReceiver",
     "inputs": []
   },
   {
@@ -1086,13 +1123,40 @@
   },
   {
     "type": "error",
-    "name": "RewardOAppNotSet",
+    "name": "RewardMessengerNotSet",
     "inputs": []
   },
   {
     "type": "error",
     "name": "RiskAndTermsConsentRequired",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SafeCastOverflowedUintDowncast",
+    "inputs": [
+      {
+        "name": "bits",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "value",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SafeCastOverflowedUintToInt",
+    "inputs": [
+      {
+        "name": "value",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1107,11 +1171,6 @@
   {
     "type": "error",
     "name": "SourceChainIdNotExpected",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "StakingPoolExhausted",
     "inputs": []
   },
   {
@@ -1131,37 +1190,7 @@
   },
   {
     "type": "error",
-    "name": "VPFIBuyAmountTooSmall",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyRateNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIGlobalCapExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "VPFIInvalidOriginChainId",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIPerWalletCapExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIReserveInsufficient",
     "inputs": []
   },
   {
@@ -1202,6 +1231,11 @@
   {
     "type": "error",
     "name": "VaultWithdrawFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "VpfiNotAllowedAsRentalPrepay",
     "inputs": []
   }
 ]

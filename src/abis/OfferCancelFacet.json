@@ -221,6 +221,36 @@
             "name": "collateralAmountFilled",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "allowsPrepayListing",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "allowsParallelSale",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "parallelSaleOrderHash",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "refinanceTargetLoanId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "refinanceCarryOver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "backstopEligibleAfter",
+            "type": "uint64",
+            "internalType": "uint64"
           }
         ]
       }
@@ -402,6 +432,36 @@
             "name": "collateralAmountFilled",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "allowsPrepayListing",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "allowsParallelSale",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "parallelSaleOrderHash",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "refinanceTargetLoanId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "refinanceCarryOver",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "backstopEligibleAfter",
+            "type": "uint64",
+            "internalType": "uint64"
           }
         ]
       }
@@ -555,11 +615,6 @@
   },
   {
     "type": "error",
-    "name": "BridgedBuyReceiverNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -617,6 +672,11 @@
   },
   {
     "type": "error",
+    "name": "ConsolidationNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "CountriesNotCompatible",
     "inputs": []
   },
@@ -640,6 +700,17 @@
     "type": "error",
     "name": "DayNotReadyToFinalize",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC721NonexistentToken",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -686,6 +757,17 @@
     "type": "error",
     "name": "InsufficientProceeds",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IntentPending",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -830,27 +912,17 @@
   },
   {
     "type": "error",
-    "name": "NoStakingRewardsToClaim",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NonLiquidAsset",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NotAuthorizedRewardOApp",
+    "name": "NotAuthorizedRewardMessenger",
     "inputs": []
   },
   {
     "type": "error",
     "name": "NotBorrower",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotBridgedBuyReceiver",
     "inputs": []
   },
   {
@@ -908,6 +980,17 @@
     "type": "error",
     "name": "OfferAlreadyAccepted",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OfferAlreadyConsumedBySale",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint96",
+        "internalType": "uint96"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1099,7 +1182,7 @@
   },
   {
     "type": "error",
-    "name": "RewardOAppNotSet",
+    "name": "RewardMessengerNotSet",
     "inputs": []
   },
   {
@@ -1124,11 +1207,6 @@
   },
   {
     "type": "error",
-    "name": "StakingPoolExhausted",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "TreasuryTransferFailed",
     "inputs": []
   },
@@ -1144,37 +1222,7 @@
   },
   {
     "type": "error",
-    "name": "VPFIBuyAmountTooSmall",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIBuyRateNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIGlobalCapExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "VPFIInvalidOriginChainId",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIPerWalletCapExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VPFIReserveInsufficient",
     "inputs": []
   },
   {
@@ -1215,6 +1263,11 @@
   {
     "type": "error",
     "name": "VaultWithdrawFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "VpfiNotAllowedAsRentalPrepay",
     "inputs": []
   }
 ]

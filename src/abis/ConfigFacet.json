@@ -8,25 +8,6 @@
   },
   {
     "type": "function",
-    "name": "getAssetNumeraireDirectFeedOverride",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getDepthTierConfigBundle",
     "inputs": [],
     "outputs": [
@@ -116,32 +97,6 @@
         "name": "graceSeconds",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getEthNumeraireFeed",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getEthPadFeed",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
       }
     ],
     "stateMutability": "view"
@@ -351,7 +306,7 @@
   },
   {
     "type": "function",
-    "name": "getMinPrincipalForFinerCadence",
+    "name": "getMaxSwapToRepaySlippageBps",
     "inputs": [],
     "outputs": [
       {
@@ -382,32 +337,6 @@
   },
   {
     "type": "function",
-    "name": "getNumeraireSwapEnabled",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getNumeraireSymbol",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getPaaAssets",
     "inputs": [],
     "outputs": [
@@ -421,19 +350,6 @@
   },
   {
     "type": "function",
-    "name": "getPadNumeraireRateFeed",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getPartialFillEnabled",
     "inputs": [],
     "outputs": [
@@ -441,91 +357,6 @@
         "name": "",
         "type": "bool",
         "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getPeriodicInterestConfig",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "symbol",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "threshold",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "preNotify",
-        "type": "uint8",
-        "internalType": "uint8"
-      },
-      {
-        "name": "periodicEnabled",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "numeraireSwapEnabled_",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getPeriodicInterestEnabled",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getPreNotifyDays",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getPredominantDenominator",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getPredominantDenominatorSymbol",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ],
     "stateMutability": "view"
@@ -567,11 +398,6 @@
       },
       {
         "name": "rentalBufferBps",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "vpfiStakingAprBps",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -629,11 +455,6 @@
         "internalType": "uint256"
       },
       {
-        "name": "vpfiStakingPoolCap",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
         "name": "vpfiInteractionPoolCap",
         "type": "uint256",
         "internalType": "uint256"
@@ -644,7 +465,7 @@
         "internalType": "uint256"
       }
     ],
-    "stateMutability": "pure"
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -684,19 +505,6 @@
       },
       {
         "name": "rentalBufferBps",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getStakingAprBps",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -910,24 +718,6 @@
       }
     ],
     "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "setAssetNumeraireDirectFeedOverride",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "feed",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -1183,12 +973,25 @@
   },
   {
     "type": "function",
-    "name": "setMinPrincipalForFinerCadence",
+    "name": "setMaxSwapToRepaySlippageBps",
     "inputs": [
       {
-        "name": "newThreshold",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "maxSlippageBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMirrorTierMaxAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
       }
     ],
     "outputs": [],
@@ -1202,67 +1005,6 @@
         "name": "newFeeNumeraire1e18",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setNumeraire",
-    "inputs": [
-      {
-        "name": "ethNumeraireFeed",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "numeraireChainlinkDenominator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "numeraireSymbol",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "pythCrossCheckFeedId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "newThresholdInNewNumeraire",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "newNotificationFeeInNewNumeraire",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "newKycTier0InNewNumeraire",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "newKycTier1InNewNumeraire",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setNumeraireSwapEnabled",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "internalType": "bool"
       }
     ],
     "outputs": [],
@@ -1296,53 +1038,51 @@
   },
   {
     "type": "function",
-    "name": "setPeriodicInterestEnabled",
+    "name": "setPrepayListingAutoListConduitKey",
+    "inputs": [
+      {
+        "name": "newConduitKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPrepayListingBufferBps",
+    "inputs": [
+      {
+        "name": "newBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPrepayListingDutchGraceMarginSec",
+    "inputs": [
+      {
+        "name": "newMarginSec",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPrepayListingEnabled",
     "inputs": [
       {
         "name": "enabled",
         "type": "bool",
         "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setPreNotifyDays",
-    "inputs": [
-      {
-        "name": "newDays",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setPredominantDenominator",
-    "inputs": [
-      {
-        "name": "newDenominator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "newSymbol",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "newEthPadFeed",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "newPadNumeraireRateFeed",
-        "type": "address",
-        "internalType": "address"
       }
     ],
     "outputs": [],
@@ -1398,19 +1138,6 @@
       },
       {
         "name": "rentalBufferBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setStakingApr",
-    "inputs": [
-      {
-        "name": "aprBps",
         "type": "uint16",
         "internalType": "uint16"
       }
@@ -1585,6 +1312,58 @@
   },
   {
     "type": "function",
+    "name": "setTwaMinStakedDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTwaRecentDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTwaRecentWeight",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTwaWindowDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setTwapGuard",
     "inputs": [
       {
@@ -1656,31 +1435,6 @@
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "event",
-    "name": "AssetNumeraireDirectFeedOverrideSet",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "previous",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "next",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
   },
   {
     "type": "event",
@@ -1939,13 +1693,26 @@
   },
   {
     "type": "event",
-    "name": "MinPrincipalForFinerCadenceSet",
+    "name": "MaxSwapToRepaySlippageBpsSet",
     "inputs": [
       {
-        "name": "newThreshold",
-        "type": "uint256",
+        "name": "maxSlippageBps",
+        "type": "uint16",
         "indexed": false,
-        "internalType": "uint256"
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "MirrorTierMaxAgeSecSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
       }
     ],
     "anonymous": false
@@ -1959,44 +1726,6 @@
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "NumeraireSwapEnabledSet",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "NumeraireUpdated",
-    "inputs": [
-      {
-        "name": "oldEthFeed",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newEthFeed",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "numeraireSymbol",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
       }
     ],
     "anonymous": false
@@ -2029,63 +1758,52 @@
   },
   {
     "type": "event",
-    "name": "PeriodicInterestEnabledSet",
+    "name": "PrepayListingAutoListConduitKeySet",
+    "inputs": [
+      {
+        "name": "newConduitKey",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PrepayListingBufferBpsSet",
+    "inputs": [
+      {
+        "name": "newBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PrepayListingDutchGraceMarginSecSet",
+    "inputs": [
+      {
+        "name": "newMarginSec",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PrepayListingEnabledSet",
     "inputs": [
       {
         "name": "enabled",
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "PreNotifyDaysSet",
-    "inputs": [
-      {
-        "name": "newDays",
-        "type": "uint8",
-        "indexed": false,
-        "internalType": "uint8"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "PredominantDenominatorUpdated",
-    "inputs": [
-      {
-        "name": "oldDenominator",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newDenominator",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newSymbol",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "newEthPadFeed",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      },
-      {
-        "name": "newPadNumeraireRateFeed",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -2141,19 +1859,6 @@
       },
       {
         "name": "rentalBufferBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "StakingAprSet",
-    "inputs": [
-      {
-        "name": "aprBps",
         "type": "uint16",
         "indexed": false,
         "internalType": "uint16"
@@ -2299,6 +2004,19 @@
   },
   {
     "type": "event",
+    "name": "TierTableVersionBumped",
+    "inputs": [
+      {
+        "name": "newVersion",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "TreasuryConvertTargetsSet",
     "inputs": [
       {
@@ -2325,6 +2043,58 @@
         "type": "uint32",
         "indexed": false,
         "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TwaMinStakedDaysSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TwaRecentDaysSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TwaRecentWeightSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TwaWindowDaysSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
       }
     ],
     "anonymous": false
@@ -2524,11 +2294,6 @@
   },
   {
     "type": "error",
-    "name": "InvalidAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "InvalidAsset",
     "inputs": []
   },
@@ -2619,6 +2384,17 @@
   },
   {
     "type": "error",
+    "name": "InvalidMirrorTierMaxAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidNotificationFee",
     "inputs": [
       {
@@ -2651,6 +2427,38 @@
   },
   {
     "type": "error",
+    "name": "InvalidPrepayListingBufferBps",
+    "inputs": [
+      {
+        "name": "bps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidPrepayListingDutchGraceMarginSec",
+    "inputs": [
+      {
+        "name": "marginSec",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidRentalBufferBps",
     "inputs": [
       {
@@ -2678,23 +2486,56 @@
   },
   {
     "type": "error",
-    "name": "InvalidStakingAprBps",
-    "inputs": [
-      {
-        "name": "bps",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "InvalidTreasuryConvertTargets",
     "inputs": [
       {
         "name": "reason",
         "type": "string",
         "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTwaMinStakedDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTwaRecentDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTwaRecentWeight",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTwaWindowDays",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint8",
+        "internalType": "uint8"
       }
     ]
   },
@@ -2708,6 +2549,11 @@
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "KeeperAccessRequired",
+    "inputs": []
   },
   {
     "type": "error",
@@ -2828,11 +2674,6 @@
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "NumeraireSwapDisabled",
-    "inputs": []
   },
   {
     "type": "error",
