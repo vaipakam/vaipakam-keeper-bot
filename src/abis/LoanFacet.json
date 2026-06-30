@@ -253,6 +253,11 @@
             "name": "initLtvCapBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "originalDurationDays",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -682,8 +687,35 @@
   },
   {
     "type": "error",
+    "name": "IlliquidAssetNotAcknowledged",
+    "inputs": [
+      {
+        "name": "leg",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IlliquidLoanNoRiskMath",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IlliquidPairNotConsented",
+    "inputs": [
+      {
+        "name": "actor",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "pairKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
   },
   {
     "type": "error",
@@ -832,6 +864,22 @@
     "type": "error",
     "name": "LoanNotActive",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MidTierPairNotAcknowledged",
+    "inputs": [
+      {
+        "name": "actor",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "pairKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1130,6 +1178,27 @@
     "type": "error",
     "name": "RiskAndTermsConsentRequired",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RiskTierTooLow",
+    "inputs": [
+      {
+        "name": "actor",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requiredTier",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "actorTier",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
   },
   {
     "type": "error",

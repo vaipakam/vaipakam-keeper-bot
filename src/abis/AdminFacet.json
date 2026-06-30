@@ -73,6 +73,19 @@
   },
   {
     "type": "function",
+    "name": "getMaxPartialLiquidationCloseFactorBps",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "capBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getPancakeswapV2Factory",
     "inputs": [],
     "outputs": [
@@ -1187,6 +1200,17 @@
     "type": "error",
     "name": "IlliquidAsset",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IlliquidAssetNotAcknowledged",
+    "inputs": [
+      {
+        "name": "leg",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",

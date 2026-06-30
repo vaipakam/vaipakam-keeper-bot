@@ -1,6 +1,92 @@
 [
   {
     "type": "function",
+    "name": "getActiveLenderIntents",
+    "inputs": [
+      {
+        "name": "offset",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "intents",
+        "type": "tuple[]",
+        "internalType": "struct LibMetricsTypes.LenderIntentSummary[]",
+        "components": [
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "lendingAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maxExposure",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minRateBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxInitLtvBps",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "maxDurationDays",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "minFillAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "requiresKeeperAuth",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "livePrincipal",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "availableCapital",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      },
+      {
+        "name": "total",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getActiveLoansCount",
     "inputs": [],
     "outputs": [
@@ -892,6 +978,11 @@
             "name": "initLtvCapBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "originalDurationDays",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -1126,6 +1217,62 @@
         "name": "dayCount",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRollableIntentLoans",
+    "inputs": [
+      {
+        "name": "offset",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "loans",
+        "type": "tuple[]",
+        "internalType": "struct LibMetricsTypes.RollableIntentLoan[]",
+        "components": [
+          {
+            "name": "loanId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "lendingAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      },
+      {
+        "name": "total",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -1601,6 +1748,45 @@
   },
   {
     "type": "function",
+    "name": "getUserPositionLoansPaginated",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "offset",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "loanIds",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "tokenIds",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "totalBalance",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getUserPositionOffers",
     "inputs": [
       {
@@ -1619,6 +1805,45 @@
         "name": "tokenIds",
         "type": "uint256[]",
         "internalType": "uint256[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getUserPositionOffersPaginated",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "offset",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "offerIds",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "tokenIds",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "totalBalance",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
