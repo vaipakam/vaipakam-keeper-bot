@@ -251,6 +251,26 @@
             "name": "backstopEligibleAfter",
             "type": "uint64",
             "internalType": "uint64"
+          },
+          {
+            "name": "rentalBufferBpsAtCreate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "creatorFull",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "creatorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "creatorMaxCStar",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
@@ -462,6 +482,26 @@
             "name": "backstopEligibleAfter",
             "type": "uint64",
             "internalType": "uint64"
+          },
+          {
+            "name": "rentalBufferBpsAtCreate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "creatorFull",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "creatorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "creatorMaxCStar",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
@@ -486,6 +526,38 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "teardownStaleSaleListing",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "LoanSaleListingTornDown",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "saleOfferId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
   },
   {
     "type": "event",
@@ -634,6 +706,17 @@
   },
   {
     "type": "error",
+    "name": "BroadcastDestinationMismatch",
+    "inputs": [
+      {
+        "name": "destChainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -717,6 +800,17 @@
   },
   {
     "type": "error",
+    "name": "DayCapModeUnsetPostCutover",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayNotReadyToFinalize",
     "inputs": []
   },
@@ -734,6 +828,21 @@
   {
     "type": "error",
     "name": "EnforcedPause",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementChargeFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementRequiresCanonicalVpfiChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FullTariffMaxCStarRequired",
     "inputs": []
   },
   {
@@ -938,6 +1047,11 @@
   {
     "type": "error",
     "name": "NoInteractionRewardsToClaim",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoStaleSaleListing",
     "inputs": []
   },
   {
@@ -1212,12 +1326,28 @@
   },
   {
     "type": "error",
+    "name": "RewardEntrySetMismatch",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RewardMessengerNotSet",
     "inputs": []
   },
   {
     "type": "error",
     "name": "RiskAndTermsConsentRequired",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SaleListingLoanStillLive",
     "inputs": []
   },
   {

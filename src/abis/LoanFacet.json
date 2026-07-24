@@ -263,6 +263,16 @@
             "name": "interestRemainingDays",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "treasuryFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "loanInitiationFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -501,6 +511,16 @@
             "name": "borrowerTokenId",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "treasuryFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "loanInitiationFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -536,7 +556,38 @@
         "internalType": "uint256"
       },
       {
-        "name": "feeNumeraire1e18",
+        "name": "configuredFeeVpfi1e18",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "VpfiRecycled",
+    "inputs": [
+      {
+        "name": "source",
+        "type": "uint8",
+        "indexed": true,
+        "internalType": "uint8"
+      },
+      {
+        "name": "refId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "dayId",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
@@ -575,6 +626,17 @@
     "type": "error",
     "name": "BaseChainIdNotSet",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "BroadcastDestinationMismatch",
+    "inputs": [
+      {
+        "name": "destChainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -656,8 +718,30 @@
   },
   {
     "type": "error",
+    "name": "DayCapModeUnsetPostCutover",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayNotReadyToFinalize",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC721NonexistentToken",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -673,6 +757,21 @@
   {
     "type": "error",
     "name": "EnforcedPause",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementChargeFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementRequiresCanonicalVpfiChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FullTariffMaxCStarRequired",
     "inputs": []
   },
   {
@@ -742,6 +841,22 @@
     "type": "error",
     "name": "InsufficientProceeds",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InsufficientRecycleBacking",
+    "inputs": [
+      {
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "available",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -963,22 +1078,7 @@
   },
   {
     "type": "error",
-    "name": "NotifFeeOraclePriceZero",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotifFeeTreasuryNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NotifFeeVpfiTokenNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotifFeeWethNotSet",
     "inputs": []
   },
   {
@@ -1173,6 +1273,17 @@
     "type": "error",
     "name": "RewardDayNotElapsed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardEntrySetMismatch",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

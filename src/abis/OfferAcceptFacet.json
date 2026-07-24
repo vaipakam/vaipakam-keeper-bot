@@ -167,6 +167,21 @@
             "name": "riskTermsHash",
             "type": "bytes32",
             "internalType": "bytes32"
+          },
+          {
+            "name": "acceptorFull",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "acceptorMaxCStar",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "acceptorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       },
@@ -377,6 +392,21 @@
             "name": "riskTermsHash",
             "type": "bytes32",
             "internalType": "bytes32"
+          },
+          {
+            "name": "acceptorFull",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "acceptorMaxCStar",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "acceptorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       },
@@ -460,7 +490,7 @@
   },
   {
     "type": "function",
-    "name": "previewAccept",
+    "name": "chargeBorrowerLifAndDeliver",
     "inputs": [
       {
         "name": "offerId",
@@ -468,51 +498,38 @@
         "internalType": "uint256"
       },
       {
-        "name": "acceptor",
+        "name": "lendingAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "lender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "borrower",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "effectivePrincipal",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "isLiquid",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "originalCaller",
         "type": "address",
         "internalType": "address"
       }
     ],
-    "outputs": [
-      {
-        "name": "preview",
-        "type": "tuple",
-        "internalType": "struct OfferAcceptFacet.AcceptPreview",
-        "components": [
-          {
-            "name": "effectivePrincipal",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "interestRateBps",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralAmount",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "lifEstimate",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralResidualRefund",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "errorCode",
-            "type": "uint8",
-            "internalType": "enum OfferAcceptFacet.AcceptError"
-          }
-        ]
-      }
-    ],
-    "stateMutability": "view"
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -687,6 +704,21 @@
             "name": "riskTermsHash",
             "type": "bytes32",
             "internalType": "bytes32"
+          },
+          {
+            "name": "acceptorFull",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "acceptorMaxCStar",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "acceptorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       },
@@ -806,6 +838,17 @@
   },
   {
     "type": "error",
+    "name": "BroadcastDestinationMismatch",
+    "inputs": [
+      {
+        "name": "destChainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -884,6 +927,17 @@
   },
   {
     "type": "error",
+    "name": "DayCapModeUnsetPostCutover",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayNotReadyToFinalize",
     "inputs": []
   },
@@ -901,6 +955,21 @@
   {
     "type": "error",
     "name": "EnforcedPause",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementChargeFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementRequiresCanonicalVpfiChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FullTariffMaxCStarRequired",
     "inputs": []
   },
   {
@@ -1185,6 +1254,17 @@
   },
   {
     "type": "error",
+    "name": "OfferCancelled",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint96",
+        "internalType": "uint96"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "OfferConsumedBySale",
     "inputs": [
       {
@@ -1447,6 +1527,11 @@
   },
   {
     "type": "error",
+    "name": "RefinanceTargetPastGrace",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ReportAfterFinalization",
     "inputs": []
   },
@@ -1454,6 +1539,17 @@
     "type": "error",
     "name": "RewardDayNotElapsed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardEntrySetMismatch",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

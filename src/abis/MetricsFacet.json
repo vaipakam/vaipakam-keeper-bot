@@ -729,6 +729,16 @@
             "internalType": "uint256"
           },
           {
+            "name": "surplusClaimAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "surplusClaimAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
             "name": "createdAt",
             "type": "uint256",
             "internalType": "uint256"
@@ -988,6 +998,16 @@
             "name": "interestRemainingDays",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "treasuryFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "loanInitiationFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }
@@ -1047,12 +1067,31 @@
   },
   {
     "type": "function",
+    "name": "getOfferState",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "state",
+        "type": "uint8",
+        "internalType": "enum LibMetricsTypes.OfferState"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getOffersByStatePaginated",
     "inputs": [
       {
         "name": "state",
         "type": "uint8",
-        "internalType": "enum MetricsFacet.OfferState"
+        "internalType": "enum LibMetricsTypes.OfferState"
       },
       {
         "name": "offset",
@@ -1666,7 +1705,7 @@
       {
         "name": "state",
         "type": "uint8",
-        "internalType": "enum MetricsFacet.OfferState"
+        "internalType": "enum LibMetricsTypes.OfferState"
       },
       {
         "name": "offset",
