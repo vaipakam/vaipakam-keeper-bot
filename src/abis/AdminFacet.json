@@ -73,6 +73,19 @@
   },
   {
     "type": "function",
+    "name": "getMaxPartialLiquidationCloseFactorBps",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "capBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getPancakeswapV2Factory",
     "inputs": [],
     "outputs": [
@@ -1092,6 +1105,17 @@
   },
   {
     "type": "error",
+    "name": "BroadcastDestinationMismatch",
+    "inputs": [
+      {
+        "name": "destChainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -1144,6 +1168,88 @@
   },
   {
     "type": "error",
+    "name": "CommitmentDayNotArmed",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentDayNotComplete",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentDayNotLocallyClosed",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentEntriesNotAscending",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentEntryMismatch",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentReportAlreadySent",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CommitmentReportOnlyMirror",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CommitmentStampNotArrived",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "ConsolidationNotAllowed",
     "inputs": []
   },
@@ -1170,7 +1276,33 @@
   },
   {
     "type": "error",
+    "name": "DayCapModeUnsetPostCutover",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayNotReadyToFinalize",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementChargeFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementRequiresCanonicalVpfiChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FullTariffMaxCStarRequired",
     "inputs": []
   },
   {
@@ -1187,6 +1319,17 @@
     "type": "error",
     "name": "IlliquidAsset",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IlliquidAssetNotAcknowledged",
+    "inputs": [
+      {
+        "name": "leg",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1438,6 +1581,11 @@
   },
   {
     "type": "error",
+    "name": "OnlyMirrorRewardChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "PadNumeraireRateFeedStale",
     "inputs": []
   },
@@ -1570,6 +1718,33 @@
   },
   {
     "type": "error",
+    "name": "ReceivedRemitNotFound",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReceivedRemitStale",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "recordedSrcChainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RecoveryAmountExceedsUnsolicited",
     "inputs": []
   },
@@ -1611,6 +1786,102 @@
   },
   {
     "type": "error",
+    "name": "RemitAckChainMismatch",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "expected",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "got",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitAckSenderMismatch",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "srcSender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDayAlreadyClosed",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDayNotManualEligible",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitReleaseTooEarly",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "earliest",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitReservationNotPending",
+    "inputs": [
+      {
+        "name": "remitId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "ReportAfterFinalization",
     "inputs": []
   },
@@ -1618,6 +1889,17 @@
     "type": "error",
     "name": "RewardDayNotElapsed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardEntrySetMismatch",
+    "inputs": [
+      {
+        "name": "entryId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
