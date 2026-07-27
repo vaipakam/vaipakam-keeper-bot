@@ -816,6 +816,20 @@
   },
   {
     "type": "error",
+<<<<<<< Updated upstream
+=======
+    "name": "DuplicateExpectedChainId",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+>>>>>>> Stashed changes
     "name": "ERC721NonexistentToken",
     "inputs": [
       {
