@@ -8,6 +8,110 @@
   },
   {
     "type": "function",
+    "name": "getAssetRiskParams",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct LibVaipakam.RiskParams",
+        "components": [
+          {
+            "name": "loanInitMaxLtvBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liqBonusBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "reserveFactorBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minPartialBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getChainDailyRecycledCredit",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "credit",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "accepted",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getChainRecycledLedger",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "reportedCumulative",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "consumedCumulative",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "availRecycled",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "attributedCumulative",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getDepthTierConfigBundle",
     "inputs": [],
     "outputs": [
@@ -113,6 +217,29 @@
       },
       {
         "name": "treasuryBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getFeeEntitlementConfig",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "enabled",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "kPerLifYear",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardHaircutBps",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -323,7 +450,7 @@
     "inputs": [],
     "outputs": [
       {
-        "name": "feeNumeraire1e18",
+        "name": "feeVpfi1e18",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -483,6 +610,113 @@
   {
     "type": "function",
     "name": "getRangeRateEnabled",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRecycleBucket",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRecycleConfig",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "marginBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tariffK",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRecycleCreditedCumulative",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRecycleRegisterState",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "keeperBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "keeperBudget",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRecycledCreditedByDay",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRewardClaimHorizonDays",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRiskAccessGateEnabled",
     "inputs": [],
     "outputs": [
       {
@@ -721,6 +955,24 @@
   },
   {
     "type": "function",
+    "name": "setAssetMinPartialBps",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "minPartialBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setAutoPauseDurationSeconds",
     "inputs": [
       {
@@ -771,6 +1023,19 @@
         "name": "treasuryBps",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setFeeEntitlementEnabled",
+    "inputs": [
+      {
+        "name": "enabled",
+        "type": "bool",
+        "internalType": "bool"
       }
     ],
     "outputs": [],
@@ -1002,7 +1267,7 @@
     "name": "setNotificationFee",
     "inputs": [
       {
-        "name": "newFeeNumeraire1e18",
+        "name": "newFeeVpfi1e18",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1129,6 +1394,84 @@
   },
   {
     "type": "function",
+    "name": "setRecycleMarginBps",
+    "inputs": [
+      {
+        "name": "newMarginBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRecycleRegisterKeeperBps",
+    "inputs": [
+      {
+        "name": "keeperBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRecycleTariffKPer1e18EthDay",
+    "inputs": [
+      {
+        "name": "newKPer1e18EthDay",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRewardClaimHorizonDays",
+    "inputs": [
+      {
+        "name": "horizonDays",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRewardHaircutBps",
+    "inputs": [
+      {
+        "name": "newHaircutBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRiskAccessGateEnabled",
+    "inputs": [
+      {
+        "name": "enabled",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setRiskConfig",
     "inputs": [
       {
@@ -1140,6 +1483,19 @@
         "name": "rentalBufferBps",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTariffKPerLifYear",
+    "inputs": [
+      {
+        "name": "newKPerLifYear",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [],
@@ -1382,6 +1738,19 @@
   },
   {
     "type": "function",
+    "name": "setUserSideShareCapBps",
+    "inputs": [
+      {
+        "name": "newShareCapBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setVpfiTierDiscountBps",
     "inputs": [
       {
@@ -1438,6 +1807,25 @@
   },
   {
     "type": "event",
+    "name": "AssetMinPartialBpsUpdated",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "minPartialBps",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "AutoPauseDurationSet",
     "inputs": [
       {
@@ -1490,6 +1878,19 @@
         "type": "uint16",
         "indexed": false,
         "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "FeeEntitlementEnabledSet",
+    "inputs": [
+      {
+        "name": "enabled",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
       }
     ],
     "anonymous": false
@@ -1849,6 +2250,84 @@
   },
   {
     "type": "event",
+    "name": "RecycleMarginBpsSet",
+    "inputs": [
+      {
+        "name": "newMarginBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RecycleRegisterKeeperBpsSet",
+    "inputs": [
+      {
+        "name": "keeperBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RecycleTariffKSet",
+    "inputs": [
+      {
+        "name": "newKPer1e18EthDay",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RewardClaimHorizonDaysSet",
+    "inputs": [
+      {
+        "name": "horizonDays",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RewardHaircutBpsSet",
+    "inputs": [
+      {
+        "name": "rewardHaircutBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RiskAccessGateEnabledSet",
+    "inputs": [
+      {
+        "name": "enabled",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "RiskConfigSet",
     "inputs": [
       {
@@ -1862,6 +2341,19 @@
         "type": "uint16",
         "indexed": false,
         "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TariffKPerLifYearSet",
+    "inputs": [
+      {
+        "name": "newKPerLifYear",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -2120,6 +2612,19 @@
   },
   {
     "type": "event",
+    "name": "UserSideShareCapBpsSet",
+    "inputs": [
+      {
+        "name": "userSideShareCapBps",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "VpfiTierDiscountsSet",
     "inputs": [
       {
@@ -2248,6 +2753,11 @@
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "FeeEntitlementRequiresCanonicalVpfiChain",
+    "inputs": []
   },
   {
     "type": "error",
@@ -2459,6 +2969,43 @@
   },
   {
     "type": "error",
+    "name": "InvalidRecycleMarginBps",
+    "inputs": [
+      {
+        "name": "bps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidRecycleTariffK",
+    "inputs": [
+      {
+        "name": "k",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidRentalBufferBps",
     "inputs": [
       {
@@ -2470,10 +3017,47 @@
   },
   {
     "type": "error",
+    "name": "InvalidRewardHaircutBps",
+    "inputs": [
+      {
+        "name": "bps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidSlippageBps",
     "inputs": [
       {
         "name": "bps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTariffKPerLifYear",
+    "inputs": [
+      {
+        "name": "k",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minAllowed",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -2536,6 +3120,27 @@
         "name": "newValue",
         "type": "uint8",
         "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidUserSideShareCapBps",
+    "inputs": [
+      {
+        "name": "bps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxAllowed",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },

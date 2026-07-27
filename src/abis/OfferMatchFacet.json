@@ -697,6 +697,11 @@
   },
   {
     "type": "error",
+    "name": "OffsetVehicleNotMatchable",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ParameterOutOfRange",
     "inputs": [
       {
@@ -739,6 +744,11 @@
   {
     "type": "error",
     "name": "RefinanceTaggedOfferNotMatchable",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SaleVehicleNotMatchable",
     "inputs": []
   },
   {
