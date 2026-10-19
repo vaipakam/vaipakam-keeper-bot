@@ -40,6 +40,7 @@
 
 import {
   type Address,
+  type ContractFunctionReturnType,
   type Hex,
   type PublicClient,
   type WalletClient,
@@ -120,21 +121,24 @@ function bucketKey(o: OfferLite): string {
   ].join('|');
 }
 
-/** Decode the raw `getOffer` tuple return into the lite shape. viem
- *  surfaces a tuple's components as a plain object keyed on field
- *  name when the ABI carries names. We narrow to the fields the
- *  matcher cares about. */
-function liftOffer(raw: Record<string, unknown>): OfferLite {
+/** `getOffer`'s return, exactly as the ABI types it (#13). */
+type OfferRecord = ContractFunctionReturnType<typeof OFFER_CANCEL_ABI, 'view', 'getOffer'>;
+
+/** Narrow a `getOffer` result to the fields the matcher uses. Typed from
+ *  the ABI and read by field name, so a renamed or retyped field is a
+ *  compile error rather than an `undefined` that throws here at run time
+ *  and drops every offer (Codex #14 r1). */
+function liftOffer(raw: OfferRecord): OfferLite {
   return {
-    id: BigInt(raw['id'] as bigint | number),
-    creator: raw['creator'] as Address,
-    offerType: Number(raw['offerType']),
-    accepted: Boolean(raw['accepted']),
-    assetType: Number(raw['assetType']),
-    collateralAssetType: Number(raw['collateralAssetType']),
-    lendingAsset: raw['lendingAsset'] as Address,
-    collateralAsset: raw['collateralAsset'] as Address,
-    durationDays: BigInt(raw['durationDays'] as bigint | number),
+    id: raw.id,
+    creator: raw.creator,
+    offerType: raw.offerType,
+    accepted: raw.accepted,
+    assetType: raw.assetType,
+    collateralAssetType: raw.collateralAssetType,
+    lendingAsset: raw.lendingAsset,
+    collateralAsset: raw.collateralAsset,
+    durationDays: raw.durationDays,
   };
 }
 
@@ -282,13 +286,11 @@ async function previewMatch(
       args: [lenderId, borrowerId, self, self],
     }));
     return {
-      errorCode: Number(raw['errorCode']),
-      matchAmount: BigInt(raw['matchAmount'] as bigint | number),
-      matchRateBps: BigInt(raw['matchRateBps'] as bigint | number),
-      reqCollateral: BigInt(raw['reqCollateral'] as bigint | number),
-      lenderRemainingPostMatch: BigInt(
-        raw['lenderRemainingPostMatch'] as bigint | number,
-      ),
+      errorCode: raw.errorCode,
+      matchAmount: raw.matchAmount,
+      matchRateBps: raw.matchRateBps,
+      reqCollateral: raw.reqCollateral,
+      lenderRemainingPostMatch: raw.lenderRemainingPostMatch,
     };
   } catch (err) {
     log.debug('matcher.previewMatch.failed', {

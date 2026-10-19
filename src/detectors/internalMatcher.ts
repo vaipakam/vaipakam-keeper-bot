@@ -31,6 +31,7 @@
 
 import {
   type Address,
+  type ContractFunctionReturnType,
   type PublicClient,
   type WalletClient,
 } from 'viem';
@@ -87,18 +88,23 @@ interface LoanLite {
   collateralAmount: bigint;
 }
 
-/** Hydrate `getLoanDetails` raw tuple into the lite shape. viem
- *  returns named struct fields as a plain object. */
-function liftLoan(raw: Record<string, unknown>): LoanLite {
+/** `getLoanDetails`' return, exactly as the ABI types it (#13). */
+type LoanRecord = ContractFunctionReturnType<typeof LOAN_ABI, 'view', 'getLoanDetails'>;
+
+/** Narrow a `getLoanDetails` result to the fields matching uses. Typed
+ *  from the ABI and read by field name, so a renamed or retyped field is
+ *  a compile error, not a run-time throw that skips every loan
+ *  (Codex #14 r1). */
+function liftLoan(raw: LoanRecord): LoanLite {
   return {
-    id: BigInt(raw['id'] as bigint | number),
-    status: Number(raw['status']),
-    lender: raw['lender'] as Address,
-    borrower: raw['borrower'] as Address,
-    principalAsset: raw['principalAsset'] as Address,
-    collateralAsset: raw['collateralAsset'] as Address,
-    principal: BigInt(raw['principal'] as bigint | number),
-    collateralAmount: BigInt(raw['collateralAmount'] as bigint | number),
+    id: raw.id,
+    status: raw.status,
+    lender: raw.lender,
+    borrower: raw.borrower,
+    principalAsset: raw.principalAsset,
+    collateralAsset: raw.collateralAsset,
+    principal: raw.principal,
+    collateralAmount: raw.collateralAmount,
   };
 }
 
