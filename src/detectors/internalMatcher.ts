@@ -31,22 +31,23 @@
 
 import {
   type Address,
-  type Abi,
   type PublicClient,
   type WalletClient,
 } from 'viem';
 import { log } from '../log.ts';
-import configAbi from '../abis/ConfigFacet.json' with { type: 'json' };
-import loanAbi from '../abis/LoanFacet.json' with { type: 'json' };
-import metricsAbi from '../abis/MetricsFacet.json' with { type: 'json' };
-import riskAbi from '../abis/RiskFacet.json' with { type: 'json' };
-
-const DETECTOR_ABI: Abi = [
-  ...(configAbi as Abi),
-  ...(loanAbi as Abi),
-  ...(metricsAbi as Abi),
-  ...(riskAbi as Abi),
-];
+// Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
+// of the facet that defines its function, so viem types the call and a
+// contract signature change fails the typecheck instead of the run.
+// triggerInternalMatchLiquidation lives in RiskMatchLiquidationFacet (split
+// out of RiskFacet for EIP-170). The merged Config/Loan/Metrics/Risk ABI
+// this detector used before #13 did not contain it, so the submit could
+// never resolve the function; typed per-facet ABIs make that a compile error.
+import {
+  CONFIG_ABI,
+  LOAN_ABI,
+  METRICS_ABI,
+  RISK_MATCH_LIQUIDATION_ABI,
+} from '../abis/diamond.ts';
 
 /** Pagination chunk on `getMatchEligibleLoans`. The view performs
  *  one `RiskFacet.calculateLTV` per row inside its try/catch, so
@@ -127,9 +128,9 @@ async function isEnabled(ctx: DetectorCtx): Promise<boolean> {
   try {
     const bundle = (await ctx.publicClient.readContract({
       address: ctx.diamond,
-      abi: DETECTOR_ABI,
+      abi: CONFIG_ABI,
       functionName: 'getInternalMatchConfigBundle',
-    })) as readonly [boolean, bigint, bigint];
+    }));
     const enabled = bundle[0];
     if (!enabled && !killSwitchLogged.get(ctx.chainId)) {
       log.info('internalMatcher.disabled', {
@@ -160,7 +161,7 @@ async function listMatchEligible(ctx: DetectorCtx): Promise<bigint[]> {
     try {
       const result = (await ctx.publicClient.readContract({
         address: ctx.diamond,
-        abi: DETECTOR_ABI,
+        abi: METRICS_ABI,
         functionName: 'getMatchEligibleLoans',
         // (minLtvBps, maxLtvBps, startIdx, pageSize). Use the full
         // (0, 10_000) range — every match-eligible loan returned by
@@ -196,10 +197,10 @@ async function hydrateLoans(
     try {
       const raw = (await ctx.publicClient.readContract({
         address: ctx.diamond,
-        abi: DETECTOR_ABI,
+        abi: LOAN_ABI,
         functionName: 'getLoanDetails',
         args: [id],
-      })) as Record<string, unknown>;
+      }));
       const lite = liftLoan(raw);
       // EC-003 Phase 4 — accept both Active and FallbackPending. The
       // FallbackPending loans are the rescue opportunity: their
@@ -232,7 +233,7 @@ async function submitMatch(
   try {
     const { request } = await ctx.publicClient.simulateContract({
       address: ctx.diamond,
-      abi: DETECTOR_ABI,
+      abi: RISK_MATCH_LIQUIDATION_ABI,
       functionName: 'triggerInternalMatchLiquidation',
       args: [a.id, b.id, cId],
       account: ctx.walletClient.account!,

@@ -33,20 +33,14 @@
 
 import {
   type Address,
-  type Abi,
   type PublicClient,
   type WalletClient,
 } from 'viem';
 import { log } from '../log.ts';
-import metricsAbi from '../abis/MetricsFacet.json' with { type: 'json' };
-import adminAbi from '../abis/AdminFacet.json' with { type: 'json' };
-import autoLifecycleAbi from '../abis/AutoLifecycleFacet.json' with {
-  type: 'json',
-};
-
-const METRICS_ABI = metricsAbi as Abi;
-const ADMIN_ABI = adminAbi as Abi;
-const AUTO_LIFECYCLE_ABI = autoLifecycleAbi as Abi;
+// Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
+// of the facet that defines its function, so viem types the call and a
+// contract signature change fails the typecheck instead of the run.
+import { ADMIN_ABI, AUTO_LIFECYCLE_ABI, METRICS_ABI } from '../abis/diamond.ts';
 
 const SCAN_PAGE = 200n;
 const MAX_EXTENDS_PER_TICK = 5;
@@ -60,10 +54,14 @@ interface AutoExtendDetectorParams {
   walletClient: WalletClient;
 }
 
+/** One side's auto-extend caps as the contract returns them. The rate bounds
+ *  are `uint16`, which viem decodes as `number` (not `bigint`). The read is
+ *  assigned without a cast, so the compiler checks this shape against the
+ *  ABI (#13). */
 interface ExtendCaps {
   enabled: boolean;
-  minRateBps: bigint;
-  maxRateBps: bigint;
+  minRateBps: number;
+  maxRateBps: number;
   maxNewExpiry: bigint;
   setter: Address;
 }
@@ -80,7 +78,7 @@ export async function runAutoExtendDetectorTick(
       address: diamond,
       abi: ADMIN_ABI,
       functionName: 'getAutoExtendEnabled',
-    })) as boolean;
+    }));
   } catch (err) {
     log.warn('autoExtend.adminGate.failed', {
       chain: chainId,
@@ -100,7 +98,7 @@ export async function runAutoExtendDetectorTick(
       address: diamond,
       abi: METRICS_ABI,
       functionName: 'getActiveLoansCount',
-    })) as bigint;
+    }));
   } catch (err) {
     log.warn('autoExtend.count.failed', {
       chain: chainId,
@@ -120,7 +118,7 @@ export async function runAutoExtendDetectorTick(
         abi: METRICS_ABI,
         functionName: 'getActiveLoansPaginated',
         args: [cursor, limit],
-      })) as bigint[];
+      }));
       loanIds.push(...page);
     } catch (err) {
       log.warn('autoExtend.page.failed', {
@@ -176,7 +174,7 @@ async function tryExtend(
         functionName: 'getAutoExtendLenderCaps',
         args: [loanIdBig],
       }),
-    ])) as [ExtendCaps, ExtendCaps];
+    ]));
   } catch {
     // Old deploys without the facet — return silently; the per-chain
     // adminEnabled check would normally have caught this, but a
@@ -218,7 +216,7 @@ async function tryExtend(
       address: diamond,
       abi: AUTO_LIFECYCLE_ABI,
       functionName: 'extendLoanInPlace',
-      args: [loanIdBig, Number(newRateBps), newDurationDays],
+      args: [loanIdBig, newRateBps, newDurationDays],
       chain: null,
       account: walletClient.account,
     });

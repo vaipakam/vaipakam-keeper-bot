@@ -94,35 +94,55 @@ generated from the upstream contracts via the monorepo's
 truth — when the diamond's signatures change, regenerating them is
 the one synchronization step.
 
-**Contributor flow when the upstream protocol changes a selector
-the bot reads** (`getActiveLoansCount`, `getActiveLoansPaginated`,
-`calculateHealthFactor`, `getLoanDetails`, `triggerLiquidation`):
+**Contributor flow when the upstream protocol changes any function
+the bot calls.** The calls live in `src/index.ts` and `src/detectors/`;
+each names its facet's ABI from `src/abis/diamond.ts`.
 
 ```bash
-# In the upstream Vaipakam monorepo:
-cd /path/to/vaipakam
-forge build
+# In the upstream Vaipakam monorepo, from a clean checkout of the commit
+# you are syncing to (the script stamps "(dirty)" otherwise):
+cd /path/to/vaipakam/contracts
+forge build --skip test
 KEEPER_BOT_DIR=/path/to/vaipakam-keeper-bot \
-  bash contracts/script/exportAbis.sh
+  bash script/exportAbis.sh
 
 # In this repo:
 cd /path/to/vaipakam-keeper-bot
+npm run gen:abis     # regenerate the typed ABIs from the new JSON
 git diff src/abis/   # review what changed
-npm run typecheck    # confirm bot still builds
-git commit -am 'Sync ABIs with vaipakam@<commit>'
+npm run typecheck    # every contract call is checked against the new ABIs
+git add src/abis && git commit -m 'Sync ABIs with vaipakam@<commit>'
 git push
 ```
+
+**Why `gen:abis` matters.** The bot does not call the Diamond with the
+JSON directly. `scripts/gen-typed-abis.mjs` writes each ABI again as an
+`as const` module under `src/abis/typed/`, together with the Diamond's
+de-duplicated error set, and `src/abis/diamond.ts` pairs each facet's ABI
+with that error set. Every call names the ABI of the facet that defines
+its function, so viem types the function name, the arguments and the
+result. A renamed function, a changed argument list or a changed return
+shape is a typecheck error, not a call that fails at run time.
+
+A JSON import cannot carry those types; this is the reason for the
+generated modules. Before #13, `previewMatch` gained two arguments
+upstream and the bot kept calling it with two, so every match preview
+silently failed. The internal matcher's liquidation call had been aimed
+at an ABI that no longer contained it since that function moved to
+`RiskMatchLiquidationFacet`. Both compiled. Both are compile errors now.
 
 The script writes `src/abis/_source.json` with the monorepo's
 commit hash + timestamp at export time, so an auditor reviewing a
 released bot version can correlate it with a specific upstream
 contract state.
 
-CI runs `abi-shape` on every PR — validates each `src/abis/*.json`
-is a non-empty ABI array, and that `_source.json` exists. That
-catches the most common breakage mode: someone hand-edited
-`src/abis/RiskFacet.json` (or ran `forge inspect` without `--json`,
-producing a pretty-table the consumer can't parse).
+CI runs `abi-shape` on every PR. It checks that each `src/abis/*.json`
+is a non-empty ABI array and that `_source.json` exists, which catches
+a hand-edited JSON or a `forge inspect` run without `--json`. The
+Typecheck job first runs `npm run check:abis`, which fails if
+`src/abis/typed/` is missing a module, holds one with no matching JSON,
+or differs from what `gen:abis` would write. That way the typecheck
+always runs against the ABIs that were actually exported.
 
 ## MEV considerations
 
