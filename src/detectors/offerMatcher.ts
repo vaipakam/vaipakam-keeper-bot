@@ -40,33 +40,20 @@
 
 import {
   type Address,
-  type Abi,
+  type ContractFunctionReturnType,
   type Hex,
   type PublicClient,
   type WalletClient,
 } from 'viem';
 import { log } from '../log.ts';
-import metricsAbi from '../abis/MetricsFacet.json' with { type: 'json' };
-import offerCreateAbi from '../abis/OfferCreateFacet.json' with { type: 'json' };
-import offerAcceptAbi from '../abis/OfferAcceptFacet.json' with { type: 'json' };
-import offerCancelAbi from '../abis/OfferCancelFacet.json' with { type: 'json' };
-import offerMatchAbi from '../abis/OfferMatchFacet.json' with { type: 'json' };
+import { METRICS_ABI, OFFER_CANCEL_ABI, OFFER_MATCH_ABI } from '../abis/diamond.ts';
 
-// OfferFacet was split for the EIP-170 24,576-byte limit into
-// OfferCreateFacet (createOffer + range fields), OfferAcceptFacet
-// (acceptOffer), OfferCancelFacet (cancelOffer + getOffer + read views),
-// and OfferMatchFacet (matchOffers + previewMatch). Merge every half
-// here so viem can resolve every selector this detector calls against
-// the diamond. The previously-imported legacy combined
-// `OfferFacet.json` was deleted alongside the #227 rename housekeeping
-// — the monorepo hasn't exported it since the split landed.
-const MATCHER_ABI: Abi = [
-  ...(metricsAbi as Abi),
-  ...(offerCreateAbi as Abi),
-  ...(offerAcceptAbi as Abi),
-  ...(offerCancelAbi as Abi),
-  ...(offerMatchAbi as Abi),
-];
+// Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
+// of the facet that defines its function, so viem types the call and a
+// contract signature change fails the typecheck instead of the run.
+// OfferFacet was split for the EIP-170 24,576-byte limit; this detector
+// reads getOffer from OfferCancelFacet and previewMatch / matchOffers
+// from OfferMatchFacet.
 
 /** Pagination size when scanning `getActiveOffersPaginated`. Same
  *  bound the liquidation scan uses for `getActiveLoansPaginated`. */
@@ -134,21 +121,24 @@ function bucketKey(o: OfferLite): string {
   ].join('|');
 }
 
-/** Decode the raw `getOffer` tuple return into the lite shape. viem
- *  surfaces a tuple's components as a plain object keyed on field
- *  name when the ABI carries names. We narrow to the fields the
- *  matcher cares about. */
-function liftOffer(raw: Record<string, unknown>): OfferLite {
+/** `getOffer`'s return, exactly as the ABI types it (#13). */
+type OfferRecord = ContractFunctionReturnType<typeof OFFER_CANCEL_ABI, 'view', 'getOffer'>;
+
+/** Narrow a `getOffer` result to the fields the matcher uses. Typed from
+ *  the ABI and read by field name, so a renamed or retyped field is a
+ *  compile error rather than an `undefined` that throws here at run time
+ *  and drops every offer (Codex #14 r1). */
+function liftOffer(raw: OfferRecord): OfferLite {
   return {
-    id: BigInt(raw['id'] as bigint | number),
-    creator: raw['creator'] as Address,
-    offerType: Number(raw['offerType']),
-    accepted: Boolean(raw['accepted']),
-    assetType: Number(raw['assetType']),
-    collateralAssetType: Number(raw['collateralAssetType']),
-    lendingAsset: raw['lendingAsset'] as Address,
-    collateralAsset: raw['collateralAsset'] as Address,
-    durationDays: BigInt(raw['durationDays'] as bigint | number),
+    id: raw.id,
+    creator: raw.creator,
+    offerType: raw.offerType,
+    accepted: raw.accepted,
+    assetType: raw.assetType,
+    collateralAssetType: raw.collateralAssetType,
+    lendingAsset: raw.lendingAsset,
+    collateralAsset: raw.collateralAsset,
+    durationDays: raw.durationDays,
   };
 }
 
@@ -179,9 +169,9 @@ async function listActiveOfferIds(ctx: MatcherCtx): Promise<bigint[]> {
   try {
     total = (await ctx.publicClient.readContract({
       address: ctx.diamond,
-      abi: MATCHER_ABI,
+      abi: METRICS_ABI,
       functionName: 'getActiveOffersCount',
-    })) as bigint;
+    }));
   } catch (err) {
     log.warn('matcher.offers.count.failed', {
       chain: ctx.chainId,
@@ -196,10 +186,10 @@ async function listActiveOfferIds(ctx: MatcherCtx): Promise<bigint[]> {
     try {
       const page = (await ctx.publicClient.readContract({
         address: ctx.diamond,
-        abi: MATCHER_ABI,
+        abi: METRICS_ABI,
         functionName: 'getActiveOffersPaginated',
         args: [offset, SCAN_PAGE],
-      })) as readonly bigint[];
+      }));
       for (const id of page) ids.push(id);
       if (page.length < Number(SCAN_PAGE)) break;
     } catch (err) {
@@ -226,10 +216,10 @@ async function hydrateOffers(
       try {
         const raw = (await ctx.publicClient.readContract({
           address: ctx.diamond,
-          abi: MATCHER_ABI,
+          abi: OFFER_CANCEL_ABI,
           functionName: 'getOffer',
           args: [id],
-        })) as Record<string, unknown>;
+        }));
         return liftOffer(raw);
       } catch (err) {
         log.debug('matcher.getOffer.failed', {
@@ -291,18 +281,16 @@ async function previewMatch(
   try {
     const raw = (await ctx.publicClient.readContract({
       address: ctx.diamond,
-      abi: MATCHER_ABI,
+      abi: OFFER_MATCH_ABI,
       functionName: 'previewMatch',
       args: [lenderId, borrowerId, self, self],
-    })) as Record<string, unknown>;
+    }));
     return {
-      errorCode: Number(raw['errorCode']),
-      matchAmount: BigInt(raw['matchAmount'] as bigint | number),
-      matchRateBps: BigInt(raw['matchRateBps'] as bigint | number),
-      reqCollateral: BigInt(raw['reqCollateral'] as bigint | number),
-      lenderRemainingPostMatch: BigInt(
-        raw['lenderRemainingPostMatch'] as bigint | number,
-      ),
+      errorCode: raw.errorCode,
+      matchAmount: raw.matchAmount,
+      matchRateBps: raw.matchRateBps,
+      reqCollateral: raw.reqCollateral,
+      lenderRemainingPostMatch: raw.lenderRemainingPostMatch,
     };
   } catch (err) {
     log.debug('matcher.previewMatch.failed', {
@@ -342,7 +330,7 @@ async function submitMatch(
   try {
     hash = await ctx.walletClient.writeContract({
       address: ctx.diamond,
-      abi: MATCHER_ABI,
+      abi: OFFER_MATCH_ABI,
       functionName: 'matchOffers',
       args: [lenderId, borrowerId],
       account,

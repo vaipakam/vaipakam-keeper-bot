@@ -38,6 +38,13 @@ jobs:
       - name: Install
         run: npm ci
 
+      # #13 — the typecheck is only as good as the typed ABIs it reads. A sync
+      # that updates src/abis/*.json without regenerating src/abis/typed/ would
+      # typecheck the bot against the OLD contract surface and pass, so a stale
+      # or hand-edited typed module fails here first.
+      - name: Typed ABIs match the exported JSON
+        run: npm run check:abis
+
       - name: Typecheck
         run: npm run typecheck
 

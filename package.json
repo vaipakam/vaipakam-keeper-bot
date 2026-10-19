@@ -10,7 +10,9 @@
     "start": "node --experimental-strip-types --no-warnings src/index.ts",
     "dev": "node --watch --experimental-strip-types --no-warnings src/index.ts",
     "typecheck": "tsc -p .",
-    "lint": "tsc -p ."
+    "lint": "tsc -p .",
+    "gen:abis": "node scripts/gen-typed-abis.mjs",
+    "check:abis": "node scripts/gen-typed-abis.mjs --check"
   },
   "engines": {
     "node": ">=22"
