@@ -19,7 +19,8 @@
  *      `previewMatch` rejects mismatches anyway, but bucketing cuts
  *      the cartesian to a per-bucket nested loop so we don't pay an
  *      `eth_call` for every (N × M) impossible pair.
- *   5. Within each bucket, call `previewMatch(L, B)` until a pair
+ *   5. Within each bucket, call `previewMatch(L, B, bot, bot)` (the
+ *      bot is both the matcher and the originator) until a pair
  *      returns `errorCode == 0` (Ok).
  *   6. Submit `matchOffers(L, B)`. On revert (lost a race, kill-switch
  *      flipped, etc.) log and move on — next tick will re-evaluate
@@ -270,18 +271,29 @@ function partitionByBucket(offers: readonly OfferLite[]): {
 }
 
 /** Call `previewMatch` and unwrap the tuple. Returns null on RPC
- *  error so the caller can move on to the next pair. */
+ *  error so the caller can move on to the next pair.
+ *
+ *  The preview names the account that would send `matchOffers` and
+ *  that transaction's originator, because its last check is the
+ *  match's service-capacity charge for that account. It never reads
+ *  `msg.sender`: an `eth_call` carries none, and an unseen sender
+ *  always reads as covered, so a sender-keyed preview would approve
+ *  matches an exhausted bot cannot send. This bot submits its own
+ *  transactions, so both are its signing address. Without a signing
+ *  account it cannot submit either, so it previews nothing. */
 async function previewMatch(
   ctx: MatcherCtx,
   lenderId: bigint,
   borrowerId: bigint,
 ): Promise<MatchPreview | null> {
+  const self = ctx.walletClient.account?.address;
+  if (!self) return null;
   try {
     const raw = (await ctx.publicClient.readContract({
       address: ctx.diamond,
       abi: MATCHER_ABI,
       functionName: 'previewMatch',
-      args: [lenderId, borrowerId],
+      args: [lenderId, borrowerId, self, self],
     })) as Record<string, unknown>;
     return {
       errorCode: Number(raw['errorCode']),
