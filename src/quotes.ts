@@ -5,7 +5,7 @@
  * `frontend/src/lib/swapQuoteService.ts`. Fetches quotes from every
  * configured DEX venue in parallel, ranks by expected output, and
  * returns a ready-to-submit `AdapterCall[]` for the diamond's
- * `triggerLiquidation(loanId, calls)` entry point.
+ * `triggerLiquidation(loanId, sellAmount, calls)` entry point.
  *
  * Stand-alone: this file has no imports from the wider monorepo.
  * Third-party operators copying ops/keeper-bot out of this repo get a

@@ -12,9 +12,20 @@
  *      supplied whitelist via CHAIN_<id>_LOAN_IDS).
  *   2. For each loan, read HF via `calculateHealthFactor(loanId)`.
  *      Skip loans with HF >= 1.0.
- *   3. For loans with HF < 1.0, fetch the loan struct, orchestrate
- *      quotes from the 4 DEX venues, rank by expected output.
- *   4. Submit `triggerLiquidation(loanId, ranked)` from the keeper EOA.
+ *   3. For loans with HF < 1.0, fetch the loan struct and the contract's
+ *      sale-size range (`previewForcedSale(loanId, HealthFactorLiquidation)`),
+ *      orchestrate quotes from the 4 DEX venues for the middle of that
+ *      range, rank by expected output.
+ *   4. Submit `triggerLiquidation(loanId, sellAmount, ranked)` from the
+ *      keeper EOA.
+ *
+ * A liquidation sells only the collateral the debt needs. The contract
+ * accepts a `sellAmount` from the plan's `sell` (the least collateral whose
+ * worst-case proceeds cover the debt and the largest charges) to its
+ * `maxSell`, and reverts `ForcedSaleQuoteOutOfRange` outside it. Quoting
+ * the middle leaves room either side for accrual and a small price move
+ * between the read and inclusion; `writeContract` estimates gas first, so a
+ * quote that has left the range fails before anything is broadcast.
  *
  * Idempotent dedupe per tick — won't re-attempt the same loan twice
  * in one cron sweep. Across ticks, the diamond's status check
@@ -48,12 +59,26 @@ import { runAutoExtendDetectorTick } from './detectors/autoExtendDetector.ts';
 // The JSON they are generated from is exported by the upstream
 // `contracts/script/exportAbis.sh` whenever the protocol's keeper-relevant
 // signatures change. See README → "Syncing with upstream".
-import { LOAN_ABI, METRICS_ABI, RISK_ABI } from './abis/diamond.ts';
+import { FORCED_SALE_ABI, LOAN_ABI, METRICS_ABI, RISK_ABI } from './abis/diamond.ts';
 
 /// Page size for the active-loan scan. Keep small enough that one
 /// `eth_call` returns within Alchemy/Infura free-tier response time
 /// budgets even with thousands of active loans.
 const SCAN_PAGE = 200n;
+
+/// `ForcedSaleFacet.ForcedSaleKind.HealthFactorLiquidation`.
+const FORCED_SALE_KIND_HF_LIQUIDATION = 1;
+
+/**
+ * The collateral to quote a liquidation for: the middle of the range
+ * `previewForcedSale` accepts, or null when no sale is due (an all-zero
+ * plan). The monorepo's reference keeper quotes by the same rule
+ * (`forcedSaleQuoteAmount` in `@vaipakam/lib/routeBuilder`).
+ */
+export function forcedSaleQuoteAmount(plan: { sell: bigint; maxSell: bigint }): bigint | null {
+  if (plan.sell === 0n) return null;
+  return plan.sell + (plan.maxSell - plan.sell) / 2n;
+}
 
 interface ChainContext {
   cfg: ChainConfig;
@@ -172,11 +197,35 @@ async function attemptLiquidation(
   if (loan.assetType !== 0) return false;
   if (loan.status !== 0) return false; // not Active
 
+  // The contract sizes the sale; the quote is for an amount inside the
+  // range it accepts, never the whole collateral.
+  let sellAmount: bigint | null;
+  try {
+    const plan = await ctx.publicClient.readContract({
+      address: ctx.cfg.diamond,
+      abi: FORCED_SALE_ABI,
+      functionName: 'previewForcedSale',
+      args: [loanId, FORCED_SALE_KIND_HF_LIQUIDATION],
+    });
+    sellAmount = forcedSaleQuoteAmount(plan);
+  } catch (err) {
+    log.debug('plan.read.failed', {
+      chain: ctx.cfg.chainId,
+      loanId: Number(loanId),
+      err: String(err).slice(0, 150),
+    });
+    return false;
+  }
+  if (sellAmount === null) {
+    log.info('liquidation.no-sale-due', { chain: ctx.cfg.chainId, loanId: Number(loanId) });
+    return false;
+  }
+
   const quotes = await orchestrateQuotes({
     chainId: ctx.cfg.chainId,
     sellToken: loan.collateralAsset,
     buyToken: loan.principalAsset,
-    sellAmount: loan.collateralAmount,
+    sellAmount,
     taker: ctx.cfg.diamond,
     slippageBps: cfg.slippageBps,
     client: ctx.publicClient,
@@ -201,7 +250,7 @@ async function attemptLiquidation(
       address: ctx.cfg.diamond,
       abi: RISK_ABI,
       functionName: 'triggerLiquidation',
-      args: [loanId, quotes.calls],
+      args: [loanId, sellAmount, quotes.calls],
       account,
       chain: ctx.walletClient.chain,
     });
@@ -210,6 +259,7 @@ async function attemptLiquidation(
       loanId: Number(loanId),
       tx: hash,
       via: quotes.ranked[0]?.kind,
+      sell: sellAmount.toString(),
       expected: quotes.ranked[0]?.expectedOutput.toString(),
     });
     return true;

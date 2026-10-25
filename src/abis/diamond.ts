@@ -23,6 +23,7 @@
 import AdminFacet from './typed/AdminFacet.ts';
 import AutoLifecycleFacet from './typed/AutoLifecycleFacet.ts';
 import ConfigFacet from './typed/ConfigFacet.ts';
+import ForcedSaleFacet from './typed/ForcedSaleFacet.ts';
 import LoanFacet from './typed/LoanFacet.ts';
 import MetricsFacet from './typed/MetricsFacet.ts';
 import OfferCancelFacet from './typed/OfferCancelFacet.ts';
@@ -34,6 +35,7 @@ import DIAMOND_ERRORS from './typed/DiamondErrors.ts';
 export const ADMIN_ABI = [...AdminFacet, ...DIAMOND_ERRORS] as const;
 export const AUTO_LIFECYCLE_ABI = [...AutoLifecycleFacet, ...DIAMOND_ERRORS] as const;
 export const CONFIG_ABI = [...ConfigFacet, ...DIAMOND_ERRORS] as const;
+export const FORCED_SALE_ABI = [...ForcedSaleFacet, ...DIAMOND_ERRORS] as const;
 export const LOAN_ABI = [...LoanFacet, ...DIAMOND_ERRORS] as const;
 export const METRICS_ABI = [...MetricsFacet, ...DIAMOND_ERRORS] as const;
 export const OFFER_CANCEL_ABI = [...OfferCancelFacet, ...DIAMOND_ERRORS] as const;

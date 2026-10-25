@@ -55,6 +55,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "AddressEmptyCode",
+    "inputs": [
+      {
+        "name": "target",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AlreadyLaunched",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "AmountMaxMustBePositive",
     "inputs": []
   },
@@ -260,6 +276,17 @@ export default [
     "type": "error",
     "name": "AutoLendDisabled",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AutoPauseCoolingDown",
+    "inputs": [
+      {
+        "name": "availableAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1367,6 +1394,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "EmptySplitList",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "EncumbranceAlreadyExists",
     "inputs": [
       {
@@ -1414,12 +1446,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "ExpectedSourceListUnusable",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ExtensionGraceExpired",
     "inputs": []
   },
   {
     "type": "error",
     "name": "ExtensionMustExtend",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FailedCall",
     "inputs": []
   },
   {
@@ -1521,6 +1563,48 @@ export default [
     "type": "error",
     "name": "FeeEntitlementRequiresCanonicalVpfiChain",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ForcedSaleNotDue",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ForcedSaleQuoteOutOfRange",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "quoted",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "least",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "most",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1684,17 +1768,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "IngressPacketAlreadyTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "IngressPacketDayListStamped",
     "inputs": [
       {
@@ -1739,17 +1812,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "IngressReceiptHasNoPacket",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "InitLtvAboveTier",
     "inputs": [
       {
@@ -1773,22 +1835,6 @@ export default [
     "type": "error",
     "name": "InsufficientProceeds",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "InsufficientRecycleBacking",
-    "inputs": [
-      {
-        "name": "needed",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "available",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
   },
   {
     "type": "error",
@@ -2075,6 +2121,27 @@ export default [
     "type": "error",
     "name": "InvalidAssetType",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAutoPauseCooldown",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -2650,6 +2717,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "LaunchGateCallInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "LegacyDayNotStampable",
     "inputs": [
       {
@@ -3146,11 +3218,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NotifFeeVpfiTokenNotSet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NumeraireSwapDisabled",
     "inputs": []
   },
@@ -3307,6 +3374,11 @@ export default [
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "OraclePriceDivergence",
+    "inputs": []
   },
   {
     "type": "error",
@@ -3555,6 +3627,17 @@ export default [
         "name": "live",
         "type": "uint64",
         "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PauseIntervalOutOfRange",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -4439,17 +4522,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "RemitReservationCarriesNoSplit",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "RemitReservationNotPending",
     "inputs": [
       {
@@ -4472,14 +4544,13 @@ export default [
   },
   {
     "type": "error",
-    "name": "RemitSplitAlreadyOnWire",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
+    "name": "RentalAmountRangeNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentalQuantityAboveVaultRange",
+    "inputs": []
   },
   {
     "type": "error",
@@ -5876,10 +5947,15 @@ export default [
   },
   {
     "type": "error",
-    "name": "SplitAttestationEmpty",
+    "name": "SplitMinOutputUnderfilled",
     "inputs": [
       {
-        "name": "remitId",
+        "name": "totalOutput",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minOutputAmount",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -5887,17 +5963,17 @@ export default [
   },
   {
     "type": "error",
-    "name": "SplitAttestationNotFromBase",
+    "name": "SplitSumMismatch",
     "inputs": [
       {
-        "name": "sourceChainId",
-        "type": "uint32",
-        "internalType": "uint32"
+        "name": "sum",
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
-        "name": "baseChainId",
-        "type": "uint32",
-        "internalType": "uint32"
+        "name": "inputAmount",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -6315,6 +6391,94 @@ export default [
   },
   {
     "type": "error",
+    "name": "SwapAttemptHostMissing",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SwapInputSpendMismatch",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "adapterIdx",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "spent",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "inputAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SwapOutputBelowFloor",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "adapterIdx",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minOutputAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SwapOutputShortDelivered",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "adapterIdx",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "reported",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SwapVenuePaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "TierLiqDiscountNonMonotonic",
     "inputs": [
       {
@@ -6505,34 +6669,54 @@ export default [
   },
   {
     "type": "error",
-    "name": "TransportBatchAlreadyAdmitted",
+    "name": "TokenDecimalsUnreadable",
     "inputs": [
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TransportBatchFullyIndexed",
+    "name": "TokenDeliveryShort",
     "inputs": [
       {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TransportBatchNotAdmitted",
+    "name": "TokenOverDebit",
     "inputs": [
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "sent",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "debited",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -6597,17 +6781,6 @@ export default [
         "name": "references",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportBatchRooted",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -6825,39 +6998,6 @@ export default [
         "name": "dayId",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketHasNoDayList",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketNothingUntyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketWireTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
