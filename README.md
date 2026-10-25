@@ -32,15 +32,22 @@ Every tick (default 60s), per configured chain:
    or stress-testing.)
 2. For each loan id, read the on-chain Health Factor via
    `calculateHealthFactor(loanId)`. Skip loans whose HF ≥ 1.0.
-3. For each liquidatable loan, read the loan struct, then
-   orchestrate quotes from all configured DEX venues in parallel:
+3. For each liquidatable loan, read the loan struct and the
+   contract's sale-size range,
+   `previewForcedSale(loanId, 1)` (kind 1 = HF liquidation). A
+   liquidation sells only the collateral the debt needs: the
+   contract accepts a sale size from the plan's `sell` to its
+   `maxSell` and reverts outside it. The bot quotes the middle of
+   that range, orchestrating quotes from all configured DEX venues
+   in parallel:
    - **0x Swap API** (off-chain, requires API key)
    - **1inch Swap API** (off-chain, requires API key)
    - **Uniswap V3 QuoterV2** (on-chain, no API key)
    - **Balancer V2** (subgraph + reserve estimate, no API key)
 4. Rank by expected output (best first), pack into the diamond's
    ranked-failover signature, and submit
-   `triggerLiquidation(loanId, ranked)` from the keeper EOA.
+   `triggerLiquidation(loanId, sellAmount, ranked)` from the keeper
+   EOA.
 5. The diamond iterates the ranked try-list, commits on the first
    adapter that meets the oracle-derived 6% slippage floor, and
    pays out the liquidator bonus.
@@ -193,7 +200,9 @@ missing venue.
   gas cost as a cost of doing business.
 - **NFT-collateral defaults.** ERC-721 / ERC-1155 collateral takes
   the time-based default path (no DEX swap), which the bot doesn't
-  participate in. Anyone can call `triggerDefault(loanId)` after
+  participate in. Anyone can call `triggerDefault(loanId, 0, [])`
+  (an in-kind default sells nothing, so its size and try-list are
+  empty) after
   the grace period; that's a separate (gas-cheaper) script.
 
 ## License
