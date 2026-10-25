@@ -22,7 +22,7 @@ export default [
       {
         "name": "",
         "type": "tuple",
-        "internalType": "struct LibVaipakam.RiskParams",
+        "internalType": "struct LibVaipakam.AssetRiskParamsView",
         "components": [
           {
             "name": "loanInitMaxLtvBps",
@@ -31,11 +31,6 @@ export default [
           },
           {
             "name": "liqBonusBps",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "reserveFactorBps",
             "type": "uint256",
             "internalType": "uint256"
           },

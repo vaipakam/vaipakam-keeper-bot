@@ -92,6 +92,11 @@
         "internalType": "uint256"
       },
       {
+        "name": "sellAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
         "name": "adapterCalls",
         "type": "tuple[]",
         "internalType": "struct LibSwap.AdapterCall[]",
@@ -186,11 +191,6 @@
       },
       {
         "name": "liqBonusBps",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "reserveFactorBps",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -406,12 +406,6 @@
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
-      },
-      {
-        "name": "reserveFactorBps",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -553,6 +547,11 @@
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "AlreadyLaunched",
+    "inputs": []
   },
   {
     "type": "error",
@@ -1735,6 +1734,11 @@
   },
   {
     "type": "error",
+    "name": "ExpectedSourceListUnusable",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "FeeEntitlementChargeFailed",
     "inputs": []
   },
@@ -1856,17 +1860,6 @@
   },
   {
     "type": "error",
-    "name": "IngressPacketAlreadyTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "IngressPacketDayListStamped",
     "inputs": [
       {
@@ -1906,17 +1899,6 @@
         "name": "receiptKey",
         "type": "bytes32",
         "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "IngressReceiptHasNoPacket",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ]
   },
@@ -2265,6 +2247,11 @@
   },
   {
     "type": "error",
+    "name": "LaunchGateCallInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "LegacyDayNotStampable",
     "inputs": [
       {
@@ -2565,6 +2552,11 @@
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "OraclePriceDivergence",
+    "inputs": []
   },
   {
     "type": "error",
@@ -3611,17 +3603,6 @@
   },
   {
     "type": "error",
-    "name": "RemitReservationCarriesNoSplit",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "RemitReservationNotPending",
     "inputs": [
       {
@@ -3634,17 +3615,6 @@
   {
     "type": "error",
     "name": "RemitReservationUnknown",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "RemitSplitAlreadyOnWire",
     "inputs": [
       {
         "name": "remitId",
@@ -4774,33 +4744,6 @@
   },
   {
     "type": "error",
-    "name": "SplitAttestationEmpty",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SplitAttestationNotFromBase",
-    "inputs": [
-      {
-        "name": "sourceChainId",
-        "type": "uint32",
-        "internalType": "uint32"
-      },
-      {
-        "name": "baseChainId",
-        "type": "uint32",
-        "internalType": "uint32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "StagingCommitmentMismatch",
     "inputs": [
       {
@@ -5198,34 +5141,59 @@
   },
   {
     "type": "error",
-    "name": "TransportBatchAlreadyAdmitted",
+    "name": "SwapAttemptHostMissing",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TokenDecimalsUnreadable",
     "inputs": [
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TransportBatchFullyIndexed",
+    "name": "TokenDeliveryShort",
     "inputs": [
       {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TransportBatchNotAdmitted",
+    "name": "TokenOverDebit",
     "inputs": [
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "sent",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "debited",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -5290,17 +5258,6 @@
         "name": "references",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportBatchRooted",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -5518,39 +5475,6 @@
         "name": "dayId",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketHasNoDayList",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketNothingUntyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketWireTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },

@@ -137,6 +137,52 @@ export default [
   },
   {
     "type": "function",
+    "name": "getPauseIntervals",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "intervals",
+        "type": "tuple[]",
+        "internalType": "struct LibPausable.PauseInterval[]",
+        "components": [
+          {
+            "name": "start",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "end",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "pausedBefore",
+            "type": "uint64",
+            "internalType": "uint64"
+          }
+        ]
+      },
+      {
+        "name": "total",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getRateModel",
     "inputs": [],
     "outputs": [
@@ -292,6 +338,29 @@ export default [
   },
   {
     "type": "function",
+    "name": "launch",
+    "inputs": [
+      {
+        "name": "expectedEpoch",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "gate",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "gateCall",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "pause",
     "inputs": [],
     "outputs": [],
@@ -319,6 +388,25 @@ export default [
         "name": "",
         "type": "bool",
         "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "pausedSecondsAt",
+    "inputs": [
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -801,6 +889,25 @@ export default [
   },
   {
     "type": "event",
+    "name": "LaunchedThroughGate",
+    "inputs": [
+      {
+        "name": "gate",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "by",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "PancakeswapV2FactorySet",
     "inputs": [
       {
@@ -858,6 +965,31 @@ export default [
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PauseIntervalClosed",
+    "inputs": [
+      {
+        "name": "start",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "end",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "pausedTotal",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
       }
     ],
     "anonymous": false
@@ -1101,6 +1233,22 @@ export default [
         "internalType": "bytes32"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "AddressEmptyCode",
+    "inputs": [
+      {
+        "name": "target",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AlreadyLaunched",
+    "inputs": []
   },
   {
     "type": "error",
@@ -2262,6 +2410,16 @@ export default [
   },
   {
     "type": "error",
+    "name": "ExpectedSourceListUnusable",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FailedCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "FeeEntitlementChargeFailed",
     "inputs": []
   },
@@ -2378,17 +2536,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "IngressPacketAlreadyTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "IngressPacketDayListStamped",
     "inputs": [
       {
@@ -2428,17 +2575,6 @@ export default [
         "name": "receiptKey",
         "type": "bytes32",
         "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "IngressReceiptHasNoPacket",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ]
   },
@@ -2757,6 +2893,11 @@ export default [
         "internalType": "uint64"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "LaunchGateCallInvalid",
+    "inputs": []
   },
   {
     "type": "error",
@@ -3170,6 +3311,17 @@ export default [
         "name": "live",
         "type": "uint64",
         "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PauseIntervalOutOfRange",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -3994,17 +4146,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "RemitReservationCarriesNoSplit",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "RemitReservationNotPending",
     "inputs": [
       {
@@ -4017,17 +4158,6 @@ export default [
   {
     "type": "error",
     "name": "RemitReservationUnknown",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "RemitSplitAlreadyOnWire",
     "inputs": [
       {
         "name": "remitId",
@@ -5119,33 +5249,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "SplitAttestationEmpty",
-    "inputs": [
-      {
-        "name": "remitId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SplitAttestationNotFromBase",
-    "inputs": [
-      {
-        "name": "sourceChainId",
-        "type": "uint32",
-        "internalType": "uint32"
-      },
-      {
-        "name": "baseChainId",
-        "type": "uint32",
-        "internalType": "uint32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "StagingCommitmentMismatch",
     "inputs": [
       {
@@ -5558,34 +5661,43 @@ export default [
   },
   {
     "type": "error",
-    "name": "TransportBatchAlreadyAdmitted",
+    "name": "TokenDeliveryShort",
     "inputs": [
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TransportBatchFullyIndexed",
+    "name": "TokenOverDebit",
     "inputs": [
       {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportBatchNotAdmitted",
-    "inputs": [
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
       {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "name": "sent",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "debited",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -5650,17 +5762,6 @@ export default [
         "name": "references",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportBatchRooted",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -5878,39 +5979,6 @@ export default [
         "name": "dayId",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketHasNoDayList",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketNothingUntyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportPacketWireTyped",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
