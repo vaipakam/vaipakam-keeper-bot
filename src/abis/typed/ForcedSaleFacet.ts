@@ -2454,6 +2454,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "OraclePriceDivergence",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "PadNumeraireRateFeedStale",
     "inputs": []
   },

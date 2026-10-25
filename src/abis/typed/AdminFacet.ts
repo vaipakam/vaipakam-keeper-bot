@@ -29,6 +29,32 @@ export default [
   },
   {
     "type": "function",
+    "name": "autoPauseAvailableAt",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "autoPauseCooldownSeconds",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "disableRateModel",
     "inputs": [],
     "outputs": [],
@@ -491,6 +517,19 @@ export default [
   },
   {
     "type": "function",
+    "name": "setAutoPauseCooldownSeconds",
+    "inputs": [
+      {
+        "name": "newSeconds",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setAutoRefinanceEnabled",
     "inputs": [
       {
@@ -819,6 +858,19 @@ export default [
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AutoPauseCooldownSet",
+    "inputs": [
+      {
+        "name": "newSeconds",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
       }
     ],
     "anonymous": false
@@ -1374,6 +1426,17 @@ export default [
         "name": "bps",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AutoPauseCoolingDown",
+    "inputs": [
+      {
+        "name": "availableAt",
+        "type": "uint64",
+        "internalType": "uint64"
       }
     ]
   },
@@ -2709,6 +2772,27 @@ export default [
     "type": "error",
     "name": "InvalidAsset",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAutoPauseCooldown",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

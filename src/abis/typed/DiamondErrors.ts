@@ -279,6 +279,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "AutoPauseCoolingDown",
+    "inputs": [
+      {
+        "name": "availableAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "BaseChainIdNotSet",
     "inputs": []
   },
@@ -2110,6 +2121,27 @@ export default [
     "type": "error",
     "name": "InvalidAssetType",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAutoPauseCooldown",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
