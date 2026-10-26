@@ -17,7 +17,18 @@
  *      `min(both maxNewExpiry)`, capped at 30 days per extension so
  *      consent doesn't roll forward indefinitely without
  *      re-affirmation.
- *   6. Submit `extendLoanInPlace(loanId, newRateBps, newDurationDays)`.
+ *   6. Only inside the extension window (vaipakam#2738): from three days
+ *      before the loan's effective due date to the end of its grace, both
+ *      read from `LoanFacet.getLoanDeadlines` (the pause-adjusted loan
+ *      clock), and only for a term that does not make the loan
+ *      defaultable sooner: the new due date plus the new term's grace
+ *      must not be earlier than the old grace end. A shorter term can sit
+ *      in a smaller grace bucket, so "the end moves later" alone does not
+ *      hold that. A deadline or grace schedule that does not read skips
+ *      the loan (or the chain's tick) rather than extending blind. The
+ *      contract does not yet check either rule; when it publishes the
+ *      window (`getAutoExtendWindow`) this detector reads it instead.
+ *   7. Submit `extendLoanInPlace(loanId, newRateBps, newDurationDays)`.
  *      The contract enforces every safety guard (sub-day-since-start,
  *      grace expired, sanctions, etc.) — failures bubble up here as
  *      logs and we continue.
@@ -40,12 +51,64 @@ import { log } from '../log.ts';
 // Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
 // of the facet that defines its function, so viem types the call and a
 // contract signature change fails the typecheck instead of the run.
-import { ADMIN_ABI, AUTO_LIFECYCLE_ABI, METRICS_ABI } from '../abis/diamond.ts';
+import { ADMIN_ABI, AUTO_LIFECYCLE_ABI, CONFIG_ABI, LOAN_ABI, METRICS_ABI } from '../abis/diamond.ts';
 
 const SCAN_PAGE = 200n;
 const MAX_EXTENDS_PER_TICK = 5;
 const DEFAULT_EXTEND_DAYS = 30n;
 const SECONDS_PER_DAY = 86_400n;
+
+/** vaipakam#2738 — how long before a loan's effective due date the window to
+ *  extend it opens. It closes at the end of the loan's grace. The value
+ *  matches the protocol's own keeper and the contract half of #2738. */
+export const EXTEND_WINDOW_SECONDS = 3n * SECONDS_PER_DAY;
+
+/** One governance grace bucket, as `ConfigFacet.getGraceBuckets` returns it. */
+export interface GraceBucket {
+  maxDurationDays: bigint;
+  graceSeconds: bigint;
+}
+
+/** The grace a term of `durationDays` carries: `LibVaipakam.gracePeriod`'s
+ *  walk over the published buckets, or its compiled default schedule when
+ *  governance has published none. */
+export function graceSeconds(buckets: readonly GraceBucket[], durationDays: bigint): bigint {
+  if (buckets.length === 0) {
+    if (durationDays < 7n) return 3_600n;
+    if (durationDays < 30n) return SECONDS_PER_DAY;
+    if (durationDays < 90n) return 3n * SECONDS_PER_DAY;
+    if (durationDays < 180n) return 7n * SECONDS_PER_DAY;
+    if (durationDays < 365n) return 14n * SECONDS_PER_DAY;
+    return 30n * SECONDS_PER_DAY;
+  }
+  for (const b of buckets) {
+    if (b.maxDurationDays === 0n || durationDays < b.maxDurationDays) return b.graceSeconds;
+  }
+  return buckets[buckets.length - 1].graceSeconds;
+}
+
+/**
+ * Whether extending a loan whose effective deadlines are `maturity` /
+ * `graceEnd` to a `newDurationDays` term from `now` is inside the window and
+ * keeps its grace-inclusive deadline; null when it is, otherwise why not. The
+ * new term starts at `now`, as `extendLoanInPlace` restarts it.
+ */
+export function extendWindowVerdict(
+  deadlines: { maturity: bigint; graceEnd: bigint },
+  newDurationDays: bigint,
+  buckets: readonly GraceBucket[],
+  now: bigint,
+): string | null {
+  const opensAt = deadlines.maturity - EXTEND_WINDOW_SECONDS;
+  if (now < opensAt) return `window opens at ${opensAt}`;
+  if (now > deadlines.graceEnd) return `past grace (ended ${deadlines.graceEnd})`;
+  const newMaturity = now + newDurationDays * SECONDS_PER_DAY;
+  if (newMaturity <= deadlines.maturity) return 'term would not move the due date later';
+  if (newMaturity + graceSeconds(buckets, newDurationDays) < deadlines.graceEnd) {
+    return 'term would make the loan defaultable sooner';
+  }
+  return null;
+}
 
 interface AutoExtendDetectorParams {
   chainId: number;
@@ -108,6 +171,23 @@ export async function runAutoExtendDetectorTick(
   }
   if (total === 0n) return;
 
+  // vaipakam#2738 — the grace each candidate term carries. Unread, no term's
+  // grace is known, so nothing is extended this tick.
+  let buckets: readonly GraceBucket[];
+  try {
+    buckets = await publicClient.readContract({
+      address: diamond,
+      abi: CONFIG_ABI,
+      functionName: 'getGraceBuckets',
+    });
+  } catch (err) {
+    log.warn('autoExtend.graceBuckets.failed', {
+      chain: chainId,
+      err: String(err).slice(0, 200),
+    });
+    return;
+  }
+
   const loanIds: bigint[] = [];
   for (let cursor = 0n; cursor < total; cursor += SCAN_PAGE) {
     const limit =
@@ -139,6 +219,7 @@ export async function runAutoExtendDetectorTick(
       publicClient,
       walletClient,
       loanIdBig,
+      buckets,
     );
     if (fired) submitted++;
   }
@@ -155,6 +236,7 @@ async function tryExtend(
   publicClient: PublicClient,
   walletClient: WalletClient,
   loanIdBig: bigint,
+  buckets: readonly GraceBucket[],
 ): Promise<boolean> {
   // Read both-side caps. Each getter self-applies the staleness fence:
   // a transferred NFT returns `enabled: false` and we skip.
@@ -207,6 +289,36 @@ async function tryExtend(
     const remainingDays = (expiryCap - nowSec) / SECONDS_PER_DAY;
     if (remainingDays < newDurationDays) newDurationDays = remainingDays;
     if (newDurationDays === 0n) return false;
+  }
+
+  // vaipakam#2738 — only inside the window, and only a term that keeps the
+  // loan's grace-inclusive deadline. Read after the caps: most loans carry
+  // no consent and never reach this read.
+  let deadlines: { maturity: bigint; graceEnd: bigint };
+  try {
+    const [, , maturity, graceEnd] = await publicClient.readContract({
+      address: diamond,
+      abi: LOAN_ABI,
+      functionName: 'getLoanDeadlines',
+      args: [loanIdBig],
+    });
+    deadlines = { maturity, graceEnd };
+  } catch (err) {
+    log.info('autoExtend.deadlines.unread', {
+      chain: chainId,
+      loanId: String(loanIdBig),
+      err: String(err).slice(0, 200),
+    });
+    return false;
+  }
+  const outside = extendWindowVerdict(deadlines, newDurationDays, buckets, nowSec);
+  if (outside !== null) {
+    log.debug('autoExtend.outsideWindow', {
+      chain: chainId,
+      loanId: String(loanIdBig),
+      reason: outside,
+    });
+    return false;
   }
 
   if (!walletClient.account) return false;
