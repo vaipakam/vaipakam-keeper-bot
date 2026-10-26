@@ -3038,6 +3038,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "PaaNeedsNonWethQuote",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ParameterOutOfRange",
     "inputs": [
       {

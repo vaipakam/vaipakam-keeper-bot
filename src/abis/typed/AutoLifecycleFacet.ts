@@ -118,6 +118,30 @@ export default [
   },
   {
     "type": "function",
+    "name": "getAutoExtendWindow",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "opensAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "closesAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getAutoLendConsent",
     "inputs": [
       {
@@ -721,8 +745,14 @@ export default [
   },
   {
     "type": "error",
-    "name": "AutoExtendTooSoonAfterStart",
-    "inputs": []
+    "name": "AutoExtendWindowNotOpen",
+    "inputs": [
+      {
+        "name": "opensAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -759,6 +789,22 @@ export default [
     "type": "error",
     "name": "ExtensionMustExtend",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ExtensionShortensGrace",
+    "inputs": [
+      {
+        "name": "newGraceEnd",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "graceEnd",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

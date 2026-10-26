@@ -1391,6 +1391,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "BroadcastRoleRefused",
+    "inputs": [
+      {
+        "name": "role",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CadenceNotAllowed",
     "inputs": [
       {
@@ -1732,22 +1743,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "CompFundedSeedInvalid",
-    "inputs": [
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "chainId",
-        "type": "uint32",
-        "internalType": "uint32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "CompQuoteAlreadyDispatched",
     "inputs": [
       {
@@ -1931,17 +1926,6 @@ export default [
         "name": "chainId",
         "type": "uint32",
         "internalType": "uint32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "CompensationDayHasNoClock",
-    "inputs": [
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ]
   },
@@ -2186,7 +2170,7 @@ export default [
   },
   {
     "type": "error",
-    "name": "DayHasNoLapseClock",
+    "name": "DayFundedLocally",
     "inputs": [
       {
         "name": "dayId",
@@ -2231,43 +2215,6 @@ export default [
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryGateAlreadyArmed",
-    "inputs": [
-      {
-        "name": "current",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryGateBelowFold",
-    "inputs": [
-      {
-        "name": "fromDay",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "lenderCursor",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "borrowerCursor",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryGateNotMirror",
-    "inputs": []
   },
   {
     "type": "error",
@@ -2901,16 +2848,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "LapseTerminalsAlreadyArmed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "LapseTerminalsNotArmed",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "LapseWindowOutOfBounds",
     "inputs": [
       {
@@ -2924,17 +2861,6 @@ export default [
     "type": "error",
     "name": "LaunchGateCallInvalid",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "LegacyDayNotStampable",
-    "inputs": [
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
   },
   {
     "type": "error",
@@ -2981,32 +2907,10 @@ export default [
   },
   {
     "type": "error",
-    "name": "LegacyReceiptUnusable",
-    "inputs": [
-      {
-        "name": "receiptKey",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "LegacySliceNotPending",
     "inputs": [
       {
         "name": "entryId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "LegacyStampQuoteMissing",
-    "inputs": [
-      {
-        "name": "dayId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -3147,11 +3051,6 @@ export default [
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "MessengerPredatesV3",
-    "inputs": []
   },
   {
     "type": "error",
@@ -3341,6 +3240,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "PaaNeedsNonWethQuote",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "PadNumeraireRateFeedStale",
     "inputs": []
   },
@@ -3396,66 +3300,6 @@ export default [
       },
       {
         "name": "max",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ParkedBroadcastDigestMismatch",
-    "inputs": [
-      {
-        "name": "id",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ParkedBroadcastNotParked",
-    "inputs": [
-      {
-        "name": "id",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "status",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ParkedBroadcastQuarantineOnly",
-    "inputs": [
-      {
-        "name": "id",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ParkedBroadcastStillUnroutable",
-    "inputs": [
-      {
-        "name": "id",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ParkedBroadcastUnknown",
-    "inputs": [
-      {
-        "name": "id",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -5397,28 +5241,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "ShortLapseClockAlreadyArmed",
-    "inputs": [
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ShortLapseClockUnarmed",
-    "inputs": [
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "ShortLapseDeadlineNotReached",
     "inputs": [
       {
@@ -5447,6 +5269,17 @@ export default [
   {
     "type": "error",
     "name": "ShortLapseNotShort",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ShortLapseQuoteMissing",
     "inputs": [
       {
         "name": "dayId",
