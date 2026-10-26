@@ -344,29 +344,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "getMasterFlags",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "rangeAmount",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "rangeRate",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "partialFill",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getMaxSwapToRepaySlippageBps",
     "inputs": [],
     "outputs": [
@@ -473,16 +450,6 @@ export default [
         "internalType": "uint256[4]"
       },
       {
-        "name": "rangeAmountEnabled",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "rangeRateEnabled",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
         "name": "partialFillEnabled",
         "type": "bool",
         "internalType": "bool"
@@ -524,32 +491,6 @@ export default [
         "name": "maxInteractionClaimDays",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getRangeAmountEnabled",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getRangeRateEnabled",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
       }
     ],
     "stateMutability": "view"
@@ -1272,45 +1213,6 @@ export default [
   {
     "type": "function",
     "name": "setPrepayListingEnabled",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRangeAmountEnabled",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRangeCollateralEnabled",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRangeRateEnabled",
     "inputs": [
       {
         "name": "enabled",
@@ -2115,45 +2017,6 @@ export default [
   {
     "type": "event",
     "name": "PrepayListingEnabledSet",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "RangeAmountEnabledSet",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "RangeCollateralEnabledSet",
-    "inputs": [
-      {
-        "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "RangeRateEnabledSet",
     "inputs": [
       {
         "name": "enabled",

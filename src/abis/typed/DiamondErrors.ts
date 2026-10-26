@@ -3568,6 +3568,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "PartialMustCoverInterest",
+    "inputs": [
+      {
+        "name": "repaid",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "interestDue",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "PartialMustImproveHF",
     "inputs": [
       {
