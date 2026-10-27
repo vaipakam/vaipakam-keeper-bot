@@ -5,7 +5,7 @@
  *   1. Read `getInternalMatchConfigBundle()` — short-circuit when the
  *      kill-switch is off (no log, no work).
  *   2. Page through `getMatchEligibleLoans(minLtvBps, maxLtvBps,
- *      startIdx, pageSize)` to gather every active loan whose
+ *      startIdx, maxScan)` to gather every active loan whose
  *      current LTV is at or above its snapshotted per-tier
  *      liquidation threshold.
  *   3. Hydrate each ID via `getLoanDetails(loanId)` to get the
@@ -50,9 +50,11 @@ import {
   RISK_MATCH_LIQUIDATION_ABI,
 } from '../abis/diamond.ts';
 
-/** Pagination chunk on `getMatchEligibleLoans`. The view performs
- *  one `RiskFacet.calculateLTV` per row inside its try/catch, so
- *  pages of 200 stay comfortably under the public-RPC gas cap. */
+/** Rows read per `getMatchEligibleLoans` call. The view performs
+ *  one `RiskFacet.calculateLTV` per row it reads inside its
+ *  try/catch, and since vaipakam#2751 it reads at most this many
+ *  rows, so pages of 200 stay comfortably under the public-RPC gas
+ *  cap. A page can therefore hold fewer matches than this, or none. */
 const SCAN_PAGE = 200n;
 
 /** Per-tick cap on `triggerInternalMatchLiquidation` submissions.
@@ -169,7 +171,7 @@ async function listMatchEligible(ctx: DetectorCtx): Promise<bigint[]> {
         address: ctx.diamond,
         abi: METRICS_ABI,
         functionName: 'getMatchEligibleLoans',
-        // (minLtvBps, maxLtvBps, startIdx, pageSize). Use the full
+        // (minLtvBps, maxLtvBps, startIdx, maxScan). Use the full
         // (0, 10_000) range — every match-eligible loan returned by
         // the view is liquidatable by construction (the view's
         // upstream filter walks active loans and calls calculateLTV).
@@ -186,9 +188,11 @@ async function listMatchEligible(ctx: DetectorCtx): Promise<bigint[]> {
       return all;
     }
     for (const id of page) all.push(id);
-    // Two exit conditions: empty page, or view reached the end
-    // (nextIdx didn't advance / equals active list length).
-    if (page.length === 0 || nextIdx <= cursor) break;
+    // The view reads at most SCAN_PAGE rows per call, so an empty page
+    // does NOT mean the scan is done (vaipakam#2751): later rows can
+    // still match. The end is when the cursor stops advancing — the
+    // view returns the active list's length once startIdx reaches it.
+    if (nextIdx <= cursor) break;
     cursor = nextIdx;
   }
   return all;
