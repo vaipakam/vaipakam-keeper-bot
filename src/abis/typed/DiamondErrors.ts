@@ -2230,11 +2230,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "InvalidRateModelDeviation",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "InvalidRateRange",
     "inputs": []
   },
@@ -2996,11 +2991,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NotWatcherOrAdmin",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NumeraireSwapDisabled",
     "inputs": []
   },
@@ -3512,11 +3502,6 @@ export default [
         "internalType": "address"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "RateModelNotContract",
-    "inputs": []
   },
   {
     "type": "error",
@@ -6833,11 +6818,6 @@ export default [
   {
     "type": "error",
     "name": "UpdateNotAllowed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "UseDisableRateModel",
     "inputs": []
   },
   {

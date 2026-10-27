@@ -55,13 +55,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "disableRateModel",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "getAutoExtendEnabled",
     "inputs": [],
     "outputs": [
@@ -201,32 +194,6 @@ export default [
       },
       {
         "name": "total",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getRateModel",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getRateModelMaxDeviationBps",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -624,32 +591,6 @@ export default [
         "name": "value",
         "type": "bool",
         "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRateModel",
-    "inputs": [
-      {
-        "name": "newModel",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRateModelMaxDeviationBps",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "internalType": "uint16"
       }
     ],
     "outputs": [],
@@ -1068,38 +1009,6 @@ export default [
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "RateModelMaxDeviationBpsSet",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "RateModelSet",
-    "inputs": [
-      {
-        "name": "previousModel",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newModel",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -2658,11 +2567,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "InvalidRateModelDeviation",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "InvalidSaleOffer",
     "inputs": []
   },
@@ -2997,11 +2901,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NotWatcherOrAdmin",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NumeraireSwapDisabled",
     "inputs": []
   },
@@ -3232,11 +3131,6 @@ export default [
         "internalType": "address"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "RateModelNotContract",
-    "inputs": []
   },
   {
     "type": "error",
@@ -5839,11 +5733,6 @@ export default [
   {
     "type": "error",
     "name": "UpdateNotAllowed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "UseDisableRateModel",
     "inputs": []
   },
   {
