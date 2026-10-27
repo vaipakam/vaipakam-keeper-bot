@@ -487,6 +487,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "LifecycleTermsMismatch",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "MatchHFTooLow",
     "inputs": []
   },

@@ -697,106 +697,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "ArmedFreshPaidAlreadyRebased",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshPaidAlreadySeeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshRebaseRequiresActiveRole",
-    "inputs": [
-      {
-        "name": "role",
-        "type": "uint8",
-        "internalType": "uint8"
-      },
-      {
-        "name": "total",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "paidBefore",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "receivedBefore",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshRebaseStalePauseEpoch",
-    "inputs": [
-      {
-        "name": "stated",
-        "type": "uint64",
-        "internalType": "uint64"
-      },
-      {
-        "name": "live",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshRebaseTotalExceedsCap",
-    "inputs": [
-      {
-        "name": "total",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "cap",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshSeedExceedsCap",
-    "inputs": [
-      {
-        "name": "resulting",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "cap",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ArmedFreshSeedStalePauseEpoch",
-    "inputs": [
-      {
-        "name": "stated",
-        "type": "uint64",
-        "internalType": "uint64"
-      },
-      {
-        "name": "live",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "AssetPaused",
     "inputs": [
       {
@@ -2289,49 +2189,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "LegacyEnvelopeAlreadyImported",
-    "inputs": [
-      {
-        "name": "snapshotId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "LegacyEnvelopeEmpty",
-    "inputs": [
-      {
-        "name": "snapshotId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "LegacyEnvelopeMismatch",
-    "inputs": [
-      {
-        "name": "snapshotId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "stated",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "netTotal",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "LegacySliceNotPending",
     "inputs": [
       {
@@ -3144,11 +3001,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "RecoveryAttributionAlreadyArmed",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "RecoveryDeadlineExpired",
     "inputs": []
   },
@@ -3184,17 +3036,6 @@ export default [
       },
       {
         "name": "unspent",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "RecoveryReceiptPredatesAttribution",
-    "inputs": [
-      {
-        "name": "sourceRemitId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -3585,16 +3426,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "RewardCustodyActivationRequiresRebase",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "RewardCustodyActivationRequiresRecoveryArming",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "RewardCustodyActivationStalePauseEpoch",
     "inputs": [
       {
@@ -3687,11 +3518,6 @@ export default [
         "internalType": "uint8"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "RewardCustodyBootstrapRequiresRebase",
-    "inputs": []
   },
   {
     "type": "error",

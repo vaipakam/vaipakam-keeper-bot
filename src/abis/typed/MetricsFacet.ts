@@ -731,16 +731,6 @@ export default [
             "internalType": "bool"
           },
           {
-            "name": "vpfiHeld",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "vpfiRebatePending",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
             "name": "surplusClaimAsset",
             "type": "address",
             "internalType": "address"
