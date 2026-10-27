@@ -205,6 +205,16 @@ export default [
         "name": "collateralAsset",
         "type": "address",
         "internalType": "address"
+      },
+      {
+        "name": "offset",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limit",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [
@@ -580,7 +590,7 @@ export default [
         "internalType": "uint256"
       },
       {
-        "name": "pageSize",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
