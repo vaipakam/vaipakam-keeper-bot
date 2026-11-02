@@ -3054,6 +3054,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "NotAccountManager",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NotAuthorizedRewardMessenger",
     "inputs": []
   },

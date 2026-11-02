@@ -470,6 +470,11 @@ export default [
     "name": "withdrawExtendReserve",
     "inputs": [
       {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
         "name": "loanId",
         "type": "uint256",
         "internalType": "uint256"
@@ -1106,6 +1111,22 @@ export default [
     "type": "error",
     "name": "LoanNotActive",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotAccountManager",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
