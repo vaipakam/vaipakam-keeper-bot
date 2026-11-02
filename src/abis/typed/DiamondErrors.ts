@@ -39,6 +39,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "AccountRetired",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AdapterIndexOutOfRange",
     "inputs": [
       {
@@ -1070,6 +1081,93 @@ export default [
   },
   {
     "type": "error",
+    "name": "DayDeliveryAlreadyOpen",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryAlreadySkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotConflicted",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotSkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipAwaitsBroadcast",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipSideNotHeld",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "side",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipTooEarly",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayFundedLocally",
     "inputs": [
       {
@@ -1193,11 +1291,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "DiscountPathDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "DispatchCutoffGapOutOfBounds",
     "inputs": [
       {
@@ -1300,6 +1393,37 @@ export default [
   {
     "type": "error",
     "name": "ExpectedSourceListUnusable",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ExtendReserveInsufficient",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "holder",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "available",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ExtendReserveZeroAmount",
     "inputs": []
   },
   {
@@ -3155,22 +3279,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "OracleStaleForDiscount",
-    "inputs": [
-      {
-        "name": "principalAsset",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "collateralAsset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "PaaListInvalid",
     "inputs": [
       {
@@ -3498,6 +3606,17 @@ export default [
       },
       {
         "name": "signed",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProtectedVaultLocked",
+    "inputs": [
+      {
+        "name": "account",
         "type": "address",
         "internalType": "address"
       }
@@ -4187,6 +4306,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "RemitDayAbandoned",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RemitDayAlreadyClosed",
     "inputs": [
       {
@@ -4230,6 +4365,54 @@ export default [
         "name": "chainId",
         "type": "uint32",
         "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationOnlyDiamondInternal",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseDone",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleasePending",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "releaseCursor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "abandonedBefore",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -4294,6 +4477,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "RentalCollateralNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "RentalQuantityAboveVaultRange",
     "inputs": []
   },
@@ -4329,6 +4517,32 @@ export default [
       },
       {
         "name": "requested",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RewardChainIsRetired",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardChainNotRetirable",
+    "inputs": [
+      {
+        "name": "role",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "detachedFrom",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "detachedFromDeployment",
         "type": "address",
         "internalType": "address"
       }
@@ -6838,17 +7052,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "UntierableCollateral",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "UpdateNotAllowed",
     "inputs": []
   },
@@ -6921,11 +7124,6 @@ export default [
   {
     "type": "error",
     "name": "ZeroCollateral",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ZeroRecipient",
     "inputs": []
   }
 ] as const;

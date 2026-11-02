@@ -27,6 +27,29 @@ export default [
   },
   {
     "type": "function",
+    "name": "executeAutoDispatchMatch",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "candidateId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "matcher",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "triggerInternalMatchLiquidation",
     "inputs": [
       {
@@ -160,6 +183,43 @@ export default [
   },
   {
     "type": "event",
+    "name": "InternalMatchRefusedShortDelivery",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "candidateId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "asset",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "OwedAtInternalMatchRecorded",
     "inputs": [
       {
@@ -231,6 +291,17 @@ export default [
       }
     ],
     "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "CrossFacetCallFailed",
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
   },
   {
     "type": "error",
@@ -441,6 +512,27 @@ export default [
         "name": "who",
         "type": "address",
         "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TokenDeliveryShort",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   }

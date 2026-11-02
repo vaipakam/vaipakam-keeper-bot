@@ -1941,7 +1941,7 @@ export default [
     "name": "NotificationFeeSet",
     "inputs": [
       {
-        "name": "newFeeNumeraire1e18",
+        "name": "newFeeVpfi1e18",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"

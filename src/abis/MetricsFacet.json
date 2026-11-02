@@ -132,12 +132,12 @@
         "internalType": "address"
       },
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -147,6 +147,11 @@
         "name": "offerIds",
         "type": "uint256[]",
         "internalType": "uint256[]"
+      },
+      {
+        "name": "nextCursor",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -313,12 +318,12 @@
     "name": "getAllLoansPaginated",
     "inputs": [
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -328,6 +333,11 @@
         "name": "loanIds",
         "type": "uint256[]",
         "internalType": "uint256[]"
+      },
+      {
+        "name": "nextCursor",
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
         "name": "total",
@@ -342,12 +352,12 @@
     "name": "getAllOffersPaginated",
     "inputs": [
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -357,6 +367,11 @@
         "name": "offerIds",
         "type": "uint256[]",
         "internalType": "uint256[]"
+      },
+      {
+        "name": "nextCursor",
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
         "name": "total",
@@ -462,6 +477,43 @@
   },
   {
     "type": "function",
+    "name": "getLifetimeLendingAssets",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getLifetimeLendingTotals",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "principalLent",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "interestPaid",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getLoanCollateralLien",
     "inputs": [
       {
@@ -544,12 +596,12 @@
         "internalType": "enum LibVaipakam.LoanStatus"
       },
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -561,7 +613,7 @@
         "internalType": "uint256[]"
       },
       {
-        "name": "matched",
+        "name": "nextCursor",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -659,6 +711,11 @@
             "internalType": "address"
           },
           {
+            "name": "principalAssetType",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.AssetType"
+          },
+          {
             "name": "principalSymbol",
             "type": "string",
             "internalType": "string"
@@ -670,6 +727,41 @@
           },
           {
             "name": "principalAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "principalTokenId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "principalQuantity",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "prepayAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "prepaySymbol",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "prepayDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "prepayAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "bufferAmount",
             "type": "uint256",
             "internalType": "uint256"
           },
@@ -720,6 +812,31 @@
           },
           {
             "name": "claimableAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "claimableAssetType",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.AssetType"
+          },
+          {
+            "name": "claimableSymbol",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "claimableDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "claimableTokenId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "claimableQuantity",
             "type": "uint256",
             "internalType": "uint256"
           },
@@ -1094,12 +1211,12 @@
         "internalType": "enum LibMetricsTypes.OfferState"
       },
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1111,7 +1228,7 @@
         "internalType": "uint256[]"
       },
       {
-        "name": "matched",
+        "name": "nextCursor",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1177,7 +1294,7 @@
         "internalType": "uint256"
       },
       {
-        "name": "totalInterestEarnedNumeraire",
+        "name": "totalInterestPaidNumeraire",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -1313,19 +1430,6 @@
           }
         ]
       },
-      {
-        "name": "total",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getTotalInterestEarnedNumeraire",
-    "inputs": [],
-    "outputs": [
       {
         "name": "total",
         "type": "uint256",
@@ -1597,12 +1701,12 @@
         "internalType": "enum LibVaipakam.LoanStatus"
       },
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1614,7 +1718,7 @@
         "internalType": "uint256[]"
       },
       {
-        "name": "matched",
+        "name": "nextCursor",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1708,12 +1812,12 @@
         "internalType": "enum LibMetricsTypes.OfferState"
       },
       {
-        "name": "offset",
+        "name": "cursor",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "limit",
+        "name": "maxScan",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1725,7 +1829,7 @@
         "internalType": "uint256[]"
       },
       {
-        "name": "matched",
+        "name": "nextCursor",
         "type": "uint256",
         "internalType": "uint256"
       }
