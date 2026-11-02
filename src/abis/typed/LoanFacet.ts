@@ -547,6 +547,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "AccountRetired",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AlreadyLaunched",
     "inputs": []
   },
@@ -1421,6 +1432,93 @@ export default [
     "inputs": [
       {
         "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryAlreadyOpen",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryAlreadySkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotConflicted",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotSkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipAwaitsBroadcast",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipSideNotHeld",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "side",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipTooEarly",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -2494,6 +2592,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "ProtectedVaultLocked",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RateShortfallTooHigh",
     "inputs": []
   },
@@ -3121,6 +3230,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "RemitDayAbandoned",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RemitDayAlreadyClosed",
     "inputs": [
       {
@@ -3164,6 +3289,54 @@ export default [
         "name": "chainId",
         "type": "uint32",
         "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationOnlyDiamondInternal",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseDone",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleasePending",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "releaseCursor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "abandonedBefore",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -3253,6 +3426,32 @@ export default [
       },
       {
         "name": "requested",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RewardChainIsRetired",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardChainNotRetirable",
+    "inputs": [
+      {
+        "name": "role",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "detachedFrom",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "detachedFromDeployment",
         "type": "address",
         "internalType": "address"
       }
