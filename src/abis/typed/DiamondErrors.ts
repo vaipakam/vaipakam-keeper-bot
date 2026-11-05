@@ -2137,6 +2137,27 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidEscapeGrace",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidFeeBps",
     "inputs": [
       {
