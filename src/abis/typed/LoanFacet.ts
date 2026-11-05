@@ -296,7 +296,7 @@ export default [
             "internalType": "uint64"
           },
           {
-            "name": "interestRemainingDays",
+            "name": "retiredInterestRemainingDays",
             "type": "uint16",
             "internalType": "uint16"
           },
