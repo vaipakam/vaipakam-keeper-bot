@@ -107,6 +107,24 @@ export default [
   },
   {
     "type": "function",
+    "name": "getEscapeGraceSeconds",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "nextPause",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "currentPause",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getMaxPartialLiquidationCloseFactorBps",
     "inputs": [],
     "outputs": [
@@ -536,6 +554,19 @@ export default [
   },
   {
     "type": "function",
+    "name": "setEscapeGraceSeconds",
+    "inputs": [
+      {
+        "name": "newSeconds",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setKYCEnforcement",
     "inputs": [
       {
@@ -876,6 +907,19 @@ export default [
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EscapeGraceSet",
+    "inputs": [
+      {
+        "name": "newSeconds",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
       }
     ],
     "anonymous": false
@@ -2613,6 +2657,27 @@ export default [
   {
     "type": "error",
     "name": "InvalidAutoPauseCooldown",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxSec",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidEscapeGrace",
     "inputs": [
       {
         "name": "provided",
