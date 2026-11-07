@@ -5554,11 +5554,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "VaultUpgradeRequired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "VaultWithdrawFailed",
     "inputs": []
   },
