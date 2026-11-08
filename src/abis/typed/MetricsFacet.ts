@@ -2124,18 +2124,12 @@ export default [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidOwner",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
+    "name": "InvalidWindow",
+    "inputs": []
   },
   {
     "type": "error",
-    "name": "InvalidWindow",
+    "name": "PositionNFTNotSet",
     "inputs": []
   },
   {
