@@ -138,19 +138,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "getPancakeswapV2Factory",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getPancakeswapV3Factory",
     "inputs": [],
     "outputs": [
@@ -233,19 +220,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "getSushiswapV2Factory",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getSushiswapV3Factory",
     "inputs": [],
     "outputs": [
@@ -277,19 +251,6 @@ export default [
     "outputs": [
       {
         "name": "treasury",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getUniswapV2Factory",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
         "type": "address",
         "internalType": "address"
       }
@@ -593,19 +554,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "setPancakeswapV2Factory",
-    "inputs": [
-      {
-        "name": "newFactory",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "setPancakeswapV3Factory",
     "inputs": [
       {
@@ -655,19 +603,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "setSushiswapV2Factory",
-    "inputs": [
-      {
-        "name": "newFactory",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "setSushiswapV3Factory",
     "inputs": [
       {
@@ -703,19 +638,6 @@ export default [
     "inputs": [
       {
         "name": "newTreasury",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setUniswapV2Factory",
-    "inputs": [
-      {
-        "name": "newFactory",
         "type": "address",
         "internalType": "address"
       }
@@ -971,25 +893,6 @@ export default [
   },
   {
     "type": "event",
-    "name": "PancakeswapV2FactorySet",
-    "inputs": [
-      {
-        "name": "previous",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "current",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
     "name": "PancakeswapV3FactorySet",
     "inputs": [
       {
@@ -1079,25 +982,6 @@ export default [
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "SushiswapV2FactorySet",
-    "inputs": [
-      {
-        "name": "previous",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "current",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -1197,25 +1081,6 @@ export default [
     "inputs": [
       {
         "name": "newTreasury",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "UniswapV2FactorySet",
-    "inputs": [
-      {
-        "name": "previous",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "current",
         "type": "address",
         "indexed": true,
         "internalType": "address"
