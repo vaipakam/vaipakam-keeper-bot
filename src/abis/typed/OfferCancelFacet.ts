@@ -531,6 +531,25 @@ export default [
   },
   {
     "type": "function",
+    "name": "isOfferRouteDead",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "teardownStaleSaleListing",
     "inputs": [
       {
