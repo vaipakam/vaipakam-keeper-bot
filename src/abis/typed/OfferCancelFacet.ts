@@ -2448,11 +2448,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NumeraireSwapDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "OfferAcceptFailed",
     "inputs": []
   },
@@ -2507,17 +2502,6 @@ export default [
     "type": "error",
     "name": "PadNumeraireRateUnavailable",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "PadPivotFeedUnavailable",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
