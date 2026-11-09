@@ -148,6 +148,11 @@ export default [
             "name": "maxSell",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "floorBps",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
@@ -2519,6 +2524,11 @@ export default [
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "PositionNFTNotSet",
+    "inputs": []
   },
   {
     "type": "error",

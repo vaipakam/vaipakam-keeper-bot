@@ -1275,17 +1275,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidOwner",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "ERC721NonexistentToken",
     "inputs": [
       {
@@ -3613,6 +3602,27 @@ export default [
         "name": "signed",
         "type": "address",
         "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionNFTNotSet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionTokenBoundToAnotherLoan",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "boundLoanId",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
