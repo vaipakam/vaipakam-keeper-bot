@@ -1127,6 +1127,16 @@ export default [
             "name": "loanInitiationFeeBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "liqDiscountTierAtInit",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "liqDiscountBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
           }
         ]
       }

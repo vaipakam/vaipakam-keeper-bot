@@ -3108,6 +3108,32 @@ export default [
   },
   {
     "type": "error",
+    "name": "PriceGuardNumeraireMismatch",
+    "inputs": [
+      {
+        "name": "guard",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "recorded",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "guardNumeraire",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProtocolRegistryUnset",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "TierLiqDiscountNonMonotonic",
     "inputs": [
       {

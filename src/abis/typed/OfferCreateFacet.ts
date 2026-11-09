@@ -3034,11 +3034,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NumeraireSwapDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "OfferAcceptFailed",
     "inputs": []
   },
@@ -3114,17 +3109,6 @@ export default [
     "type": "error",
     "name": "PadNumeraireRateUnavailable",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "PadPivotFeedUnavailable",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -3313,6 +3297,27 @@ export default [
   },
   {
     "type": "error",
+    "name": "PriceGuardNumeraireMismatch",
+    "inputs": [
+      {
+        "name": "guard",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "recorded",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "guardNumeraire",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "ProtectedVaultLocked",
     "inputs": [
       {
@@ -3321,6 +3326,11 @@ export default [
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "ProtocolRegistryUnset",
+    "inputs": []
   },
   {
     "type": "error",
