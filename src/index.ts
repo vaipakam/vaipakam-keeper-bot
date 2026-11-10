@@ -59,7 +59,7 @@ import { runAutoExtendDetectorTick } from './detectors/autoExtendDetector.ts';
 // The JSON they are generated from is exported by the upstream
 // `contracts/script/exportAbis.sh` whenever the protocol's keeper-relevant
 // signatures change. See README → "Syncing with upstream".
-import { FORCED_SALE_ABI, LOAN_ABI, METRICS_ABI, RISK_ABI } from './abis/diamond.ts';
+import { FORCED_SALE_PREVIEW_ABI, LOAN_ABI, METRICS_ABI, RISK_ABI } from './abis/diamond.ts';
 
 /// Page size for the active-loan scan. Keep small enough that one
 /// `eth_call` returns within Alchemy/Infura free-tier response time
@@ -203,7 +203,7 @@ async function attemptLiquidation(
   try {
     const plan = await ctx.publicClient.readContract({
       address: ctx.cfg.diamond,
-      abi: FORCED_SALE_ABI,
+      abi: FORCED_SALE_PREVIEW_ABI,
       functionName: 'previewForcedSale',
       args: [loanId, FORCED_SALE_KIND_HF_LIQUIDATION],
     });

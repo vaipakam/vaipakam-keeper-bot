@@ -131,6 +131,15 @@ its function, so viem types the function name, the arguments and the
 result. A renamed function, a changed argument list or a changed return
 shape is a typecheck error, not a call that fails at run time.
 
+The error set is every error the Diamond can revert with:
+`src/abis/DiamondErrors.json`, which the export takes from the monorepo's
+combined Diamond ABI, plus any the facet files declare. A cross-facet call
+passes the callee's revert straight through, so the facets the bot calls
+are not enough on their own. When `previewForcedSale` moved to
+ForcedSalePreviewFacet, they no longer declared `ForcedSaleQuoteOutOfRange`.
+The generator refuses to run without that file. The export also deletes a
+facet file, and its typed module, that the upstream list no longer names.
+
 A JSON import cannot carry those types; this is the reason for the
 generated modules. Before #13, `previewMatch` gained two arguments
 upstream and the bot kept calling it with two, so every match preview

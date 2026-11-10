@@ -296,7 +296,7 @@ export default [
             "internalType": "uint64"
           },
           {
-            "name": "interestRemainingDays",
+            "name": "retiredInterestRemainingDays",
             "type": "uint16",
             "internalType": "uint16"
           },
@@ -307,6 +307,16 @@ export default [
           },
           {
             "name": "loanInitiationFeeBpsAtInit",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "liqDiscountTierAtInit",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "liqDiscountBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
           }
@@ -547,6 +557,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "AccountRetired",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AlreadyLaunched",
     "inputs": []
   },
@@ -558,6 +579,27 @@ export default [
         "name": "asset",
         "type": "address",
         "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AttributionCapAboveCeiling",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "cap",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "ceiling",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -1428,6 +1470,93 @@ export default [
   },
   {
     "type": "error",
+    "name": "DayDeliveryAlreadyOpen",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryAlreadySkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotConflicted",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliveryNotSkipped",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipAwaitsBroadcast",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipSideNotHeld",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "side",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DayDeliverySkipTooEarly",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DayFundedLocally",
     "inputs": [
       {
@@ -1471,49 +1600,6 @@ export default [
         "name": "available",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryPacketDisposed",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "disposed",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryProofNotBudget",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "kind",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DeliveryProofRouteIsBatch",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -1721,7 +1807,18 @@ export default [
   },
   {
     "type": "error",
-    "name": "IngressPacketDayListStamped",
+    "name": "IngressPacketDayAlreadyStamped",
+    "inputs": [
+      {
+        "name": "packetHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IngressPacketDayUnnamed",
     "inputs": [
       {
         "name": "packetHash",
@@ -1954,6 +2051,11 @@ export default [
   {
     "type": "error",
     "name": "KeeperWhitelistFull",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "KeepersPaused",
     "inputs": []
   },
   {
@@ -2272,11 +2374,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "NumeraireSwapDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "OfferAcceptFailed",
     "inputs": []
   },
@@ -2315,17 +2412,6 @@ export default [
     "type": "error",
     "name": "PadNumeraireRateUnavailable",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "PadPivotFeedUnavailable",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -2491,6 +2577,64 @@ export default [
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "PositionNFTNotSet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionTokenBoundToAnotherLoan",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "boundLoanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PriceGuardNumeraireMismatch",
+    "inputs": [
+      {
+        "name": "guard",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "recorded",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "guardNumeraire",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProtectedVaultLocked",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProtocolRegistryUnset",
+    "inputs": []
   },
   {
     "type": "error",
@@ -3121,6 +3265,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "RemitDayAbandoned",
+    "inputs": [
+      {
+        "name": "dayId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RemitDayAlreadyClosed",
     "inputs": [
       {
@@ -3164,6 +3324,54 @@ export default [
         "name": "chainId",
         "type": "uint32",
         "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationOnlyDiamondInternal",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseDone",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleaseFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RemitDestinationReleasePending",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "releaseCursor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "abandonedBefore",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -3253,6 +3461,32 @@ export default [
       },
       {
         "name": "requested",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RewardChainIsRetired",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RewardChainNotRetirable",
+    "inputs": [
+      {
+        "name": "role",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "detachedFrom",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "detachedFromDeployment",
         "type": "address",
         "internalType": "address"
       }
@@ -4749,27 +4983,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "TransportBatchNotFullyIndexed",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "indexedDays",
-        "type": "uint32",
-        "internalType": "uint32"
-      },
-      {
-        "name": "dayCount",
-        "type": "uint32",
-        "internalType": "uint32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "TransportBatchNotReleased",
     "inputs": [
       {
@@ -4777,17 +4990,6 @@ export default [
         "type": "bytes32",
         "internalType": "bytes32"
       },
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportBatchNotRooted",
-    "inputs": [
       {
         "name": "batchId",
         "type": "bytes32",
@@ -4835,90 +5037,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "TransportChunkAlreadyIndexed",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "chunkIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportChunkLengthMismatch",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "chunkIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "expected",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "supplied",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportChunkOutOfExtent",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "chunkIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "chunkCount",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportChunkProofInvalid",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "chunkIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "leaf",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "TransportDayFanoutExceeded",
     "inputs": [
       {
@@ -4930,27 +5048,6 @@ export default [
         "name": "cap",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportDayListMismatch",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "committed",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "supplied",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -4988,27 +5085,6 @@ export default [
         "name": "available",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportIndexHintInvalid",
-    "inputs": [
-      {
-        "name": "batchId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "dayId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "hint",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
@@ -5079,27 +5155,6 @@ export default [
         "name": "batchId",
         "type": "bytes32",
         "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "TransportRootExtentInvalid",
-    "inputs": [
-      {
-        "name": "packetHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "elementCount",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "chunkCount",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ]
   },

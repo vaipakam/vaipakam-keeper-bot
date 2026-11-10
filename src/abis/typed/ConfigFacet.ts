@@ -344,7 +344,33 @@ export default [
   },
   {
     "type": "function",
+    "name": "getMaxOpenOffersPerWallet",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getMaxSwapToRepaySlippageBps",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getMinTermsAgeSec",
     "inputs": [],
     "outputs": [
       {
@@ -1095,6 +1121,19 @@ export default [
   },
   {
     "type": "function",
+    "name": "setMaxOpenOffersPerWallet",
+    "inputs": [
+      {
+        "name": "cap",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setMaxPartialLiquidationCloseFactorBps",
     "inputs": [
       {
@@ -1114,6 +1153,19 @@ export default [
         "name": "maxSlippageBps",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
       }
     ],
     "outputs": [],
@@ -1899,6 +1951,19 @@ export default [
   },
   {
     "type": "event",
+    "name": "MaxOpenOffersPerWalletSet",
+    "inputs": [
+      {
+        "name": "cap",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "MaxPartialLiquidationCloseFactorBpsSet",
     "inputs": [
       {
@@ -1925,6 +1990,19 @@ export default [
   },
   {
     "type": "event",
+    "name": "MinTermsAgeSecSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "MirrorTierMaxAgeSecSet",
     "inputs": [
       {
@@ -1941,7 +2019,7 @@ export default [
     "name": "NotificationFeeSet",
     "inputs": [
       {
-        "name": "newFeeNumeraire1e18",
+        "name": "newFeeVpfi1e18",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
@@ -2660,6 +2738,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidMirrorTierMaxAgeSec",
     "inputs": [
       {
@@ -2902,7 +2991,7 @@ export default [
   },
   {
     "type": "error",
-    "name": "KeeperAccessRequired",
+    "name": "KeepersPaused",
     "inputs": []
   },
   {
@@ -3066,6 +3155,32 @@ export default [
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "PriceGuardNumeraireMismatch",
+    "inputs": [
+      {
+        "name": "guard",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "recorded",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "guardNumeraire",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProtocolRegistryUnset",
+    "inputs": []
   },
   {
     "type": "error",
