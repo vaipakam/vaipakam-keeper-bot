@@ -1570,6 +1570,11 @@
   },
   {
     "type": "error",
+    "name": "KeepersPaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "KnownGlobalAlreadySet",
     "inputs": []
   },
@@ -4894,6 +4899,17 @@
   },
   {
     "type": "error",
+    "name": "DeadlinePassed",
+    "inputs": [
+      {
+        "name": "validUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NotSignedOfferSigner",
     "inputs": []
   },
@@ -4940,17 +4956,6 @@
     "inputs": [
       {
         "name": "nonce",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferSigExpired",
-    "inputs": [
-      {
-        "name": "deadline",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -5413,11 +5418,6 @@
   },
   {
     "type": "error",
-    "name": "AcceptDeadlineExpired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AcceptNonceUsed",
     "inputs": []
   },
@@ -5451,6 +5451,11 @@
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "DeadlineRequired",
+    "inputs": []
   },
   {
     "type": "error",
@@ -5524,6 +5529,22 @@
         "name": "field",
         "type": "uint8",
         "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferTermsTooFresh",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -5759,54 +5780,6 @@
   {
     "type": "error",
     "name": "SaleVehicleNotMatchable",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferFillInvalid",
-    "inputs": [
-      {
-        "name": "fillAmount",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "remaining",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferGttExpired",
-    "inputs": [
-      {
-        "name": "expiresAt",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferMaterializeFailed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferNonceBurned",
-    "inputs": [
-      {
-        "name": "nonce",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferRatioNotConstant",
     "inputs": []
   },
   {
@@ -6471,6 +6444,17 @@
   },
   {
     "type": "error",
+    "name": "IntentOrderProtocolMismatch",
+    "inputs": [
+      {
+        "name": "pinned",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IntentPostInteractionUnauthorized",
     "inputs": [
       {
@@ -6513,17 +6497,6 @@
     "inputs": [
       {
         "name": "token",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "LopDomainUnsupported",
-    "inputs": [
-      {
-        "name": "lop",
         "type": "address",
         "internalType": "address"
       }
@@ -6968,6 +6941,22 @@
         "name": "minVpfiOut",
         "type": "uint128",
         "internalType": "uint128"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "BuybackHeadroomShort",
+    "inputs": [
+      {
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "free",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -8077,6 +8066,17 @@
   },
   {
     "type": "error",
+    "name": "OfferPriceGuardUnpriced",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "TooManyOpenOffers",
     "inputs": [
       {
@@ -8245,6 +8245,108 @@
   },
   {
     "type": "error",
+    "name": "OfferPairNoCheckpoint",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPairNotCalm",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPriceMoved",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "moveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxMoveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPriceUnreadable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferFillInvalid",
+    "inputs": [
+      {
+        "name": "fillAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "remaining",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferGttExpired",
+    "inputs": [
+      {
+        "name": "expiresAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferMaterializeFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferNonceBurned",
+    "inputs": [
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferRatioNotConstant",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "AlreadyClaimed",
     "inputs": []
   },
@@ -8281,11 +8383,6 @@
   {
     "type": "error",
     "name": "BackstopVpfiPrincipalUnsupported",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "KeepersPaused",
     "inputs": []
   },
   {
@@ -8452,6 +8549,17 @@
   },
   {
     "type": "error",
+    "name": "InvalidPositionTransferCooldown",
+    "inputs": [
+      {
+        "name": "sec",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidRoyalty",
     "inputs": []
   },
@@ -8459,6 +8567,27 @@
     "type": "error",
     "name": "NotAuthorized",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionCoolingDown",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "valueOutBlock",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
   },
   {
     "type": "error",
@@ -8907,11 +9036,6 @@
   },
   {
     "type": "error",
-    "name": "SaleDeadlineRequired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "SaleExposureExceedsAuthoredDuration",
     "inputs": [
       {
@@ -8966,17 +9090,6 @@
         "name": "which",
         "type": "uint8",
         "internalType": "uint8"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SaleQuoteExpired",
-    "inputs": [
-      {
-        "name": "deadline",
-        "type": "uint64",
-        "internalType": "uint64"
       }
     ]
   },
@@ -9274,6 +9387,17 @@
         "name": "maxSecs",
         "type": "uint32",
         "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LopDomainUnsupported",
+    "inputs": [
+      {
+        "name": "lop",
+        "type": "address",
+        "internalType": "address"
       }
     ]
   },
@@ -10394,6 +10518,17 @@
         "name": "ceilDays",
         "type": "uint256",
         "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
       }
     ]
   },
@@ -11831,6 +11966,22 @@
     "type": "error",
     "name": "StagingRecordMarkUnavailable",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IntentTermsTooFresh",
+    "inputs": [
+      {
+        "name": "lender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

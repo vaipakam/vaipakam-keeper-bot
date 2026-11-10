@@ -2640,6 +2640,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "KeepersPaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "KnownGlobalAlreadySet",
     "inputs": []
   },

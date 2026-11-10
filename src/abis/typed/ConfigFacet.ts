@@ -370,6 +370,19 @@ export default [
   },
   {
     "type": "function",
+    "name": "getMinTermsAgeSec",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getNotificationFeeConfig",
     "inputs": [],
     "outputs": [
@@ -1140,6 +1153,19 @@ export default [
         "name": "maxSlippageBps",
         "type": "uint16",
         "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
       }
     ],
     "outputs": [],
@@ -1964,6 +1990,19 @@ export default [
   },
   {
     "type": "event",
+    "name": "MinTermsAgeSecSet",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "MirrorTierMaxAgeSecSet",
     "inputs": [
       {
@@ -2699,6 +2738,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidMirrorTierMaxAgeSec",
     "inputs": [
       {
@@ -2941,7 +2991,7 @@ export default [
   },
   {
     "type": "error",
-    "name": "KeeperAccessRequired",
+    "name": "KeepersPaused",
     "inputs": []
   },
   {

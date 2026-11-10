@@ -3,11 +3,6 @@
 export default [
   {
     "type": "error",
-    "name": "AcceptDeadlineExpired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AcceptNonceUsed",
     "inputs": []
   },
@@ -936,6 +931,22 @@ export default [
     "inputs": [
       {
         "name": "expiresAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "BuybackHeadroomShort",
+    "inputs": [
+      {
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "free",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -2188,6 +2199,22 @@ export default [
   {
     "type": "error",
     "name": "DayNotReadyToFinalize",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "DeadlinePassed",
+    "inputs": [
+      {
+        "name": "validUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DeadlineRequired",
     "inputs": []
   },
   {
@@ -3595,6 +3622,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "IntentOrderProtocolMismatch",
+    "inputs": [
+      {
+        "name": "pinned",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IntentPending",
     "inputs": [
       {
@@ -3641,6 +3679,22 @@ export default [
     "type": "error",
     "name": "IntentSurfaceDisabled",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IntentTermsTooFresh",
+    "inputs": [
+      {
+        "name": "lender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -4108,6 +4162,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidMinTermsAgeSec",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidMirrorTierMaxAgeSec",
     "inputs": [
       {
@@ -4200,6 +4265,17 @@ export default [
     "type": "error",
     "name": "InvalidPartialLiqSizing",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPositionTransferCooldown",
+    "inputs": [
+      {
+        "name": "sec",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
   },
   {
     "type": "error",
@@ -5903,6 +5979,28 @@ export default [
   },
   {
     "type": "error",
+    "name": "OfferPairNoCheckpoint",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPairNotCalm",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "OfferPartiallyFilled",
     "inputs": [
       {
@@ -5912,6 +6010,49 @@ export default [
       },
       {
         "name": "amountFilled",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPriceGuardUnpriced",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPriceMoved",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "moveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxMoveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferPriceUnreadable",
+    "inputs": [
+      {
+        "name": "offerId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -5936,6 +6077,22 @@ export default [
         "name": "field",
         "type": "uint8",
         "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferTermsTooFresh",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -6725,6 +6882,27 @@ export default [
         "name": "signed",
         "type": "address",
         "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionCoolingDown",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "valueOutBlock",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint64",
+        "internalType": "uint64"
       }
     ]
   },
@@ -9270,11 +9448,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "SaleDeadlineRequired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "SaleExposureExceedsAuthoredDuration",
     "inputs": [
       {
@@ -9552,17 +9725,6 @@ export default [
         "name": "floor",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SaleQuoteExpired",
-    "inputs": [
-      {
-        "name": "deadline",
-        "type": "uint64",
-        "internalType": "uint64"
       }
     ]
   },
@@ -10171,17 +10333,6 @@ export default [
     "type": "error",
     "name": "SignedOfferRatioNotConstant",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferSigExpired",
-    "inputs": [
-      {
-        "name": "deadline",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
   },
   {
     "type": "error",

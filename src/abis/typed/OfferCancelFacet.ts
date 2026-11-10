@@ -273,6 +273,11 @@ export default [
             "name": "creatorMaxCStar",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "termsSetAt",
+            "type": "uint64",
+            "internalType": "uint64"
           }
         ]
       }
@@ -504,6 +509,11 @@ export default [
             "name": "creatorMaxCStar",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "termsSetAt",
+            "type": "uint64",
+            "internalType": "uint64"
           }
         ]
       }
@@ -2151,6 +2161,11 @@ export default [
   {
     "type": "error",
     "name": "KeeperWhitelistFull",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "KeepersPaused",
     "inputs": []
   },
   {

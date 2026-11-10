@@ -740,11 +740,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "AcceptDeadlineExpired",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AcceptNonceUsed",
     "inputs": []
   },
@@ -1786,6 +1781,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "DeadlinePassed",
+    "inputs": [
+      {
+        "name": "validUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DeadlineRequired",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "DeliveredFreshBoundExceeded",
     "inputs": [
       {
@@ -2252,6 +2263,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "KeepersPaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "KnownGlobalAlreadySet",
     "inputs": []
   },
@@ -2620,6 +2636,22 @@ export default [
         "name": "field",
         "type": "uint8",
         "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OfferTermsTooFresh",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "readyAt",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
