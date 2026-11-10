@@ -727,6 +727,27 @@ export default [
   },
   {
     "type": "error",
+    "name": "AttributionCapAboveCeiling",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "cap",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "ceiling",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AttributionCapUnderLiveKeeperBps",
     "inputs": [
       {
