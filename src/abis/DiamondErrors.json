@@ -1042,6 +1042,22 @@
   },
   {
     "type": "error",
+    "name": "DeadlinePassed",
+    "inputs": [
+      {
+        "name": "validUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DeadlineRequired",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "DeliveredFreshBoundExceeded",
     "inputs": [
       {
@@ -4899,17 +4915,6 @@
   },
   {
     "type": "error",
-    "name": "DeadlinePassed",
-    "inputs": [
-      {
-        "name": "validUntil",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "NotSignedOfferSigner",
     "inputs": []
   },
@@ -5451,11 +5456,6 @@
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "DeadlineRequired",
-    "inputs": []
   },
   {
     "type": "error",
