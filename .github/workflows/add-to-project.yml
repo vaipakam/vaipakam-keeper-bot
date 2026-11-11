@@ -29,6 +29,12 @@ permissions:
 jobs:
   add-to-project:
     name: Add issue to @vaipakam-labs
+    # The PAT is a secret of the `main-only` environment, whose
+    # deployment-branch rule admits only main, so a workflow added on a pushed
+    # branch cannot read it (vaipakam#3541). An `issues` event always runs
+    # main's copy of this file, so the ref check holds for every real run.
+    if: github.ref == 'refs/heads/main'
+    environment: main-only
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v1.0.2
