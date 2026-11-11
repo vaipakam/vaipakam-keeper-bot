@@ -11587,6 +11587,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "TreasuryConvertUnpriced",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "TreasuryInsufficient",
     "inputs": []
   },
