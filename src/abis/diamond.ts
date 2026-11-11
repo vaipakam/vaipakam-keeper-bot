@@ -22,6 +22,7 @@
  */
 import AdminFacet from './typed/AdminFacet.ts';
 import AutoLifecycleFacet from './typed/AutoLifecycleFacet.ts';
+import AutoLifecycleSettingsFacet from './typed/AutoLifecycleSettingsFacet.ts';
 import ConfigFacet from './typed/ConfigFacet.ts';
 import ForcedSalePreviewFacet from './typed/ForcedSalePreviewFacet.ts';
 import LoanFacet from './typed/LoanFacet.ts';
@@ -34,6 +35,8 @@ import DIAMOND_ERRORS from './typed/DiamondErrors.ts';
 
 export const ADMIN_ABI = [...AdminFacet, ...DIAMOND_ERRORS] as const;
 export const AUTO_LIFECYCLE_ABI = [...AutoLifecycleFacet, ...DIAMOND_ERRORS] as const;
+/** vaipakam#3410 — the consent and caps readers, split off AutoLifecycleFacet. */
+export const AUTO_LIFECYCLE_SETTINGS_ABI = [...AutoLifecycleSettingsFacet, ...DIAMOND_ERRORS] as const;
 export const CONFIG_ABI = [...ConfigFacet, ...DIAMOND_ERRORS] as const;
 export const FORCED_SALE_PREVIEW_ABI = [...ForcedSalePreviewFacet, ...DIAMOND_ERRORS] as const;
 export const LOAN_ABI = [...LoanFacet, ...DIAMOND_ERRORS] as const;

@@ -49,7 +49,7 @@ import { log } from '../log.ts';
 // Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
 // of the facet that defines its function, so viem types the call and a
 // contract signature change fails the typecheck instead of the run.
-import { ADMIN_ABI, AUTO_LIFECYCLE_ABI, METRICS_ABI } from '../abis/diamond.ts';
+import { ADMIN_ABI, AUTO_LIFECYCLE_ABI, AUTO_LIFECYCLE_SETTINGS_ABI, METRICS_ABI } from '../abis/diamond.ts';
 
 const SCAN_PAGE = 200n;
 const MAX_EXTENDS_PER_TICK = 5;
@@ -184,13 +184,13 @@ async function tryExtend(
     [borrowerCaps, lenderCaps] = (await Promise.all([
       publicClient.readContract({
         address: diamond,
-        abi: AUTO_LIFECYCLE_ABI,
+        abi: AUTO_LIFECYCLE_SETTINGS_ABI,
         functionName: 'getAutoExtendBorrowerCaps',
         args: [loanIdBig],
       }),
       publicClient.readContract({
         address: diamond,
-        abi: AUTO_LIFECYCLE_ABI,
+        abi: AUTO_LIFECYCLE_SETTINGS_ABI,
         functionName: 'getAutoExtendLenderCaps',
         args: [loanIdBig],
       }),

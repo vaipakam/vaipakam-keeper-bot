@@ -7217,11 +7217,6 @@
   },
   {
     "type": "error",
-    "name": "AutoLendDisabled",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "BothSideAutoExtendRequired",
     "inputs": []
   },
@@ -7289,11 +7284,6 @@
   },
   {
     "type": "error",
-    "name": "InvalidCaps",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NotBorrowerNftOwner",
     "inputs": []
   },
@@ -7310,6 +7300,16 @@
   {
     "type": "error",
     "name": "UnsupportedAssetTypeForExtend",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AutoLendDisabled",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidCaps",
     "inputs": []
   },
   {
@@ -8810,16 +8810,6 @@
   },
   {
     "type": "error",
-    "name": "OffsetNotLinked",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "OffsetOfferNotAccepted",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "PositionNftsLocked",
     "inputs": [
       {
@@ -8828,6 +8818,16 @@
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "OffsetNotLinked",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OffsetOfferNotAccepted",
+    "inputs": []
   },
   {
     "type": "error",
@@ -9437,6 +9437,22 @@
     "type": "error",
     "name": "TreasuryConvertSwapFailed",
     "inputs": [
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TreasuryConvertUnpriced",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "internalType": "address"
+      },
       {
         "name": "tokenOut",
         "type": "address",
