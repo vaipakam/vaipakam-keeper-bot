@@ -22,40 +22,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "getLoanDeadlines",
-    "inputs": [
-      {
-        "name": "loanId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "originalMaturity",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "pauseCredit",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "maturity",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "graceEnd",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "getLoanDetails",
     "inputs": [
       {
