@@ -299,32 +299,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "ParameterOutOfRange",
-    "inputs": [
-      {
-        "name": "name",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "value",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "min",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "max",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "PositionNFTNotSet",
     "inputs": []
   },

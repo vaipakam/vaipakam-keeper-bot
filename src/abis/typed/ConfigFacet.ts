@@ -693,11 +693,6 @@ export default [
     "inputs": [],
     "outputs": [
       {
-        "name": "tier1FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
         "name": "tier1CeilBps",
         "type": "uint16",
         "internalType": "uint16"
@@ -708,22 +703,12 @@ export default [
         "internalType": "uint16"
       },
       {
-        "name": "tier2FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
         "name": "tier2CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       },
       {
         "name": "tier2HaircutBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier3FloorBps",
         "type": "uint16",
         "internalType": "uint16"
       },
@@ -1422,11 +1407,6 @@ export default [
     "name": "setTierLtvParams",
     "inputs": [
       {
-        "name": "tier1FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
         "name": "tier1CeilBps",
         "type": "uint16",
         "internalType": "uint16"
@@ -1437,22 +1417,12 @@ export default [
         "internalType": "uint16"
       },
       {
-        "name": "tier2FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
         "name": "tier2CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       },
       {
         "name": "tier2HaircutBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier3FloorBps",
         "type": "uint16",
         "internalType": "uint16"
       },
@@ -2257,12 +2227,6 @@ export default [
     "name": "TierLtvParamsSet",
     "inputs": [
       {
-        "name": "tier1FloorBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
-      },
-      {
         "name": "tier1CeilBps",
         "type": "uint16",
         "indexed": false,
@@ -2275,12 +2239,6 @@ export default [
         "internalType": "uint16"
       },
       {
-        "name": "tier2FloorBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
-      },
-      {
         "name": "tier2CeilBps",
         "type": "uint16",
         "indexed": false,
@@ -2288,12 +2246,6 @@ export default [
       },
       {
         "name": "tier2HaircutBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier3FloorBps",
         "type": "uint16",
         "indexed": false,
         "internalType": "uint16"
@@ -3263,32 +3215,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "TierLtvBoundsNonMonotonic",
-    "inputs": [
-      {
-        "name": "tier1CeilBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier2FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier2CeilBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier3FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "TierLtvBpsTooHigh",
     "inputs": [
       {
@@ -3316,25 +3242,41 @@ export default [
         "name": "ceilBps",
         "type": "uint16",
         "internalType": "uint16"
+      },
+      {
+        "name": "maxBps",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TierLtvFloorAboveCeil",
+    "name": "TierLtvCeilZero",
     "inputs": [
       {
         "name": "tier",
         "type": "uint8",
         "internalType": "uint8"
-      },
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TierLtvCeilsNonMonotonic",
+    "inputs": [
       {
-        "name": "floorBps",
+        "name": "tier1CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       },
       {
-        "name": "ceilBps",
+        "name": "tier2CeilBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "tier3CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       }
