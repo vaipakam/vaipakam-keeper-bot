@@ -5225,6 +5225,53 @@ export default [
   },
   {
     "type": "error",
+    "name": "NftNotDelivered",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "vault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NftShortDelivery",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "quantity",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NoDexPool",
     "inputs": []
   },
@@ -11063,32 +11110,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "TierLtvBoundsNonMonotonic",
-    "inputs": [
-      {
-        "name": "tier1CeilBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier2FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier2CeilBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      },
-      {
-        "name": "tier3FloorBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "TierLtvBpsTooHigh",
     "inputs": [
       {
@@ -11116,25 +11137,41 @@ export default [
         "name": "ceilBps",
         "type": "uint16",
         "internalType": "uint16"
+      },
+      {
+        "name": "maxBps",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
   {
     "type": "error",
-    "name": "TierLtvFloorAboveCeil",
+    "name": "TierLtvCeilZero",
     "inputs": [
       {
         "name": "tier",
         "type": "uint8",
         "internalType": "uint8"
-      },
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TierLtvCeilsNonMonotonic",
+    "inputs": [
       {
-        "name": "floorBps",
+        "name": "tier1CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       },
       {
-        "name": "ceilBps",
+        "name": "tier2CeilBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "tier3CeilBps",
         "type": "uint16",
         "internalType": "uint16"
       }
@@ -11175,27 +11212,6 @@ export default [
     "type": "error",
     "name": "TierPushRefundFailed",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "TierPushSpacingOutOfRange",
-    "inputs": [
-      {
-        "name": "value",
-        "type": "uint32",
-        "internalType": "uint32"
-      },
-      {
-        "name": "min",
-        "type": "uint32",
-        "internalType": "uint32"
-      },
-      {
-        "name": "max",
-        "type": "uint32",
-        "internalType": "uint32"
-      }
-    ]
   },
   {
     "type": "error",
