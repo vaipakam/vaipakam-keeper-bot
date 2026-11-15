@@ -5026,6 +5026,17 @@
   },
   {
     "type": "error",
+    "name": "SignedOfferSetSize",
+    "inputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "SignedOfferTakerNotAllowed",
     "inputs": [
       {
@@ -5154,6 +5165,11 @@
         "internalType": "enum LibVaipakam.LoanStatus"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "LenderIntentEnded",
+    "inputs": []
   },
   {
     "type": "error",
@@ -12122,6 +12138,22 @@
     "type": "error",
     "name": "LenderIntentPartialRepayNotAllowed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LenderIntentPastLendUntil",
+    "inputs": [
+      {
+        "name": "maturity",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "lendUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
