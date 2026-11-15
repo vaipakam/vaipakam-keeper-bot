@@ -2588,6 +2588,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "PriceReadOutOfGas",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ProtectedVaultLocked",
     "inputs": [
       {

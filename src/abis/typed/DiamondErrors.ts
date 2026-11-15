@@ -7135,6 +7135,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "PriceReadOutOfGas",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "PriceZero",
     "inputs": []
   },
@@ -11630,6 +11635,11 @@ export default [
   {
     "type": "error",
     "name": "TreasuryTransferFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TreasuryUnset",
     "inputs": []
   },
   {
