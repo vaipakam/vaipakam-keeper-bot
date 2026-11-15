@@ -4866,6 +4866,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "LenderIntentEnded",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "LenderIntentExposureExceeded",
     "inputs": []
   },
@@ -4924,6 +4929,22 @@ export default [
     "type": "error",
     "name": "LenderIntentPartialRepayNotAllowed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LenderIntentPastLendUntil",
+    "inputs": [
+      {
+        "name": "maturity",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "lendUntil",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
