@@ -15,7 +15,9 @@
  *   3. Hydrate each id via `getOffer(id)` and split into two arrays —
  *      lender offers and borrower offers.
  *   4. Pre-filter by the cheap continuity bucket (`(lendingAsset,
- *      collateralAsset, assetType, collateralAssetType, durationDays)`).
+ *      collateralAsset, assetType, collateralAssetType)`), then by the
+ *      match core's term rule (`termsFit`, vaipakam #3615: equal terms, or
+ *      a pro-rata pair with the shorter borrower term).
  *      `previewMatch` rejects mismatches anyway, but bucketing cuts
  *      the cartesian to a per-bucket nested loop so we don't pay an
  *      `eth_call` for every (N × M) impossible pair.
@@ -107,6 +109,7 @@ interface OfferLite {
   lendingAsset: Address;
   collateralAsset: Address;
   durationDays: bigint;
+  useFullTermInterest: boolean;
 }
 
 /** Bucket key for pre-filtering candidate pairs by hard continuity
@@ -117,8 +120,16 @@ function bucketKey(o: OfferLite): string {
     o.collateralAsset.toLowerCase(),
     o.assetType,
     o.collateralAssetType,
-    o.durationDays.toString(),
   ].join('|');
+}
+
+/** The match core's term rule (vaipakam #3615, `LibOfferMatch`): equal
+ *  terms always fit; when both offers chose pro-rata interest, a borrower
+ *  term below the lender's fits too (the loan runs the borrower's term).
+ *  Checked before a preview is spent; the preview stays the authority. */
+function termsFit(lender: OfferLite, borrower: OfferLite): boolean {
+  if (lender.durationDays === borrower.durationDays) return true;
+  return !lender.useFullTermInterest && !borrower.useFullTermInterest && borrower.durationDays < lender.durationDays;
 }
 
 /** `getOffer`'s return, exactly as the ABI types it (#13). */
@@ -139,6 +150,7 @@ function liftOffer(raw: OfferRecord): OfferLite {
     lendingAsset: raw.lendingAsset,
     collateralAsset: raw.collateralAsset,
     durationDays: raw.durationDays,
+    useFullTermInterest: raw.useFullTermInterest,
   };
 }
 
@@ -469,6 +481,9 @@ export async function runOfferMatcherTick(ctx: MatcherCtx): Promise<void> {
         if (L.creator.toLowerCase() === B.creator.toLowerCase()) {
           continue;
         }
+        // vaipakam #3615 — the bucket no longer splits by term, so a pair
+        // whose terms the match core would refuse is skipped here.
+        if (!termsFit(L, B)) continue;
 
         previewCalls += 1;
         const p = await previewMatch(ctx, L.id, B.id);
