@@ -10440,6 +10440,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "SignedOfferSetSize",
+    "inputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "SignedOfferTakerNotAllowed",
     "inputs": [
       {
