@@ -10297,7 +10297,44 @@ export default [
   },
   {
     "type": "error",
+    "name": "SignedOfferBelowCancelFloor",
+    "inputs": [
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "floor",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "SignedOfferCallFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferCancelFloorNotRaised",
+    "inputs": [
+      {
+        "name": "floor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "current",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferCoSignatureInvalid",
     "inputs": []
   },
   {
@@ -10345,17 +10382,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "SignedOfferGttExpired",
-    "inputs": [
-      {
-        "name": "expiresAt",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "SignedOfferInsufficientFreeBalance",
     "inputs": [
       {
@@ -10377,19 +10403,24 @@ export default [
   },
   {
     "type": "error",
-    "name": "SignedOfferMaterializeFailed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferNonceBurned",
+    "name": "SignedOfferLoanInitiationFeeAboveCap",
     "inputs": [
       {
-        "name": "nonce",
+        "name": "liveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "capBps",
         "type": "uint256",
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferMaterializeFailed",
+    "inputs": []
   },
   {
     "type": "error",
@@ -10406,6 +10437,38 @@ export default [
     "type": "error",
     "name": "SignedOfferRatioNotConstant",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferTakerNotAllowed",
+    "inputs": [
+      {
+        "name": "taker",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "allowedTaker",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedOfferTreasuryFeeAboveCap",
+    "inputs": [
+      {
+        "name": "liveBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "capBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
