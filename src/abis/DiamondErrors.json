@@ -2226,6 +2226,11 @@
   },
   {
     "type": "error",
+    "name": "PriceReadOutOfGas",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "ProtectedVaultLocked",
     "inputs": [
       {
@@ -5299,6 +5304,11 @@
   {
     "type": "error",
     "name": "TreasuryNotDiamond",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TreasuryUnset",
     "inputs": []
   },
   {

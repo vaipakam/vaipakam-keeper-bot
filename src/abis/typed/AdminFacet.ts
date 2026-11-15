@@ -634,19 +634,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "setTreasury",
-    "inputs": [
-      {
-        "name": "newTreasury",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "setZeroExProxy",
     "inputs": [
       {
@@ -1071,19 +1058,6 @@ export default [
         "type": "address[]",
         "indexed": false,
         "internalType": "address[]"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "TreasurySet",
-    "inputs": [
-      {
-        "name": "newTreasury",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
       }
     ],
     "anonymous": false
