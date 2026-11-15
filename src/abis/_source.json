@@ -1,5 +1,5 @@
 {
-  "monorepoCommit": "f3a2587adc0adf6639f44d500ab81fdb39afce46",
-  "exportedAt": "2026-11-15T04:09:23Z",
+  "monorepoCommit": "8b6b999d95b4a34a25b8e1106befb7d502a78b9d",
+  "exportedAt": "2026-11-15T08:18:17Z",
   "facets": ["MetricsFacet","RiskFacet","RiskMatchLiquidationFacet","ForcedSalePreviewFacet","LoanFacet","OfferCreateFacet","OfferAcceptFacet","OfferCancelFacet","OfferMatchFacet","ConfigFacet","AdminFacet","AutoLifecycleFacet","AutoLifecycleSettingsFacet"]
 }
