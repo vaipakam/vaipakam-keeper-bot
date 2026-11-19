@@ -1051,6 +1051,21 @@ export default [
             "name": "liqDiscountBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "lifTermOrigin",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "lifPaidDays",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "rateFromLink",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       }

@@ -184,6 +184,16 @@ export default [
             "name": "acceptorAllowFullDowngrade",
             "type": "bool",
             "internalType": "bool"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       },
@@ -407,6 +417,16 @@ export default [
           },
           {
             "name": "acceptorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
             "type": "bool",
             "internalType": "bool"
           }
@@ -676,6 +696,16 @@ export default [
           },
           {
             "name": "acceptorAllowFullDowngrade",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
             "type": "bool",
             "internalType": "bool"
           }
@@ -1164,6 +1194,17 @@ export default [
         "name": "key",
         "type": "bytes32",
         "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -2854,6 +2895,11 @@ export default [
   {
     "type": "error",
     "name": "PositionNFTNotSet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionTokenNotAccepted",
     "inputs": []
   },
   {

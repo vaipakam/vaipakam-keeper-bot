@@ -26,21 +26,22 @@ export default [
   },
   {
     "type": "function",
-    "name": "fundExtendReserve",
+    "name": "getAutoExtendLendUntil",
     "inputs": [
       {
         "name": "loanId",
         "type": "uint256",
         "internalType": "uint256"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "outputs": [
+      {
+        "name": "lendUntil",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -111,29 +112,6 @@ export default [
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "withdrawExtendReserve",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "loanId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
     "type": "event",
     "name": "ExtendChargeDrawn",
     "inputs": [
@@ -178,7 +156,7 @@ export default [
   },
   {
     "type": "event",
-    "name": "ExtendReserveFunded",
+    "name": "ExtensionFeeCharged",
     "inputs": [
       {
         "name": "loanId",
@@ -187,7 +165,7 @@ export default [
         "internalType": "uint256"
       },
       {
-        "name": "holder",
+        "name": "payer",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -199,50 +177,19 @@ export default [
         "internalType": "address"
       },
       {
-        "name": "amount",
+        "name": "fee",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
       },
       {
-        "name": "reserved",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ExtendReserveWithdrawn",
-    "inputs": [
-      {
-        "name": "loanId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "holder",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "asset",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
+        "name": "paidDays",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
       },
       {
-        "name": "reserved",
+        "name": "newPaidDays",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
@@ -375,17 +322,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "AssetPaused",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "AutoExtendDisabled",
     "inputs": []
   },
@@ -403,6 +339,22 @@ export default [
     "type": "error",
     "name": "AutoExtendExpiryExceedsCap",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AutoExtendPastLendUntil",
+    "inputs": [
+      {
+        "name": "newEnd",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "lendUntil",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
   },
   {
     "type": "error",
@@ -474,34 +426,19 @@ export default [
   },
   {
     "type": "error",
-    "name": "ExtendReserveInsufficient",
+    "name": "ExtensionFeeAboveCap",
     "inputs": [
       {
-        "name": "loanId",
+        "name": "fee",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "holder",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "requested",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "available",
+        "name": "cap",
         "type": "uint256",
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "ExtendReserveZeroAmount",
-    "inputs": []
   },
   {
     "type": "error",
@@ -557,17 +494,43 @@ export default [
   },
   {
     "type": "error",
-    "name": "NotAccountManager",
+    "name": "LoanReserveInsufficient",
     "inputs": [
       {
-        "name": "account",
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "holder",
         "type": "address",
         "internalType": "address"
       },
       {
-        "name": "caller",
-        "type": "address",
-        "internalType": "address"
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "available",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LoanReserveKindUnknown",
+    "inputs": [
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
       }
     ]
   },

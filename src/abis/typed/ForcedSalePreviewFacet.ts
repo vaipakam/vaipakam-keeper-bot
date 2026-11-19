@@ -3,6 +3,35 @@
 export default [
   {
     "type": "function",
+    "name": "getFallbackGate",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "failedSales",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "firstFailAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "fallbackOpensAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "previewDiscountedLiquidation",
     "inputs": [
       {

@@ -1521,6 +1521,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CommitmentDayNotArmed",
     "inputs": [
       {
@@ -3126,6 +3137,11 @@ export default [
         "internalType": "address"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "PositionTokenNotAccepted",
+    "inputs": []
   },
   {
     "type": "error",

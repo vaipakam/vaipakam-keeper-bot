@@ -3,6 +3,22 @@
 export default [
   {
     "type": "error",
+    "name": "AcceptChargeLoanMismatch",
+    "inputs": [
+      {
+        "name": "settledFor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "opened",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AcceptNonceUsed",
     "inputs": []
   },
@@ -34,6 +50,17 @@ export default [
         "name": "neededRole",
         "type": "bytes32",
         "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AccountNotRecovered",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
       }
     ]
   },
@@ -93,11 +120,6 @@ export default [
   {
     "type": "error",
     "name": "AggregatorAdaptersPaused",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AlreadyApproved",
     "inputs": []
   },
   {
@@ -417,6 +439,22 @@ export default [
     "type": "error",
     "name": "AutoExtendExpiryExceedsCap",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AutoExtendPastLendUntil",
+    "inputs": [
+      {
+        "name": "newEnd",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "lendUntil",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1246,6 +1284,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "CannotCosignOwnPayout",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "CannotEmergencyRevokeFromOwner",
     "inputs": [
       {
@@ -1366,17 +1415,6 @@ export default [
       },
       {
         "name": "borrowerFrontier",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ChangeExpired",
-    "inputs": [
-      {
-        "name": "expiredAt",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -1533,6 +1571,53 @@ export default [
   },
   {
     "type": "error",
+    "name": "CollateralExclusionsMismatch",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollateralExclusionsOnList",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollateralExclusionsTooMany",
+    "inputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollateralLabelTooLong",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollateralListEmpty",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "CollateralMustBePositive",
     "inputs": []
   },
@@ -1540,6 +1625,133 @@ export default [
     "type": "error",
     "name": "CollateralMutationUnsupportedForShape",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollateralProofTooDeep",
+    "inputs": [
+      {
+        "name": "depth",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollateralRangeInverted",
+    "inputs": [
+      {
+        "name": "low",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "high",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollateralSetKindMissing",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollectionExpiryOutOfRange",
+    "inputs": [
+      {
+        "name": "expiresAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "latest",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionLoansOutOfRange",
+    "inputs": [
+      {
+        "name": "loans",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionOfferShape",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionPublishedIdsInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollectionReductionInvalid",
+    "inputs": [
+      {
+        "name": "loansLeft",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "requested",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionTakeRefused",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "reason",
+        "type": "uint8",
+        "internalType": "enum CollectionOfferFacet.TakeFailure"
+      }
+    ]
   },
   {
     "type": "error",
@@ -2219,22 +2431,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "DelayOutOfBounds",
-    "inputs": [
-      {
-        "name": "minDelay",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "maxDelay",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "DeliveredFreshBoundExceeded",
     "inputs": [
       {
@@ -2326,6 +2522,17 @@ export default [
         "name": "dispatchCutoffGap",
         "type": "uint64",
         "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DueDatePlanExists",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -2515,34 +2722,19 @@ export default [
   },
   {
     "type": "error",
-    "name": "ExtendReserveInsufficient",
+    "name": "ExtensionFeeAboveCap",
     "inputs": [
       {
-        "name": "loanId",
+        "name": "fee",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "holder",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "requested",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "available",
+        "name": "cap",
         "type": "uint256",
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "ExtendReserveZeroAmount",
-    "inputs": []
   },
   {
     "type": "error",
@@ -2906,6 +3098,17 @@ export default [
       },
       {
         "name": "most",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ForcedSaleRoutesFailed",
+    "inputs": [
+      {
+        "name": "loanId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -3287,8 +3490,231 @@ export default [
   },
   {
     "type": "error",
+    "name": "InstantBelowLeast",
+    "inputs": [
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "least",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantKindUnavailable",
+    "inputs": [
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantLoanNotEligible",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantMarketDisabled",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantNothingToFill",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantOfferNotSource",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantPairNotEligible",
+    "inputs": [
+      {
+        "name": "lendingAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "collateralAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantRateAboveLimit",
+    "inputs": [
+      {
+        "name": "rateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantRequestInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantSlotInactive",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantSlotNeedsProRata",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantSlotNotOffered",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantSlotSolverOnly",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverHeld",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "held",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverLtvAboveSlot",
+    "inputs": [
+      {
+        "name": "ltvBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxInitLtvBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverNotOffered",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverRateBelowSlot",
+    "inputs": [
+      {
+        "name": "rateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverSameParty",
+    "inputs": [
+      {
+        "name": "incoming",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantTakeoverTermPastSlot",
+    "inputs": [
+      {
+        "name": "maturity",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InstantTooManySources",
+    "inputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InsufficientAllowance",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InsufficientBalance",
+    "inputs": [
+      {
+        "name": "balance",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -3365,6 +3791,82 @@ export default [
   },
   {
     "type": "error",
+    "name": "IntegratorAddressTaken",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "holder",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntegratorInvalid",
+    "inputs": [
+      {
+        "name": "integrator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntegratorNameInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IntegratorNameTaken",
+    "inputs": [
+      {
+        "name": "holder",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntegratorNotRegistered",
+    "inputs": [
+      {
+        "name": "integrator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntegratorNotSuspended",
+    "inputs": [
+      {
+        "name": "integrator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntegratorRateInvalid",
+    "inputs": [
+      {
+        "name": "rateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IntentAlreadyCommitted",
     "inputs": [
       {
@@ -3413,6 +3915,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "IntentCalmCheckRequired",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IntentCapitalInsufficient",
     "inputs": [
       {
@@ -3429,6 +3942,11 @@ export default [
         "name": "coll",
         "type": "address",
         "internalType": "address"
+      },
+      {
+        "name": "slot",
+        "type": "uint8",
+        "internalType": "uint8"
       },
       {
         "name": "requested",
@@ -3633,6 +4151,54 @@ export default [
   },
   {
     "type": "error",
+    "name": "IntentPairNoCheckpoint",
+    "inputs": [
+      {
+        "name": "lendingAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "collateralAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntentPairNotCalm",
+    "inputs": [
+      {
+        "name": "lendingAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "collateralAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntentPairUnpriced",
+    "inputs": [
+      {
+        "name": "lendingAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "collateralAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "IntentPending",
     "inputs": [
       {
@@ -3672,6 +4238,17 @@ export default [
         "name": "orderHash",
         "type": "bytes32",
         "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "IntentSlotOutOfRange",
+    "inputs": [
+      {
+        "name": "slot",
+        "type": "uint8",
+        "internalType": "uint8"
       }
     ]
   },
@@ -3794,8 +4371,50 @@ export default [
   },
   {
     "type": "error",
+    "name": "InterestPaymentOutOfGas",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InterestPaymentPreview",
+    "inputs": [
+      {
+        "name": "skip",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "inner",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InterestRateAboveCeiling",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InterestRecoveredAboveGross",
+    "inputs": [
+      {
+        "name": "recovered",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "gross",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -4099,6 +4718,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidFeeShareCeiling",
+    "inputs": [
+      {
+        "name": "ceilingBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidIncentiveBps",
     "inputs": [
       {
@@ -4133,6 +4763,27 @@ export default [
     "type": "error",
     "name": "InvalidLoan",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidLoanInitiationFeeTerms",
+    "inputs": [
+      {
+        "name": "baseTermDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "yearlyBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "yearDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -4186,17 +4837,6 @@ export default [
     "type": "error",
     "name": "InvalidNewBorrower",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "InvalidNominee",
-    "inputs": [
-      {
-        "name": "nominee",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -4265,6 +4905,17 @@ export default [
     "type": "error",
     "name": "InvalidPartialLiqSizing",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPositionOwnMoveWait",
+    "inputs": [
+      {
+        "name": "sec",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
   },
   {
     "type": "error",
@@ -4353,6 +5004,33 @@ export default [
   },
   {
     "type": "error",
+    "name": "InvalidReferralPeriod",
+    "inputs": [
+      {
+        "name": "periodDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidReferralRates",
+    "inputs": [
+      {
+        "name": "cutBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "shareBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InvalidRefinanceOffer",
     "inputs": []
   },
@@ -4423,17 +5101,6 @@ export default [
     "type": "error",
     "name": "InvalidSaleOffer",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "InvalidSigner",
-    "inputs": [
-      {
-        "name": "signer",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -4511,6 +5178,22 @@ export default [
         "name": "reason",
         "type": "string",
         "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTreasuryFeeFloors",
+    "inputs": [
+      {
+        "name": "initiationBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "interestBps",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -4702,6 +5385,22 @@ export default [
         "name": "maxSecs",
         "type": "uint32",
         "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "KeeperSaleRateAbove",
+    "inputs": [
+      {
+        "name": "saleRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "loanRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -4969,6 +5668,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "LenderIntentSlotOutOfRange",
+    "inputs": [
+      {
+        "name": "slot",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "LenderIntentVpfiRollUnsupported",
     "inputs": []
   },
@@ -4986,6 +5696,22 @@ export default [
     "type": "error",
     "name": "LenderYieldFeeResolveFailed",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LifecycleFlexNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LifecycleFlexUnknownBits",
+    "inputs": [
+      {
+        "name": "flex",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
   },
   {
     "type": "error",
@@ -5052,12 +5778,96 @@ export default [
   },
   {
     "type": "error",
+    "name": "LoanHealthAboveTrigger",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "hf",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "trigger",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "LoanInitiationFailed",
     "inputs": []
   },
   {
     "type": "error",
     "name": "LoanNotActive",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LoanReserveInsufficient",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "holder",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "available",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LoanReserveKindUnknown",
+    "inputs": [
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LoanReserveNotOffered",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LoanReserveZeroAmount",
     "inputs": []
   },
   {
@@ -5088,6 +5898,43 @@ export default [
   },
   {
     "type": "error",
+    "name": "LockedSaleRateAbove",
+    "inputs": [
+      {
+        "name": "seller",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "saleRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "loanRateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "LockedSaleShortfall",
+    "inputs": [
+      {
+        "name": "seller",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "shortfall",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "LopDomainUnsupported",
     "inputs": [
       {
@@ -5099,8 +5946,40 @@ export default [
   },
   {
     "type": "error",
+    "name": "MatchCoreOnlyDiamondInternal",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "MatchHFTooLow",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MatcherAndCutAboveCeiling",
+    "inputs": [
+      {
+        "name": "matcherBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "cutBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "ceilingBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -5314,6 +6193,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "NoParkedTreasuryShare",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NoPendingRiskTermsCommitment",
     "inputs": []
   },
@@ -5324,8 +6219,14 @@ export default [
   },
   {
     "type": "error",
-    "name": "NoReplacementProposed",
-    "inputs": []
+    "name": "NoRecoveryAddress",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -5335,6 +6236,11 @@ export default [
   {
     "type": "error",
     "name": "NoSwapAdaptersConfigured",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoTosAnnouncement",
     "inputs": []
   },
   {
@@ -5518,6 +6424,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "NotAccountVault",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NotAdapterPrincipal",
     "inputs": []
   },
@@ -5564,6 +6486,22 @@ export default [
   {
     "type": "error",
     "name": "NotCanonicalVPFIChain",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotCollectionOffer",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotCollectionOfferLender",
     "inputs": []
   },
   {
@@ -5805,6 +6743,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "NothingOwed",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NothingToClaim",
     "inputs": []
   },
@@ -5828,6 +6777,17 @@ export default [
     "type": "error",
     "name": "NothingToRemit",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NothingToSweep",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -6361,11 +7321,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "OwnerCannotCancelWhileSignerLock",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "OwnershipTransferToZero",
     "inputs": []
   },
@@ -6747,11 +7702,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "PendingRowsExist",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "PeriodicCadenceMustSettleFirst",
     "inputs": []
   },
@@ -7034,6 +7984,38 @@ export default [
   },
   {
     "type": "error",
+    "name": "PositionStateChanged",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "current",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionToVault",
+    "inputs": [
+      {
+        "name": "vault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "PositionTokenBoundToAnotherLoan",
     "inputs": [
       {
@@ -7047,6 +8029,11 @@ export default [
         "internalType": "uint256"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "PositionTokenNotAccepted",
+    "inputs": []
   },
   {
     "type": "error",
@@ -7177,17 +8164,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "ProtectedModeAlreadyOn",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "ProtectedModeOff",
     "inputs": [
       {
@@ -7200,17 +8176,6 @@ export default [
   {
     "type": "error",
     "name": "ProtectedVaultLocked",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ProtectedVaultNotLocked",
     "inputs": [
       {
         "name": "account",
@@ -7248,6 +8213,96 @@ export default [
   },
   {
     "type": "error",
+    "name": "RateBeyondAcceptorLimit",
+    "inputs": [
+      {
+        "name": "rateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "limitBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RateFarFromTermAverage",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "termDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "averageBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "above",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RateLinkInvalid",
+    "inputs": [
+      {
+        "name": "kind",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "marginBps",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RateLinkNoReference",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RateLinkNotOffered",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RateLinkUnavailable",
+    "inputs": [
+      {
+        "name": "refusal",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RateModelNotContract",
     "inputs": []
   },
@@ -7258,8 +8313,146 @@ export default [
   },
   {
     "type": "error",
+    "name": "RatePricedLendingAsset",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RateRangeEmpty",
+    "inputs": [
+      {
+        "name": "floorBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "ceilingBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "RateShortfallTooHigh",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReadyAmountZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReadyBalanceShort",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "ready",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReadyExceedsFree",
+    "inputs": [
+      {
+        "name": "requested",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "available",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReadyHostInternalOnly",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReadyIdleOutOfRange",
+    "inputs": [
+      {
+        "name": "idle",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReadyNoPendingTopUp",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReadyNotOwner",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReadyNotOwnerOrSigner",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReadyUntilOutOfRange",
+    "inputs": [
+      {
+        "name": "until",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -7785,6 +8978,33 @@ export default [
     "type": "error",
     "name": "ReentrancyGuardReentrantCall",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReferralAfterFirstBorrow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReferralAlreadyBound",
+    "inputs": [
+      {
+        "name": "inviter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ReferralInviterInvalid",
+    "inputs": [
+      {
+        "name": "inviter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -8509,12 +9729,23 @@ export default [
   },
   {
     "type": "error",
-    "name": "RepaymentPastGracePeriod",
-    "inputs": []
+    "name": "RepayLeadTooLong",
+    "inputs": [
+      {
+        "name": "leadSeconds",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "max",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
   },
   {
     "type": "error",
-    "name": "ReplacementNotReady",
+    "name": "RepaymentPastGracePeriod",
     "inputs": []
   },
   {
@@ -9296,6 +10527,22 @@ export default [
       },
       {
         "name": "maxAllowed",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RiskCooldownTooShort",
+    "inputs": [
+      {
+        "name": "requested",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "minAllowed",
         "type": "uint64",
         "internalType": "uint64"
       }
@@ -10227,6 +11474,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "SettlementAttemptOutOfGas",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SettlementLegAlreadyParked",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "ShortLapseDeadlineNotReached",
     "inputs": [
       {
@@ -10287,6 +11550,53 @@ export default [
         "name": "offerId",
         "type": "uint96",
         "internalType": "uint96"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedCollectionLifetimeInvalid",
+    "inputs": [
+      {
+        "name": "startTime",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "expiresAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "deadline",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "latest",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SignedCollectionTakeRefused",
+    "inputs": [
+      {
+        "name": "orderHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "reason",
+        "type": "uint8",
+        "internalType": "enum CollectionOfferFacet.TakeFailure"
       }
     ]
   },
@@ -10488,12 +11798,23 @@ export default [
   },
   {
     "type": "error",
-    "name": "SignerNotAccepted",
+    "name": "SignedOfferWrongRoute",
     "inputs": [
       {
-        "name": "signer",
-        "type": "address",
-        "internalType": "address"
+        "name": "setKind",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SlotOriginMissing",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -10814,6 +12135,80 @@ export default [
   },
   {
     "type": "error",
+    "name": "StandingInstructionConfigInvalid",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "StandingInstructionNotDue",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "instruction",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "from",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "StandingInstructionNotOffered",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "instruction",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "StandingInstructionNotSet",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "instruction",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "StandingInstructionWindowClosed",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "instruction",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "StrandedReturnAwaitingAck",
     "inputs": [
       {
@@ -11131,6 +12526,22 @@ export default [
   },
   {
     "type": "error",
+    "name": "TermsNotAccepted",
+    "inputs": [
+      {
+        "name": "wallet",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "version",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "TierLiqDiscountNonMonotonic",
     "inputs": [
       {
@@ -11347,6 +12758,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "TierTableVersionUnset",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "TokenDecimalsUnreadable",
     "inputs": [
       {
@@ -11400,8 +12816,19 @@ export default [
   },
   {
     "type": "error",
-    "name": "TooManyAllowlisted",
-    "inputs": []
+    "name": "TooManyAssets",
+    "inputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "max",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -11442,8 +12869,83 @@ export default [
   },
   {
     "type": "error",
-    "name": "TooManySigners",
+    "name": "TopUpBoundsInvalid",
+    "inputs": [
+      {
+        "name": "triggerHf",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "targetHf",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TopUpTooSoon",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "nextAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TosAnnouncementPending",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TosMinimumAlreadyLatest",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TosNoticeTooShort",
+    "inputs": [
+      {
+        "name": "effectiveAt",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "earliest",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TosVersionWindowTooWide",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "minimum",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
   },
   {
     "type": "error",
@@ -11465,6 +12967,38 @@ export default [
     "type": "error",
     "name": "TransferAdminToZero",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TransferFromRecoveredAccount",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TransferFromRetiredAccount",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -11930,6 +13464,11 @@ export default [
   {
     "type": "error",
     "name": "VaultDepositFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "VaultMoveOutsideGuard",
     "inputs": []
   },
   {
