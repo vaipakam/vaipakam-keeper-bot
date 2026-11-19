@@ -57,7 +57,47 @@ twice in one cron sweep. Across ticks, the diamond's status check
 naturally rejects re-attempts on already-liquidated loans (you
 just pay gas for a failed simulation, not a real revert).
 
+## My positions mode: your own standing instructions
+
+A borrower can leave standing instructions on a loan: top up the
+collateral from a collateral reserve when the health factor falls under a
+trigger, pay each period's interest from a payment reserve, and repay the
+whole loan from a lead time before the due date. The reserves are the
+borrower's own money in their own vault. **A step runs only when someone
+submits it.** The protocol's own keeper may or may not run these steps on
+a given network, and anyone may run them for their own wallets with this
+bot.
+
+Switch each step on separately (all are off unless set):
+
+| Variable | Step |
+| --- | --- |
+| `STANDING_TOPUP_ENABLED=true` | `runCollateralTopUp(loanId)` |
+| `STANDING_INTEREST_ENABLED=true` | `runInterestPayment(loanId)` (previewed first with `previewInterestPayment`) |
+| `STANDING_REPAY_ENABLED=true` | `runDueRepayment(loanId)` |
+
+Set `CHAIN_<ID>_MY_WALLETS` to your own wallets and the bot looks only at
+loans whose **borrower position** one of them holds now. That is read from
+the position tokens the wallet holds, so a position you bought counts and
+one you sold does not. Leave it blank to look at every active loan.
+`CHAIN_<ID>_LOAN_IDS` narrows either further. The other passes
+(liquidation, matching, auto-extension) ignore this setting.
+
+The bot decides nothing itself. It reads the loan's own view
+(`getLoanReserve`), tries a step only where that view says it would move
+something now, simulates the call, and sends it only when the simulation
+succeeds. When the contract skips an instruction it records
+`StandingInstructionSkipped`, and the bot logs the reason by name. At most
+5 sends per chain per tick; the rest wait for the next tick. A due
+repayment closes the loan, so it is that loan's only step.
+
 ## Trust assumptions
+
+- **The standing-instruction steps need no permission.** Your bot's key
+  needs no keeper approval from anyone and holds no authority over any
+  loan: the loan, the borrower's settings and the reserve fix every
+  amount, and the caller receives nothing. A leaked key costs only the gas
+  it holds.
 
 - **Keeper key** = a hot wallet. Worst case if leaked: the attacker
   drains your gas budget by submitting attempts that fail. They

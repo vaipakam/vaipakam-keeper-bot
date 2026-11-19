@@ -19,6 +19,22 @@ export interface ChainConfig {
   /** Optional whitelist of loan IDs to monitor on this chain. Empty
    *  = "all active loans" (heavier RPC load). */
   loanIds: number[] | null;
+  /** "My positions" mode (vaipakam#3789): the operator's own wallets on this
+   *  chain (`CHAIN_<id>_MY_WALLETS`). When set, the standing-instruction
+   *  passes look only at loans whose BORROWER POSITION one of these wallets
+   *  holds now; null = every active loan. `loanIds` narrows further. */
+  myWallets: Address[] | null;
+}
+
+/** The standing-instruction passes (vaipakam#3789), each off unless its
+ *  variable is `true`. */
+export interface StandingSteps {
+  /** `STANDING_TOPUP_ENABLED`: `runCollateralTopUp`. */
+  topUp: boolean;
+  /** `STANDING_INTEREST_ENABLED`: `runInterestPayment`. */
+  interest: boolean;
+  /** `STANDING_REPAY_ENABLED`: `runDueRepayment`. */
+  repay: boolean;
 }
 
 export interface BotConfig {
@@ -26,6 +42,7 @@ export interface BotConfig {
   /** Computed keeper EOA address from the private key. */
   keeperAddress: Address;
   chains: readonly ChainConfig[];
+  standing: StandingSteps;
   zeroExApiKey: string | null;
   oneInchApiKey: string | null;
   pollIntervalSeconds: number;
@@ -48,6 +65,30 @@ function optString(key: string): string | null {
   const v = process.env[key];
   if (v == null || v.trim() === '') return null;
   return v.trim();
+}
+
+/** A pass switch: on only for `true` (any case), off when unset or empty;
+ *  anything else is a startup error, so a typo never arms or disarms a pass
+ *  silently. */
+function flag(key: string): boolean {
+  const v = optString(key);
+  if (v === null) return false;
+  if (/^true$/i.test(v)) return true;
+  if (/^false$/i.test(v)) return false;
+  throw new ConfigError(`${key} must be true or false, got: ${v}`);
+}
+
+/** `CHAIN_<id>_MY_WALLETS`: comma-separated addresses, or null when unset. */
+export function parseWallets(key: string, raw: string | null): Address[] | null {
+  if (raw === null) return null;
+  const out: Address[] = [];
+  for (const part of raw.split(',')) {
+    const a = part.trim();
+    if (a === '') continue;
+    if (!isAddress(a)) throw new ConfigError(`${key} has an invalid address: ${a}`);
+    if (!out.some((x) => x.toLowerCase() === a.toLowerCase())) out.push(a as Address);
+  }
+  return out.length === 0 ? null : out;
 }
 
 function parseLogLevel(s: string): BotConfig['logLevel'] {
@@ -105,11 +146,13 @@ export function loadConfig(): BotConfig {
         .filter((n) => Number.isInteger(n) && n >= 0);
       if (loanIds.length === 0) loanIds = null;
     }
+    const walletsKey = `CHAIN_${id}_MY_WALLETS`;
     return {
       chainId: id,
       diamond: diamond as Address,
       rpcUrl,
       loanIds,
+      myWallets: parseWallets(walletsKey, optString(walletsKey)),
     };
   });
 
@@ -152,6 +195,11 @@ export function loadConfig(): BotConfig {
     keeperKey: keeperKey as Hex,
     keeperAddress: account.address,
     chains,
+    standing: {
+      topUp: flag('STANDING_TOPUP_ENABLED'),
+      interest: flag('STANDING_INTEREST_ENABLED'),
+      repay: flag('STANDING_REPAY_ENABLED'),
+    },
     zeroExApiKey: optString('ZEROEX_API_KEY'),
     oneInchApiKey: optString('ONEINCH_API_KEY'),
     pollIntervalSeconds,

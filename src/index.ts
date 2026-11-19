@@ -52,6 +52,7 @@ import { log, setLogLevel } from './log.ts';
 import { orchestrateQuotes } from './quotes.ts';
 import { runOfferMatcherTick } from './detectors/offerMatcher.ts';
 import { runAutoExtendDetectorTick } from './detectors/autoExtendDetector.ts';
+import { runStandingInstructionsTick } from './detectors/standingInstructions.ts';
 
 // Per-facet typed ABIs (src/abis/diamond.ts, #13): each call names the ABI
 // of the facet that defines its function, so viem types the call and a
@@ -329,6 +330,27 @@ async function tickChain(cfg: BotConfig, ctx: ChainContext): Promise<void> {
       err: String(err).slice(0, 200),
     });
   }
+
+  // vaipakam#3789 — the borrower's standing instructions, each step off
+  // unless its STANDING_*_ENABLED is true. With CHAIN_<id>_MY_WALLETS set
+  // ("my positions" mode) only loans whose borrower position those wallets
+  // hold now are looked at.
+  try {
+    await runStandingInstructionsTick({
+      chainId: ctx.cfg.chainId,
+      diamond: ctx.cfg.diamond,
+      publicClient: ctx.publicClient,
+      walletClient: ctx.walletClient,
+      steps: cfg.standing,
+      myWallets: ctx.cfg.myWallets,
+      loanIds: ctx.cfg.loanIds,
+    });
+  } catch (err) {
+    log.warn('standing.tick.crashed', {
+      chain: ctx.cfg.chainId,
+      err: String(err).slice(0, 200),
+    });
+  }
 }
 
 async function main(): Promise<void> {
@@ -340,6 +362,8 @@ async function main(): Promise<void> {
     pollIntervalSeconds: cfg.pollIntervalSeconds,
     zeroEx: !!cfg.zeroExApiKey,
     oneInch: !!cfg.oneInchApiKey,
+    standing: cfg.standing,
+    myWallets: Object.fromEntries(cfg.chains.map((c) => [c.chainId, c.myWallets?.length ?? 'all'])),
   });
 
   const ctxs = await buildChainContexts(cfg);
