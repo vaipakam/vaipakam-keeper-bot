@@ -295,6 +295,29 @@ export default [
   },
   {
     "type": "function",
+    "name": "getLateFeeSchedule",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "firstDayBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "perDayBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "capBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
     "name": "getLifMatcherFeeBps",
     "inputs": [],
     "outputs": [

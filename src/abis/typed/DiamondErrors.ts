@@ -3606,6 +3606,17 @@ export default [
   },
   {
     "type": "error",
+    "name": "InstantSourceRepeated",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "InstantTakeoverHeld",
     "inputs": [
       {
