@@ -1016,19 +1016,6 @@ export default [
   },
   {
     "type": "function",
-    "name": "setLifMatcherFeeBps",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "internalType": "uint16"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "setLiquidationConfig",
     "inputs": [
       {
@@ -1820,19 +1807,6 @@ export default [
         "type": "uint8",
         "indexed": false,
         "internalType": "uint8"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "LifMatcherFeeBpsSet",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
       }
     ],
     "anonymous": false

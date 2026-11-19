@@ -3,6 +3,35 @@
 export default [
   {
     "type": "function",
+    "name": "matchCoreInternal",
+    "inputs": [
+      {
+        "name": "lenderOfferId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "borrowerOfferId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "matcher",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "matchOffers",
     "inputs": [
       {
@@ -210,6 +239,28 @@ export default [
   },
   {
     "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CrossFacetCallFailed",
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "DurationMismatch",
     "inputs": []
   },
@@ -249,6 +300,17 @@ export default [
     "type": "error",
     "name": "LifecycleTermsMismatch",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MatchCoreOnlyDiamondInternal",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",

@@ -31,6 +31,7 @@ import OfferCancelFacet from './typed/OfferCancelFacet.ts';
 import OfferMatchFacet from './typed/OfferMatchFacet.ts';
 import RiskFacet from './typed/RiskFacet.ts';
 import RiskMatchLiquidationFacet from './typed/RiskMatchLiquidationFacet.ts';
+import StandingInstructionFacet from './typed/StandingInstructionFacet.ts';
 import DIAMOND_ERRORS from './typed/DiamondErrors.ts';
 
 export const ADMIN_ABI = [...AdminFacet, ...DIAMOND_ERRORS] as const;
@@ -45,3 +46,5 @@ export const OFFER_CANCEL_ABI = [...OfferCancelFacet, ...DIAMOND_ERRORS] as cons
 export const OFFER_MATCH_ABI = [...OfferMatchFacet, ...DIAMOND_ERRORS] as const;
 export const RISK_ABI = [...RiskFacet, ...DIAMOND_ERRORS] as const;
 export const RISK_MATCH_LIQUIDATION_ABI = [...RiskMatchLiquidationFacet, ...DIAMOND_ERRORS] as const;
+/** vaipakam#3789 — the borrower's standing instructions ("my positions" mode). */
+export const STANDING_INSTRUCTION_ABI = [...StandingInstructionFacet, ...DIAMOND_ERRORS] as const;
