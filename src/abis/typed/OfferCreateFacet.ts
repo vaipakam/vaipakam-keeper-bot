@@ -3,6 +3,187 @@
 export default [
   {
     "type": "function",
+    "name": "createCollectionParent",
+    "inputs": [
+      {
+        "name": "creator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "params",
+        "type": "tuple",
+        "internalType": "struct LibVaipakam.CreateOfferParams",
+        "components": [
+          {
+            "name": "offerType",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.OfferType"
+          },
+          {
+            "name": "lendingAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "interestRateBps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collateralAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "durationDays",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "assetType",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.AssetType"
+          },
+          {
+            "name": "tokenId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "quantity",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "creatorRiskAndTermsConsent",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "prepayAsset",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralAssetType",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.AssetType"
+          },
+          {
+            "name": "collateralTokenId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collateralQuantity",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "allowsPartialRepay",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "amountMax",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "interestRateBpsMax",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collateralAmountMax",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "periodicInterestCadence",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.PeriodicInterestCadence"
+          },
+          {
+            "name": "expiresAt",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "fillMode",
+            "type": "uint8",
+            "internalType": "enum LibVaipakam.FillMode"
+          },
+          {
+            "name": "allowsPrepayListing",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "allowsParallelSale",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "refinanceTargetLoanId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "useFullTermInterest",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "lifecycleFlex",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "linkKind",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "linkMarginBps",
+            "type": "int16",
+            "internalType": "int16"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "createOffer",
     "inputs": [
       {
@@ -137,6 +318,31 @@ export default [
           },
           {
             "name": "useFullTermInterest",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "lifecycleFlex",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "linkKind",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "linkMarginBps",
+            "type": "int16",
+            "internalType": "int16"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
             "type": "bool",
             "internalType": "bool"
           }
@@ -300,6 +506,31 @@ export default [
             "name": "useFullTermInterest",
             "type": "bool",
             "internalType": "bool"
+          },
+          {
+            "name": "lifecycleFlex",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "linkKind",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "linkMarginBps",
+            "type": "int16",
+            "internalType": "int16"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       }
@@ -451,6 +682,31 @@ export default [
             "name": "useFullTermInterest",
             "type": "bool",
             "internalType": "bool"
+          },
+          {
+            "name": "lifecycleFlex",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "linkKind",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "linkMarginBps",
+            "type": "int16",
+            "internalType": "int16"
+          },
+          {
+            "name": "rateFarFromAverageAcknowledged",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       },
@@ -497,406 +753,6 @@ export default [
         "name": "validUntil",
         "type": "uint64",
         "internalType": "uint64"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "offerId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "createSignedOfferVault",
-    "inputs": [
-      {
-        "name": "creator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "params",
-        "type": "tuple",
-        "internalType": "struct LibVaipakam.CreateOfferParams",
-        "components": [
-          {
-            "name": "offerType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.OfferType"
-          },
-          {
-            "name": "lendingAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "amount",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "interestRateBps",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "collateralAmount",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "durationDays",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "assetType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.AssetType"
-          },
-          {
-            "name": "tokenId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "quantity",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "creatorRiskAndTermsConsent",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "prepayAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "collateralAssetType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.AssetType"
-          },
-          {
-            "name": "collateralTokenId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralQuantity",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "allowsPartialRepay",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "amountMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "interestRateBpsMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralAmountMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "periodicInterestCadence",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.PeriodicInterestCadence"
-          },
-          {
-            "name": "expiresAt",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "fillMode",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.FillMode"
-          },
-          {
-            "name": "allowsPrepayListing",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "allowsParallelSale",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "refinanceTargetLoanId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "useFullTermInterest",
-            "type": "bool",
-            "internalType": "bool"
-          }
-        ]
-      },
-      {
-        "name": "full",
-        "type": "tuple",
-        "internalType": "struct LibSignedOffer.MakerFull",
-        "components": [
-          {
-            "name": "full",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "maxCStar",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "allowDowngrade",
-            "type": "bool",
-            "internalType": "bool"
-          }
-        ]
-      }
-    ],
-    "outputs": [
-      {
-        "name": "offerId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "createSignedOfferWallet",
-    "inputs": [
-      {
-        "name": "creator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "params",
-        "type": "tuple",
-        "internalType": "struct LibVaipakam.CreateOfferParams",
-        "components": [
-          {
-            "name": "offerType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.OfferType"
-          },
-          {
-            "name": "lendingAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "amount",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "interestRateBps",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "collateralAmount",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "durationDays",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "assetType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.AssetType"
-          },
-          {
-            "name": "tokenId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "quantity",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "creatorRiskAndTermsConsent",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "prepayAsset",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "collateralAssetType",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.AssetType"
-          },
-          {
-            "name": "collateralTokenId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralQuantity",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "allowsPartialRepay",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "amountMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "interestRateBpsMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "collateralAmountMax",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "periodicInterestCadence",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.PeriodicInterestCadence"
-          },
-          {
-            "name": "expiresAt",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "fillMode",
-            "type": "uint8",
-            "internalType": "enum LibVaipakam.FillMode"
-          },
-          {
-            "name": "allowsPrepayListing",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "allowsParallelSale",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "refinanceTargetLoanId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "useFullTermInterest",
-            "type": "bool",
-            "internalType": "bool"
-          }
-        ]
-      },
-      {
-        "name": "permit",
-        "type": "tuple",
-        "internalType": "struct ISignatureTransfer.PermitTransferFrom",
-        "components": [
-          {
-            "name": "permitted",
-            "type": "tuple",
-            "internalType": "struct ISignatureTransfer.TokenPermissions",
-            "components": [
-              {
-                "name": "token",
-                "type": "address",
-                "internalType": "address"
-              },
-              {
-                "name": "amount",
-                "type": "uint256",
-                "internalType": "uint256"
-              }
-            ]
-          },
-          {
-            "name": "nonce",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "deadline",
-            "type": "uint256",
-            "internalType": "uint256"
-          }
-        ]
-      },
-      {
-        "name": "witness",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "permitSig",
-        "type": "bytes",
-        "internalType": "bytes"
-      },
-      {
-        "name": "full",
-        "type": "tuple",
-        "internalType": "struct LibSignedOffer.MakerFull",
-        "components": [
-          {
-            "name": "full",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "maxCStar",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "allowDowngrade",
-            "type": "bool",
-            "internalType": "bool"
-          }
-        ]
       }
     ],
     "outputs": [
@@ -1074,53 +930,36 @@ export default [
             "name": "refinanceTargetLoanId",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "lifecycleFlex",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "linkKind",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "linkMarginBps",
+            "type": "int16",
+            "internalType": "int16"
+          },
+          {
+            "name": "warnings",
+            "type": "uint8",
+            "internalType": "uint8"
           }
         ]
       }
     ],
     "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "OfferCreatorFullTariffSet",
-    "inputs": [
-      {
-        "name": "offerId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorFull",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      },
-      {
-        "name": "maxCStar",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "allowDowngrade",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "error",
-    "name": "AccountRetired",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -1539,6 +1378,17 @@ export default [
     "type": "error",
     "name": "CollateralMustBePositive",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -3349,6 +3199,11 @@ export default [
   },
   {
     "type": "error",
+    "name": "PositionTokenNotAccepted",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "PriceGuardNumeraireMismatch",
     "inputs": [
       {
@@ -3372,17 +3227,6 @@ export default [
     "type": "error",
     "name": "PriceReadOutOfGas",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ProtectedVaultLocked",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",
@@ -5328,32 +5172,6 @@ export default [
         "internalType": "uint256"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferInsufficientFreeBalance",
-    "inputs": [
-      {
-        "name": "asset",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "free",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "needed",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "SignedOfferUnsupportedShape",
-    "inputs": []
   },
   {
     "type": "error",

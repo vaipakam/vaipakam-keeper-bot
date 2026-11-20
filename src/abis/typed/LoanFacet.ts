@@ -285,6 +285,21 @@ export default [
             "name": "liqDiscountBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "lifTermOrigin",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "lifPaidDays",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "rateFromLink",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       }
@@ -515,6 +530,21 @@ export default [
             "name": "loanInitiationFeeBpsAtInit",
             "type": "uint16",
             "internalType": "uint16"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "warnings",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "rateFromLink",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       }
@@ -523,12 +553,17 @@ export default [
   },
   {
     "type": "error",
-    "name": "AccountRetired",
+    "name": "AcceptChargeLoanMismatch",
     "inputs": [
       {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
+        "name": "settledFor",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "opened",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -922,6 +957,17 @@ export default [
         "name": "key",
         "type": "bytes32",
         "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CollectionParentNotFillable",
+    "inputs": [
+      {
+        "name": "offerId",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
@@ -1703,22 +1749,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "IlliquidPairNotConsented",
-    "inputs": [
-      {
-        "name": "actor",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "pairKey",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "ImportedMarkerMissing",
     "inputs": [
       {
@@ -2249,22 +2279,6 @@ export default [
   },
   {
     "type": "error",
-    "name": "MidTierPairNotAcknowledged",
-    "inputs": [
-      {
-        "name": "actor",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "pairKey",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "MixedCollateralNotAllowed",
     "inputs": []
   },
@@ -2567,24 +2581,8 @@ export default [
   },
   {
     "type": "error",
-    "name": "PriceGuardNumeraireMismatch",
-    "inputs": [
-      {
-        "name": "guard",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "recorded",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "guardNumeraire",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ]
+    "name": "PositionTokenNotAccepted",
+    "inputs": []
   },
   {
     "type": "error",
@@ -2593,19 +2591,14 @@ export default [
   },
   {
     "type": "error",
-    "name": "ProtectedVaultLocked",
+    "name": "RatePricedLendingAsset",
     "inputs": [
       {
-        "name": "account",
+        "name": "asset",
         "type": "address",
         "internalType": "address"
       }
     ]
-  },
-  {
-    "type": "error",
-    "name": "ProtocolRegistryUnset",
-    "inputs": []
   },
   {
     "type": "error",
@@ -4066,27 +4059,6 @@ export default [
     "type": "error",
     "name": "RiskAndTermsConsentRequired",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "RiskTierTooLow",
-    "inputs": [
-      {
-        "name": "actor",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "requiredTier",
-        "type": "uint8",
-        "internalType": "uint8"
-      },
-      {
-        "name": "actorTier",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ]
   },
   {
     "type": "error",

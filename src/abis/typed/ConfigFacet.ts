@@ -295,6 +295,29 @@ export default [
   },
   {
     "type": "function",
+    "name": "getLateFeeSchedule",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "firstDayBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "perDayBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "capBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
     "name": "getLifMatcherFeeBps",
     "inputs": [],
     "outputs": [
@@ -1009,19 +1032,6 @@ export default [
         "name": "tier",
         "type": "uint8",
         "internalType": "uint8"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setLifMatcherFeeBps",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "internalType": "uint16"
       }
     ],
     "outputs": [],
@@ -1820,19 +1830,6 @@ export default [
         "type": "uint8",
         "indexed": false,
         "internalType": "uint8"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "LifMatcherFeeBpsSet",
-    "inputs": [
-      {
-        "name": "newBps",
-        "type": "uint16",
-        "indexed": false,
-        "internalType": "uint16"
       }
     ],
     "anonymous": false

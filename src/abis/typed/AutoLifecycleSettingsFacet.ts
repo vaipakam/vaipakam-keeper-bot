@@ -41,6 +41,11 @@ export default [
             "name": "setter",
             "type": "address",
             "internalType": "address"
+          },
+          {
+            "name": "maxExtensionFee",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
@@ -87,6 +92,11 @@ export default [
             "name": "setter",
             "type": "address",
             "internalType": "address"
+          },
+          {
+            "name": "maxExtensionFee",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
@@ -241,6 +251,11 @@ export default [
         "name": "maxNewExpiry",
         "type": "uint64",
         "internalType": "uint64"
+      },
+      {
+        "name": "maxExtensionFee",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [],
@@ -395,6 +410,12 @@ export default [
         "type": "uint64",
         "indexed": false,
         "internalType": "uint64"
+      },
+      {
+        "name": "maxExtensionFee",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -552,6 +573,17 @@ export default [
     "type": "error",
     "name": "AutoLendDisabled",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "DueDatePlanExists",
+    "inputs": [
+      {
+        "name": "loanId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
